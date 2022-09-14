@@ -13,8 +13,8 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
     return fopen(nome_arquivo, "wb");
 }
 
-int armazenarRegistro(FILE * arquivo){
-
+int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
+    
 }
 
 int recuperarArquivo(FILE * arquivo){
