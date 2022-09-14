@@ -14,7 +14,14 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 }
 
 int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
-    
+    int i;
+    for(i = 0; i<numReg; i++){
+        fwrite((registros[i]).firstname, sizeof(char), 51, arquivo);
+        fwrite((registros[i]).lastname, sizeof(char), 51, arquivo);
+        fwrite((registros[i]).email, sizeof(char), 81, arquivo);
+        fwrite((registros[i]).nationality, sizeof(char), 51, arquivo);
+        fwrite((registros[i]).age, sizeof(int), 1, arquivo);
+    }
 }
 
 int recuperarArquivo(FILE * arquivo){
