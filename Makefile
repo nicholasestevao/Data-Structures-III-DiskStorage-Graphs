@@ -12,5 +12,8 @@ mensagens.o: mensagens.c
 arquivos.o: arquivos.c
 	gcc -o arquivos.o -c arquivos.c
 
-trab : main.o arquivos.o mensagens.o 
-	gcc -o trab main.o arquivos.o mensagens.o
+registros.o: registros.c
+	gcc -o registros.o -c registros.c
+
+trab : main.o arquivos.o mensagens.o registros.o
+	gcc -o trab main.o arquivos.o mensagens.o registros.o

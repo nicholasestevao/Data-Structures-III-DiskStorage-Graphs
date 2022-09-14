@@ -3,14 +3,7 @@
 
 #include <stdlib.h>
 #include "mensagens.h"
-
-typedef struct {
-    char firstname[51];
-    char lastname[51];
-    char email[81];
-    char nationality[51];
-    int age;
-}Registro;
+#include "registros.h"
 
 FILE * abrirLeitura_bin(char * nome_arquivo);
 FILE * abrirEscrita_bin(char * nome_arquivo);
