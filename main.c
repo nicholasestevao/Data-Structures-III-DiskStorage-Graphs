@@ -15,8 +15,9 @@ void opcao1(char * nome_arquivo){
     alocaRegistros(&registros, numReg);
     
     //lendo registros do teclado
-    for(int i=0; i<numReg; i++){
-        printf("Lendo registro %d:\n",i);
+    int i;
+    for(i=0; i<numReg; i++){
+        //printf("Lendo registro %d:\n",i);
         lerRegistro(&(registros[i]));    
     }
 
@@ -41,9 +42,10 @@ void opcao2(char* nome_arquivo){
     FILE * arquivo = abrirLeitura_bin(nome_arquivo);
 
     //le todos os registros do arquivo
-    if(!recuperarArquivo(arquivo, &registros, qntReg)){//verifica se conseguiu ler o registro
+    if(!recuperarArquivo(arquivo, &registros, &qntReg)){//verifica se conseguiu ler o registro
         //imprime todos os regitros recuperados
-        for(int i=0; i<qntReg; i++){
+        int i;        
+        for(i=0; i<qntReg; i++){
             imprimeRegistro(&(registros[i]));    
         }
     }

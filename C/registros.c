@@ -3,7 +3,8 @@
 //aloca memoria para um registro
 void alocaRegistros(Registro ** registros, int numReg){
     *registros = malloc(sizeof(Registro)*numReg);   
-    for(int i = 0; i<numReg; i++){
+    int i;
+    for(i = 0; i<numReg; i++){
         (*registros)[i].firstname = malloc(sizeof(char)*FIRSTNAME_TAM);
         (*registros)[i].lastname = malloc(sizeof(char)*LASTNAME_TAM);
         (*registros)[i].email = malloc(sizeof(char)*EMAIL_TAM);
@@ -14,7 +15,8 @@ void alocaRegistros(Registro ** registros, int numReg){
 
 //desaloca a memoria do dedicada a um registro
 void desalocaRegistros(Registro ** registros, int numReg) {
-    for(int i = 0; i<numReg; i++){
+    int i;
+    for(i = 0; i<numReg; i++){
         free((*registros)[i].firstname);
         free((*registros)[i].lastname);
         free((*registros)[i].email);
@@ -39,14 +41,15 @@ void completarCifrao(char ** string, int tamMax){
     int tam = strlen(*string);
     
     //troca quebras de linha por $
-    for(int i = 0; i<tam; i++){
+    int i;
+    for(i = 0; i<tam; i++){
         if((*string)[i] == '\n') {
             (*string)[i] = '$';
         }
     }
 
     //insere $ no final da string caso não tenha ocupado o tamanho maximo
-    for(int i = tam; i<tamMax; i++){
+    for(i = tam; i<tamMax; i++){
         (*string)[i] = '$';
     }
 
@@ -63,7 +66,8 @@ void tiraCifrao(char * string, int tamMax) {
     strcpy(buffer, string);
 
     //troca o primeiro $ por \0
-    for(int i = 0; i<tamMax; i++){
+    int i;
+    for(i = 0; i<tamMax; i++){
         if(buffer[i] == '$') {
             buffer[i] = '\0';
         }
@@ -81,45 +85,35 @@ void lerRegistro(Registro *registro){
     //alca buffers
     char* firstname = malloc(sizeof(char)*100);
     char* lastname = malloc(sizeof(char)*100);    
-    char* first_e_lastname = malloc(sizeof(char)*200);
     char* email = malloc(sizeof(char)*150);
     char* nationality = malloc(sizeof(char)*100);
     int age;
     
     //recebe nome e sobrenome do usuario
-    printf("Digite o nome: ");
+    //printf("Digite o nome: ");
     fgetc(stdin);
-    fgets(first_e_lastname, sizeof(char)*200, stdin);
-
-    //divide a string em nome e sobrenome
-    strcpy(firstname,strtok(first_e_lastname, " "));
-    strcpy(lastname, strtok(NULL, "\n"));
-    
+    fgets(firstname, sizeof(char)*100, stdin);
+    //printf("Digite o sobrenome: ");
+    fgets(lastname, sizeof(char)*100, stdin);
     //recebe email, nacionalidade e idade do usuario
-    printf("Digite o email: ");
+    //printf("Digite o email: ");
     fgets(email, sizeof(char)*150, stdin);
-    printf("Digite a nacionalidade: ");
+    //printf("Digite a nacionalidade: ");
     fgets(nationality, sizeof(char)*100, stdin);
-    printf("Digite a idade: ");
+    //printf("Digite a idade: ");
     scanf("%d", &age);
 
-    //completa os espaços vazios das strings com $(lixo)
-    completarCifrao(&(firstname), 51);
-    completarCifrao(&(lastname), 51);
-    completarCifrao(&(email), 81);
-    completarCifrao(&(nationality), 51);
 
     //copia os dados pro registro
-    strcpy(registro->firstname, firstname);
-    strcpy(registro->lastname, lastname);
-    strcpy(registro->email, email);
-    strcpy(registro->nationality, nationality);
+    strcpy(registro->firstname, strtok(firstname,"\n"));
+    strcpy(registro->lastname, strtok(lastname,"\n"));
+    strcpy(registro->email, strtok(email,"\n"));
+    strcpy(registro->nationality, strtok(nationality,"\n"));
     (registro->age)[0] = age;
 
     //desaloca buffers
     free(firstname);
     free(lastname);
-    free(first_e_lastname);
     free(email);
     free(nationality);
 }

@@ -18,11 +18,29 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 //escreve todos os registros no arquivobinario
 int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
     //escreve cada registro sequencialmente no arquivo binario
-    for(int i = 0; i<numReg; i++){
-        fwrite((registros[i]).firstname, sizeof(char), 51, arquivo);
-        fwrite((registros[i]).lastname, sizeof(char), 51, arquivo);
-        fwrite((registros[i]).email, sizeof(char), 81, arquivo);
-        fwrite((registros[i]).nationality, sizeof(char), 51, arquivo);
+    int i;
+    char * cifrao = malloc(sizeof(char)*82);
+    for(i=0; i<81;i++){
+        cifrao[i]='$';
+    }
+    cifrao[81]='\0';
+    for(i = 0; i<numReg; i++){
+        int tam_first_name = strlen((registros[i]).firstname) +1;
+        fwrite((registros[i]).firstname, sizeof(char), tam_first_name, arquivo);
+        fwrite(cifrao, sizeof(char), FIRSTNAME_TAM - tam_first_name, arquivo);
+
+        int tam_last_name = strlen((registros[i]).lastname) +1;
+        fwrite((registros[i]).lastname, sizeof(char), tam_last_name, arquivo);
+        fwrite(cifrao, sizeof(char), LASTNAME_TAM - tam_last_name, arquivo);
+
+        int tam_email = strlen((registros[i]).email) +1;
+        fwrite((registros[i]).email, sizeof(char), tam_email, arquivo);
+        fwrite(cifrao, sizeof(char),EMAIL_TAM - tam_email, arquivo);
+
+        int tam_nationality = strlen((registros[i]).nationality) +1;
+        fwrite((registros[i]).nationality, sizeof(char), tam_nationality, arquivo);
+        fwrite(cifrao, sizeof(char), NATIONALITY_TAM - tam_nationality, arquivo);
+
         fwrite((registros[i]).age, sizeof(int), 1, arquivo);
     }
 
@@ -30,17 +48,18 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
 }
 
 //recupera todos os registros no arquivo binario
-int recuperarArquivo(FILE * arquivo, Registro ** registros, long qntReg){
+int recuperarArquivo(FILE * arquivo, Registro ** registros, long *qntReg){
     //Descobre quantidade de registros a serem lidos
     fseek(arquivo, 0, SEEK_END);
-    qntReg = ftell(arquivo) / 238;
+    (*qntReg) = ftell(arquivo) / 238;
     fseek(arquivo, 0, SEEK_SET);
 
     //aloca quantidade de registros
-    alocaRegistros(&(*registros), qntReg);
+    alocaRegistros(&(*registros), *qntReg);
     
     //recupera cada registro do arquivo binario
-    for(int i = 0; i < qntReg; i++){
+    int i;
+    for(i = 0; i < *qntReg; i++){
         if(recuperaCampos(arquivo, &((*registros)[i]))) {
             msg_erro_RRN_Invalido();
             return 1; //falha
