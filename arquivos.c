@@ -41,7 +41,7 @@ int recuperarArquivo(FILE * arquivo, Registro * registros){
 
     if(fread(char_buffer, sizeof(char), 234, arquivo)) {
         fread(int_buffer, sizeof(int), 1, arquivo);
-        recuperaCampos(&(char_buffer), 234, registros);
+        //recuperaCampos(&(char_buffer), 234);
         registros->age = int_buffer;
     }
 
@@ -64,16 +64,11 @@ int recuperarRegistroRRN(FILE * arquivo, int RRN, Registro * registro){
         registro->age = malloc(sizeof(int));
     }
 
-    char * char_buffer = malloc(sizeof(char)*234);
-    int * int_buffer = malloc(sizeof(int)*1);
-
     fseek(arquivo, (234 * sizeof(char) + sizeof(int)) * RRN, SEEK_SET);
-    if(fread(registro->firstname, sizeof(char), FIRSTNAME_TAM, arquivo)) {
-        fread(registro->lastname, sizeof(char), LASTNAME_TAM, arquivo);
-        fread(registro->email, sizeof(char), EMAIL_TAM, arquivo);
-        fread(registro->nationality, sizeof(char), NATIONALITY_TAM, arquivo);
-        fread(int_buffer, sizeof(int), 1, arquivo);
-        registro->age = int_buffer;
+    ftell(arquivo);
+    if(recuperaCampos(arquivo, registro)) {
+        msg_erro_RRN_Invalido();
+        return 1;
     }
     return 0;
 }

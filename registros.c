@@ -9,7 +9,7 @@ void imprimeRegistro(Registro * registro){
     printf("Lastname: %s\n", registro->lastname);
     printf("Email: %s\n", registro->email);
     printf("Nationality: %s\n", registro->nationality);
-    printf("Age: %d\n", (registro->age)[0]);
+    printf("Age: %d\n\n", (registro->age)[0]);
  }   
 
 void completarCifrao(char ** string, int tamMax){    
@@ -19,6 +19,19 @@ void completarCifrao(char ** string, int tamMax){
         (*string)[i] = '$';
     }
     (*string)[tamMax-1] = '\0';
+}
+
+void tiraCifrao(char ** string, int tamMax) {
+    char * buffer = malloc(sizeof(char) * tamMax);
+    strcpy(buffer, (*string));
+    int i;
+    for(i = 0; i<tamMax; i++){
+        if(buffer[i] == '$') {
+            buffer[i] = '\0';
+            break;
+        }
+    }
+    strcpy((*string), buffer);
 }
 
 void lerRegistro(Registro *registro){
@@ -58,21 +71,18 @@ void lerRegistro(Registro *registro){
     imprimeRegistro(registro);
 }
 
-void recuperaCampos(char ** buffer, int buffer_tam, Registro * registro) {
-    for(int i = 0; i < FIRSTNAME_TAM; i++) {
-        printf("%d - %c\n", i, (*buffer)[i]);
-        registro->firstname[i] = (*buffer)[i];
+int recuperaCampos(FILE * arquivo, Registro * registro) {
+    if(fread(registro->firstname, sizeof(char), FIRSTNAME_TAM, arquivo) != 0) {
+        fread(registro->lastname, sizeof(char), LASTNAME_TAM, arquivo);
+        fread(registro->email, sizeof(char), EMAIL_TAM, arquivo);
+        fread(registro->nationality, sizeof(char), NATIONALITY_TAM, arquivo);
+        fread(registro->age, sizeof(int), 1, arquivo);
+        tiraCifrao(&(registro->firstname), FIRSTNAME_TAM);
+        tiraCifrao(&(registro->lastname), LASTNAME_TAM);
+        tiraCifrao(&(registro->email), EMAIL_TAM);
+        tiraCifrao(&(registro->nationality), NATIONALITY_TAM);
+    } else {
+        return 1;
     }
-
-    for(int i = LASTNAME_START; i <= LASTNAME_FINISH; i++) {
-        registro->firstname[i - LASTNAME_START] = (*buffer)[i];
-    }
-
-    for(int i = EMAIL_START; i <= EMAIL_FINISH; i++) {
-        registro->firstname[i - EMAIL_START] = (*buffer)[i];
-    }
-
-    for(int i = NATIONALITY_START; i <= NATIONALITY_FINISH; i++) {
-        registro->firstname[i - NATIONALITY_START] = (*buffer)[i];
-    }
+    return 0;
 }

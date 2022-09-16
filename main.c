@@ -45,8 +45,9 @@ void opcao3(char* nome_arquivo){
     registro->nationality = malloc(sizeof(char)*NATIONALITY_TAM);
     registro->age = malloc(sizeof(int)*1);
 
-    recuperarRegistroRRN(arquivo, RRN, registro);
-    imprimeRegistro(registro);
+    if(!recuperarRegistroRRN(arquivo, RRN, registro)) {
+        imprimeRegistro(registro);
+    }
 }
 
 int main(int argC, char *argV[]){
