@@ -1,11 +1,15 @@
 #include "registros.h"
 
+void alocaRegistros(Registro * registros, int numReg){
+    
+}
+
 void imprimeRegistro(Registro * registro){
-    printf("%s\n", registro->firstname);
-    printf("%s\n", registro->lastname);
-    printf("%s\n", registro->email);
-    printf("%s\n", registro->nationality);
-    printf("%d\n", (registro->age)[0]);
+    printf("Firstname: %s\n", registro->firstname);
+    printf("Lastname: %s\n", registro->lastname);
+    printf("Email: %s\n", registro->email);
+    printf("Nationality: %s\n", registro->nationality);
+    printf("Age: %d\n", (registro->age)[0]);
  }   
 
 void completarCifrao(char ** string, int tamMax){    
@@ -52,4 +56,23 @@ void lerRegistro(Registro *registro){
     (registro->age)[0] = age;
 
     imprimeRegistro(registro);
+}
+
+void recuperaCampos(char ** buffer, int buffer_tam, Registro * registro) {
+    for(int i = 0; i < FIRSTNAME_TAM; i++) {
+        printf("%d - %c\n", i, (*buffer)[i]);
+        registro->firstname[i] = (*buffer)[i];
+    }
+
+    for(int i = LASTNAME_START; i <= LASTNAME_FINISH; i++) {
+        registro->firstname[i - LASTNAME_START] = (*buffer)[i];
+    }
+
+    for(int i = EMAIL_START; i <= EMAIL_FINISH; i++) {
+        registro->firstname[i - EMAIL_START] = (*buffer)[i];
+    }
+
+    for(int i = NATIONALITY_START; i <= NATIONALITY_FINISH; i++) {
+        registro->firstname[i - NATIONALITY_START] = (*buffer)[i];
+    }
 }
