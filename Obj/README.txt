@@ -1,0 +1,1 @@
+Arquivo para existir pasta no Git.
