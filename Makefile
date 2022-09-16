@@ -20,3 +20,6 @@ run :
 
 trab : ./Obj/main.o ./Obj/arquivos.o ./Obj/mensagens.o ./Obj/registros.o ./Obj/funcoesFornecidas.o
 	gcc -o trab ./Obj/main.o ./Obj/arquivos.o ./Obj/mensagens.o ./Obj/registros.o ./Obj/funcoesFornecidas.o
+
+rm: ./Obj/*.o
+	rm ./Obj/*.o *.exe

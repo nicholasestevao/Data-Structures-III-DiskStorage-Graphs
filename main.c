@@ -40,6 +40,10 @@ void opcao2(char* nome_arquivo){
 
     //abre arquivo para leitura
     FILE * arquivo = abrirLeitura_bin(nome_arquivo);
+    if(arquivo == NULL){
+        //Nao conseguiu abrir o arquivo
+        return;
+    }
 
     //le todos os registros do arquivo
     if(!recuperarArquivo(arquivo, &registros, &qntReg)){//verifica se conseguiu ler o registro
