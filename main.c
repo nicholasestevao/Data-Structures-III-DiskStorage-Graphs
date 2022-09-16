@@ -17,7 +17,7 @@ void opcao1(char * nome_arquivo){
     //lendo registros do teclado
     int i;
     for(i=0; i<numReg; i++){
-        printf("Lendo registro %d:\n",i);
+        //printf("Lendo registro %d:\n",i);
         lerRegistro(&(registros[i]));    
     }
 
