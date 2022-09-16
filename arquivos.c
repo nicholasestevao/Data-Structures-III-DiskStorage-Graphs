@@ -25,30 +25,17 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
     return 0;
 }
 
-int recuperarArquivo(FILE * arquivo, Registro * registros){
-    if(registros == NULL) {
+int recuperarArquivo(FILE * arquivo, Registro ** registros, long qntReg){
+    if(*registros == NULL) {
         //aloca regisros
-        registros = malloc(sizeof(Registro)*1);
-        registros->firstname = malloc(sizeof(char)*FIRSTNAME_TAM);
-        registros->lastname = malloc(sizeof(char)*LASTNAME_TAM);
-        registros->email = malloc(sizeof(char)*EMAIL_TAM);
-        registros->nationality = malloc(sizeof(char)*NATIONALITY_TAM);
-        registros->age = malloc(sizeof(int));
+        alocaRegistros(&(*registros), qntReg);
     }
 
-    char * char_buffer = malloc(sizeof(char)*234);
-    int * int_buffer = malloc(sizeof(int)*1);
-
-    if(fread(char_buffer, sizeof(char), 234, arquivo)) {
-        fread(int_buffer, sizeof(int), 1, arquivo);
-        //recuperaCampos(&(char_buffer), 234);
-        registros->age = int_buffer;
-    }
-
-    int i = 2;
-    while(fread(char_buffer, sizeof(char), 234, arquivo)) {
-        fread(int_buffer, sizeof(int), 1, arquivo);
-        //realloc(registros, sizeof(registros) * i);
+    for(int i=0; i < qntReg; i++){
+       if(recuperaCampos(arquivo, &(*registros)[i])) {
+            msg_erro_RRN_Invalido();
+            return 1;
+       } 
     }
     return 0;
 }
@@ -56,16 +43,11 @@ int recuperarArquivo(FILE * arquivo, Registro * registros){
 int recuperarRegistroRRN(FILE * arquivo, int RRN, Registro * registro){
     if(registro == NULL) {
         //aloca regisros
-        registro = malloc(sizeof(Registro)*1);
-        registro->firstname = malloc(sizeof(char)*FIRSTNAME_TAM);
-        registro->lastname = malloc(sizeof(char)*LASTNAME_TAM);
-        registro->email = malloc(sizeof(char)*EMAIL_TAM);
-        registro->nationality = malloc(sizeof(char)*NATIONALITY_TAM);
-        registro->age = malloc(sizeof(int));
+        alocaRegistros(&registro, 1);
     }
 
     fseek(arquivo, (234 * sizeof(char) + sizeof(int)) * RRN, SEEK_SET);
-    ftell(arquivo);
+    
     if(recuperaCampos(arquivo, registro)) {
         msg_erro_RRN_Invalido();
         return 1;
