@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "../HEADERS/funcoesFornecidas.h"
 
 void readline(char* string){
     char c = 0;
