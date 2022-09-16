@@ -22,12 +22,35 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
         fwrite((registros[i]).nationality, sizeof(char), 51, arquivo);
         fwrite((registros[i]).age, sizeof(int), 1, arquivo);
     }
+    return 0;
 }
 
-int recuperarArquivo(FILE * arquivo){
+int recuperarArquivo(FILE * arquivo, Registro ** registros, long qntReg){
+    if(*registros == NULL) {
+        //aloca regisros
+        alocaRegistros(&(*registros), qntReg);
+    }
 
+    for(int i=0; i < qntReg; i++){
+       if(recuperaCampos(arquivo, &(*registros)[i])) {
+            msg_erro_RRN_Invalido();
+            return 1;
+       } 
+    }
+    return 0;
 }
 
-int recuperarRegistroRRN(FILE * arquivo, int RRN){
+int recuperarRegistroRRN(FILE * arquivo, int RRN, Registro * registro){
+    if(registro == NULL) {
+        //aloca regisros
+        alocaRegistros(&registro, 1);
+    }
 
+    fseek(arquivo, (234 * sizeof(char) + sizeof(int)) * RRN, SEEK_SET);
+    
+    if(recuperaCampos(arquivo, registro)) {
+        msg_erro_RRN_Invalido();
+        return 1;
+    }
+    return 0;
 }
