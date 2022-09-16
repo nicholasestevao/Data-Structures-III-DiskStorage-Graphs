@@ -9,7 +9,7 @@ lecionada pela Docente Cristina Dutra de Aguiar, para o curso de Engenharia de C
 
 ---
 
-## Trabalho 1 
+## Trabalho 1 - Leitura e Escrita em arquivos binários
 
 Considere os seguintes dados a respeito de uma pessoa:
 
