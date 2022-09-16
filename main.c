@@ -59,11 +59,15 @@ void opcao3(char* nome_arquivo){
     Registro * registro;
     int RRN;
 
-    //recebe RRN do registro a ser recuperado
-    scanf("%d", &RRN); 
-
     //abre arquivo para leitura
     FILE * arquivo = abrirLeitura_bin(nome_arquivo);
+    if(arquivo == NULL){
+        //Nao conseguiu abrir o arquivo
+        return;
+    }
+
+    //recebe RRN do registro a ser recuperado
+    scanf("%d", &RRN); 
 
     //aloca memoria para a quantidade de registros escolhida
     alocaRegistros(&registro, 1);

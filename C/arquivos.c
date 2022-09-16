@@ -7,6 +7,7 @@ FILE * abrirLeitura_bin(char * nome_arquivo){
         return arq;
     }else{
         msg_erro_Arq_Inexistente();
+        return NULL;
     }
 }
 
