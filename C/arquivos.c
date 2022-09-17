@@ -21,7 +21,7 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
     //escreve cada registro sequencialmente no arquivo binario
     int i;
     char * cifrao = malloc(sizeof(char)*(CIFRAOSTRING+1));
-    for(i=0; i<81;i++){
+    for(i=0; i<CIFRAOSTRING;i++){
         cifrao[i]='$';
     }
     cifrao[CIFRAOSTRING]='\0';

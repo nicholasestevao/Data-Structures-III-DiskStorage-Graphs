@@ -35,51 +35,6 @@ void imprimeRegistro(Registro * registro){
     printf("Age: %d\n\n", (registro->age)[0]);
  }   
 
-//coloca $(lixo) nos espaços vazios da strings    
-void completarCifrao(char ** string, int tamMax){
-    //descobre tamanho real da string
-    int tam = strlen(*string);
-    
-    //troca quebras de linha por $
-    int i;
-    for(i = 0; i<tam; i++){
-        if((*string)[i] == '\n') {
-            (*string)[i] = '$';
-        }
-    }
-
-    //insere $ no final da string caso não tenha ocupado o tamanho maximo
-    for(i = tam; i<tamMax; i++){
-        (*string)[i] = '$';
-    }
-
-    //insere \0 no ultimo caractere para indicar fim da string
-    (*string)[tamMax-1] = '\0';
-}
-
-//tira $(lixo) das strings
-void tiraCifrao(char * string, int tamMax) {
-    //cria buffer para manipulacao da string
-    char * buffer = malloc(sizeof(char) * tamMax);
-
-    //copia a string para o buffer
-    strcpy(buffer, string);
-
-    //troca o primeiro $ por \0
-    int i;
-    for(i = 0; i<tamMax; i++){
-        if(buffer[i] == '$') {
-            buffer[i] = '\0';
-        }
-    }
-
-    //copia o buffer para string original
-    strcpy(string, buffer);
-    
-    //desaloca buffers
-    free(buffer);
-}
-
 //recebe dados do usuario e cria um registro
 void lerRegistro(Registro *registro){
     //alca buffers

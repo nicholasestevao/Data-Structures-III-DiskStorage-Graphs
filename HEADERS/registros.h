@@ -31,8 +31,6 @@ typedef struct {
 void alocaRegistros(Registro ** registros, int numReg);
 void desalocaRegistros(Registro ** registros, int numReg);
 void imprimeRegistro(Registro * registro);
-void completarCifrao(char ** string, int tamMax);
-void tiraCifrao(char * string, int tamMax);
 void lerRegistro(Registro *registro);
 int recuperaCampos(FILE * arquivo, Registro * registro);
 
