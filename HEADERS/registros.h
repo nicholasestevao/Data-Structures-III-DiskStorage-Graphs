@@ -10,6 +10,16 @@
 #define EMAIL_TAM 81
 #define NATIONALITY_TAM 51
 
+#if (FIRSTNAME_TAM >= LASTNAME_TAM) && (FIRSTNAME_TAM >= EMAIL_TAM) && (FIRSTNAME_TAM >= NATIONALITY_TAM)
+    #define CIFRAOSTRING FIRSTNAME_TAM
+#elif (LASTNAME_TAM >= FIRSTNAME_TAM) && (LASTNAME_TAM >= EMAIL_TAM) && (LASTNAME_TAM >= NATIONALITY_TAM)
+    #define CIFRAOSTRING LASTNAME_TAM
+#elif (EMAIL_TAM >= FIRSTNAME_TAM) && (EMAIL_TAM >= LASTNAME_TAM) && (EMAIL_TAM >= NATIONALITY_TAM)
+    #define CIFRAOSTRING EMAIL_TAM
+#elif (NATIONALITY_TAM >= FIRSTNAME_TAM) && (NATIONALITY_TAM >= LASTNAME_TAM) && (NATIONALITY_TAM >= EMAIL_TAM)
+    #define CIFRAOSTRING NATIONALITY_TAM 
+#endif
+
 typedef struct {
     char* firstname;
     char* lastname;
@@ -25,6 +35,5 @@ void completarCifrao(char ** string, int tamMax);
 void tiraCifrao(char * string, int tamMax);
 void lerRegistro(Registro *registro);
 int recuperaCampos(FILE * arquivo, Registro * registro);
-
 
 #endif

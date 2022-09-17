@@ -110,6 +110,7 @@ int main(int argC, char *argV[]){
     
     //desaloca string de nome do arquivo
     free(nome_arquivo);
+    
     return 0;
 }
 

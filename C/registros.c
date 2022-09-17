@@ -126,12 +126,6 @@ int recuperaCampos(FILE * arquivo, Registro * registro){
         fread(registro->email, sizeof(char), EMAIL_TAM, arquivo);
         fread(registro->nationality, sizeof(char), NATIONALITY_TAM, arquivo);
         fread(registro->age, sizeof(int), 1, arquivo);
-
-        //tira o $(lixo) das strings
-        tiraCifrao(registro->firstname, FIRSTNAME_TAM);
-        tiraCifrao(registro->lastname, LASTNAME_TAM);
-        tiraCifrao(registro->email, EMAIL_TAM);
-        tiraCifrao(registro->nationality, NATIONALITY_TAM);
     } else {
         return 1; //falha
     }
