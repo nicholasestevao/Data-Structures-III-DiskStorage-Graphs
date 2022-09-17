@@ -78,6 +78,7 @@ void opcao3(char* nome_arquivo){
 
     //le registro do arquivo pelo RRN
     if(!recuperarRegistroRRN(arquivo, RRN, registro)){//verifica se conseguiu ler o registro
+        //se conseguiu imprime
         imprimeRegistro(registro);
     }
 
