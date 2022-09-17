@@ -37,7 +37,7 @@ void imprimeRegistro(Registro * registro){
 
 //recebe dados do usuario e cria um registro
 void lerRegistro(Registro *registro){
-    //alca buffers
+    //aloca buffers
     char* firstname = malloc(sizeof(char)*100);
     char* lastname = malloc(sizeof(char)*100);    
     char* email = malloc(sizeof(char)*150);
@@ -45,17 +45,13 @@ void lerRegistro(Registro *registro){
     int age;
     
     //recebe nome e sobrenome do usuario
-    //printf("Digite o nome: ");
     fgetc(stdin);
     fgets(firstname, sizeof(char)*100, stdin);
-    //printf("Digite o sobrenome: ");
     fgets(lastname, sizeof(char)*100, stdin);
+
     //recebe email, nacionalidade e idade do usuario
-    //printf("Digite o email: ");
     fgets(email, sizeof(char)*150, stdin);
-    //printf("Digite a nacionalidade: ");
     fgets(nationality, sizeof(char)*100, stdin);
-    //printf("Digite a idade: ");
     scanf("%d", &age);
 
 

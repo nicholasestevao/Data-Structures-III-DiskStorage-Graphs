@@ -20,6 +20,7 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
     //escreve cada registro sequencialmente no arquivo binario
     int i;
+    //Variavel usada para preecher com $ o espaço nao usado
     char * cifrao = malloc(sizeof(char)*(CIFRAOSTRING+1));
     for(i=0; i<CIFRAOSTRING;i++){
         cifrao[i]='$';
