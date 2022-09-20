@@ -9,7 +9,7 @@ void alocaRegistros(Registro ** registros, int numReg){
         (*registros)[i].lastname = malloc(sizeof(char)*LASTNAME_TAM);
         (*registros)[i].email = malloc(sizeof(char)*EMAIL_TAM);
         (*registros)[i].nationality = malloc(sizeof(char)*NATIONALITY_TAM);
-        (*registros)[i].age = malloc(sizeof(int)*1);
+        (*registros)[i].age = malloc(INT_TAM);
     }
 }
 
@@ -76,7 +76,7 @@ int recuperaCampos(FILE * arquivo, Registro * registro){
         fread(registro->lastname, sizeof(char), LASTNAME_TAM, arquivo);
         fread(registro->email, sizeof(char), EMAIL_TAM, arquivo);
         fread(registro->nationality, sizeof(char), NATIONALITY_TAM, arquivo);
-        fread(registro->age, sizeof(int), 1, arquivo);
+        fread(registro->age, INT_TAM, 1, arquivo);
     } else {
         return 1; //falha
     }

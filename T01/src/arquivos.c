@@ -43,7 +43,7 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
         fwrite((registros[i]).nationality, sizeof(char), tam_nationality, arquivo);
         fwrite(cifrao, sizeof(char), NATIONALITY_TAM - tam_nationality, arquivo);
 
-        fwrite((registros[i]).age, sizeof(int), 1, arquivo);
+        fwrite((registros[i]).age, INT_TAM, 1, arquivo);
     }
 
     return 0;//sucesso
@@ -53,7 +53,7 @@ int armazenarRegistro(FILE * arquivo, int numReg, Registro * registros){
 int recuperarArquivo(FILE * arquivo, Registro ** registros, long *qntReg){
     //Descobre quantidade de registros a serem lidos
     fseek(arquivo, 0, SEEK_END);
-    (*qntReg) = ftell(arquivo) / 238;
+    (*qntReg) = ftell(arquivo) / REGISTRO_TAM;
     fseek(arquivo, 0, SEEK_SET);
 
     //aloca quantidade de registros
@@ -79,7 +79,7 @@ int recuperarRegistroRRN(FILE * arquivo, int RRN, Registro * registro){
     }
 
     //posiciona o ponteriro no registro desejado
-    fseek(arquivo, (234 * sizeof(char) + sizeof(int)) * RRN, SEEK_SET);
+    fseek(arquivo, REGISTRO_TAM * RRN, SEEK_SET);
     
     //se o RRN for invalido printa a mensagem de erro e retorna 1
     if(recuperaCampos(arquivo, registro)) {
