@@ -1,4 +1,4 @@
-#include "../HEADERS/funcoesFornecidas.h"
+#include "../headers/funcoesFornecidas.h"
 
 void readline(char* string){
     char c = 0;

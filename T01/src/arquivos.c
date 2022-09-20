@@ -1,4 +1,4 @@
-#include "../HEADERS/arquivos.h"
+#include "../headers/arquivos.h"
 
 //abre arquivo binario para leitura
 FILE * abrirLeitura_bin(char * nome_arquivo){

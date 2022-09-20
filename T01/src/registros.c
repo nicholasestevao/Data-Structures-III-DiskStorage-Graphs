@@ -1,4 +1,4 @@
-#include "../HEADERS/registros.h"
+#include "../headers/registros.h"
 
 //aloca memoria para um registro
 void alocaRegistros(Registro ** registros, int numReg){

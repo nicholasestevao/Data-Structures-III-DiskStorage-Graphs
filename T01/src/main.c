@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./HEADERS/arquivos.h"
-#include "./HEADERS/registros.h"
-#include "./HEADERS/funcoesFornecidas.h"
+#include "../headers/arquivos.h"
+#include "../headers/registros.h"
+#include "../headers/funcoesFornecidas.h"
 
 void opcao1(char * nome_arquivo){
     Registro * registros;
