@@ -6,13 +6,23 @@ FILE * abrirLeitura_bin(char * nome_arquivo){
     if(arq == NULL){
         msg_erro_Arq_Inexistente();
         return NULL;
-    }else{
-        return arq;
     }
+    return arq;
 }
 FILE * abrirEscrita_bin(char * nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "wb");
-        return arq;
+    fseek(arq, 0, SEEK_SET);
+    char* status = malloc(sizeof(char)*1);
+    status[0] = '0';
+    fwrite(status,sizeof(char), 1, arq);
+    return arq;
+}
+
+void fecharArquivo_bin(FILE * arquivo_bin){
+    char* status = malloc(sizeof(char)*1);
+    status[0] = '1';
+    fwrite(status, sizeof(char), 1, arquivo_bin);
+    fclose(arquivo_bin);
 }
 
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
@@ -21,7 +31,7 @@ RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
     char* removido;
     fread(removido, sizeof(char), 1, arquivoBin);
     RegistroDados * registro;
-    if(removido == '0'){
+    if(*removido == '0'){
         alocaRegistrosDados(&registro, 1);
         registro->removido = removido;
         fread(registro->encadeamento, sizeof(int), 1, arquivoBin);
@@ -39,7 +49,7 @@ RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
         }
         registro->nomePoPs[indice] = '\0';
         indice = 0;
-        char c = fgetc(arquivoBin);
+        c = fgetc(arquivoBin);
         while(c != '|'){
             registro->nomePais[indice] = c;
             c = fgetc(arquivoBin);
@@ -65,16 +75,14 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin){
     fread(registro->qttCompacta, sizeof(int), 1, arquivoBin);
 }
 
-void funcionalidade2Select(char* nome_arquivo){
-    FILE * arquivoBin = abrirLeitura_bin(nome_arquivo);
-    RegistroCabecalho * cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    RegistroDados * dados;
-    for(int i = 0; i<cabecalho->proxRRN; i++){
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
-        imprimeRegistroDadosTela(dados);
-        desalocaRegistrosDados(&dados,1);
+RegistroCabecalho * inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho, RegistroDados * dados){
+    if(*(cabecalho->topo) == -1){
+        //nao ha removidos
     }
-    printf("Numero de paginas de disco: %d\n", cabecalho->nroPagDisco);
-    desalocaRegistrosCabecalho(cabecalho);
-    fclose(arquivoBin);
+    return NULL;
+}
+
+
+int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho){
+
 }

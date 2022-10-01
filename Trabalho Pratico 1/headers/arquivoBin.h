@@ -10,12 +10,12 @@
 FILE * abrirLeitura_bin(char * nome_arquivo);
 FILE * abrirEscrita_bin(char * nome_arquivo);
 
+void fecharArquivo_bin(FILE * arquivo_bin);
+
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN);
 RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin);
 
 RegistroCabecalho * inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, RegistroDados * registroDados);
 int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho); 
-
-void funcionalidade2Select(char* nome_arquivo);
 
 #endif

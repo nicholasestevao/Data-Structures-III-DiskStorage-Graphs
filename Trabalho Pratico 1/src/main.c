@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../headers/funcoesFornecidas.h"
+#include "../headers/arquivoBin.h"
+#include "../headers/funcionalidades.h"
 
 
 int main(int argC, char *argV[]){
@@ -11,7 +13,7 @@ int main(int argC, char *argV[]){
     
     scanf("%d %s", &opcao, nome_arquivo);
     
-    //Create table (1) - Isaac
+    //Create table (1) - Isaac e Nicholas
     //le do csv
     
     //Select (2) - Nicholas
@@ -42,7 +44,7 @@ int main(int argC, char *argV[]){
     }
 
 
-    //Remocao logica (4) - Nicholas
+    //Remocao logica (4) - Isaac
     //le comando da tela
 
     //Insercao (5) - Nicholas
