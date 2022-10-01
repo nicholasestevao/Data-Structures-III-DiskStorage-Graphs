@@ -1,5 +1,5 @@
-#ifndef __REGISTROS_C__
-#define __REGISTROS_C__
+#ifndef __REGISTROS_DADOS_C__
+#define __REGISTROS_DADOS_C__
 
 #include <stdio.h>
 #include <stdlib.h>
