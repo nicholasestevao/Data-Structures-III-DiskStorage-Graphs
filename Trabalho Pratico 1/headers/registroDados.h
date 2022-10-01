@@ -7,7 +7,7 @@
 
 
 typedef struct {
-    int* removido;
+    char* removido;
     int* encadeamento;
     int* idConecta;
     char* siglaPais;
