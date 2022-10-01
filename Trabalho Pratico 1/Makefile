@@ -1,25 +1,36 @@
-all : trab
+CC          := gcc
+DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration -fsanitize=address,undefined
+FLAGS       := -Wall -Werror $(DEBUG_FLAGS)
 
-run : 
-	./trab
-	
-./bin/main.o: ./src/main.c
-	gcc -o ./bin/main.o -c ./src/main.c
+SRC         := ./src
+BIN         := ./bin
+HEADERS     := ./headers
+EXEC        := prog
+ZIP         := exercicio.zip
 
-./bin/mensagens.o: ./src/mensagens.c
-	gcc -o ./bin/mensagens.o -c ./src/mensagens.c
+# List of all expected $(BIN)/*.o
+ALL         := $(wildcard $(SRC)/*.c)
+ALL         := $(ALL:$(SRC)/%.c=$(BIN)/%.o)
 
-./bin/arquivos.o: ./src/arquivos.c
-	gcc -o ./bin/arquivos.o -c ./src/arquivos.c
+all: $(EXEC)
 
-./bin/registros.o: ./src/registros.c
-	gcc -o ./bin/registros.o -c ./src/registros.c
+compile: clean all
 
-./bin/funcoesFornecidas.o: ./src/funcoesFornecidas.c
-	gcc -o ./bin/funcoesFornecidas.o -c ./src/funcoesFornecidas.c	
+run: all
+	./$(EXEC)
 
-trab : ./bin/main.o ./bin/arquivos.o ./bin/mensagens.o ./bin/registros.o ./bin/funcoesFornecidas.o
-	gcc -o trab ./bin/main.o ./bin/arquivos.o ./bin/mensagens.o ./bin/registros.o ./bin/funcoesFornecidas.o
+clean:
+	rm -f $(EXEC) $(BIN)/*.o
 
-rm: ./bin/*.o
-	rm ./bin/*.o *.exe
+zip:
+	rm -f $(ZIP)
+	zip $(ZIP) Makefile $(HEADERS)/*.h $(SRC)/*.c
+
+$(EXEC): $(ALL)
+	$(CC) -o $(EXEC) $(BIN)/*.o $(FLAGS)
+
+$(BIN)/%.o: $(SRC)/%.c $(BIN)
+	$(CC) -o $@ -c $< -I $(HEADERS) $(FLAGS)
+
+$(BIN):
+	mkdir -p $(BIN)

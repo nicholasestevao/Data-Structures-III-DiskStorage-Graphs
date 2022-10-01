@@ -22,6 +22,7 @@ int main(int argC, char *argV[]){
 
     //Compactacao (6) - Isaac
     //cria outro binario
-
-}
+    
+    return 0;
+}   
 

@@ -5,9 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 typedef struct {
-    char* status;
+    char * status;
     int * topo;
     int * proxRRN;
     int * nroRegRem;
@@ -15,7 +14,7 @@ typedef struct {
     int * qttCompacta;
 }RegistroCabecalho;
 
-void alocaRegistrosCabecalho(RegistroCabecalho ** registros, int numReg);
-void desalocaRegistrosCabecalho(RegistroCabecalho ** registros, int numReg);
+void alocaRegistrosCabecalho(RegistroCabecalho *registro);
+void desalocaRegistrosCabecalho(RegistroCabecalho *registros);
 
 #endif

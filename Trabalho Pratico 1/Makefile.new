@@ -1,0 +1,33 @@
+CC := gcc
+SRC := ./src
+BIN := ./bin
+DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration -fsanitize=address,undefined
+FLAGS       := -Wall -Werror #$(DEBUG_FLAGS)
+
+
+
+all : trab
+
+run : 
+	./trab
+	
+$(BIN)/main.o: $(SRC)/main.c
+	$(CC) $(FLAGS) -o $(BIN)/main.o -c $(SRC)/main.c
+
+$(BIN)/mensagens.o: $(SRC)/mensagens.c
+	$(CC) $(FLAGS) -o $(BIN)/mensagens.o -c $(SRC)/mensagens.c
+
+$(BIN)/arquivos.o: $(SRC)/arquivos.c
+	$(CC) $(FLAGS) -o $(BIN)/arquivos.o -c $(SRC)/arquivos.c
+
+$(BIN)/registros.o: $(SRC)/registros.c
+	$(CC) $(FLAGS) -o $(BIN)/registros.o -c $(SRC)/registros.c
+
+$(BIN)/funcoesFornecidas.o: $(SRC)/funcoesFornecidas.c
+	$(CC) $(FLAGS) -o $(BIN)/funcoesFornecidas.o -c $(SRC)/funcoesFornecidas.c	
+
+trab : $(BIN)/main.o $(BIN)/arquivos.o $(BIN)/mensagens.o $(BIN)/registros.o $(BIN)/funcoesFornecidas.o
+	$(CC) $(FLAGS) -o trab $(BIN)/main.o $(BIN)/arquivos.o $(BIN)/mensagens.o $(BIN)/registros.o $(BIN)/funcoesFornecidas.o
+
+rm: $(BIN)/*.o
+	rm $(BIN)/*.o *.exe
