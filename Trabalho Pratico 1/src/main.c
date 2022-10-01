@@ -14,13 +14,13 @@ int main(int argC, char *argV[]){
     //Create table (1) - Isaac
     //le do csv
     
-    //Select (2) - Isaac
+    //Select (2) - Nicholas
     // mostra tudo (so le do binario)
     if(opcao == 2){
-        
-    }
+        funcionalidade2Select(nome_arquivo);
+    }    
 
-    //Select where (3) - Nicholas
+    //Select where (3) - Isaac
     //le comando da tela
     if(opcao == 3){
             //numeros de buscas a serem realizadas
@@ -51,13 +51,7 @@ int main(int argC, char *argV[]){
 
     //Compactacao (6) - Isaac
     //cria outro binario
-<<<<<<< Updated upstream
     
     return 0;
 }   
-=======
-    return 0;
-
-}
->>>>>>> Stashed changes
 
