@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 CC          := gcc
 DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration -fsanitize=address,undefined
 FLAGS       := -Wall -Werror $(DEBUG_FLAGS)
@@ -34,3 +35,11 @@ $(BIN)/%.o: $(SRC)/%.c $(BIN)
 
 $(BIN):
 	mkdir -p $(BIN)
+=======
+all: trab 
+
+trab:
+	gcc -o programaTrab ./src/*.c
+run:
+	./programaTrab
+>>>>>>> Stashed changes
