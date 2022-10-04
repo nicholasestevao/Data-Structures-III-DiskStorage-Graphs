@@ -15,6 +15,6 @@ typedef struct {
 }RegistroCabecalho;
 
 void alocaRegistrosCabecalho(RegistroCabecalho *registro);
-void desalocaRegistrosCabecalho(RegistroCabecalho *registros);
+void desalocaRegistrosCabecalho(RegistroCabecalho *registro);
 
 #endif
