@@ -18,8 +18,9 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "wb");
     fseek(arq, 0, SEEK_SET);
     char* status = malloc(sizeof(char)*1);
-    status[0] = '0';
+    *status = '0';
     fwrite(status,sizeof(char), 1, arq);
+    free(status);
     return arq;
 }
 
@@ -27,9 +28,10 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 //Necessario usar essa funcao apenas quando o arquivo foi aberto para escrita
 void fecharArquivo_bin(FILE * arquivo_bin){
     char* status = malloc(sizeof(char)*1);
-    status[0] = '1';
+    *status = '1';
     fwrite(status, sizeof(char), 1, arquivo_bin);
     fclose(arquivo_bin);
+    free(status);
 }
 
 //Le registro de dados do arquivo binario por RRN
