@@ -7,10 +7,10 @@ int main(int argC, char *argV[]){
     //Create table (1) - Isaac
     //le do csv
 
-    //Select (2) - Isaac
+    //Select (2) - Nicholas
     // mostra tudo (so le do binario)
 
-    //Select where (3) - Nicholas
+    //Select where (3) - Isaac
     //le comando da tela
 
     //Remocao logica (4) - Nicholas

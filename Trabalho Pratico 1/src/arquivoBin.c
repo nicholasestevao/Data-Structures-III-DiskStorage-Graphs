@@ -32,7 +32,7 @@ int createTable(FILE* arquivobin, FILE* arquivocsv) {
     free(buf);
 
     while(!feof(arquivocsv)) {
-        fscanf(arquivocsv, "%c,%s,%s,%c%c,%d,%c,%d", rDados->idConecta, rDados->nomePoPs, rDados->nomePais, rDados->siglaPais[0], rDados->siglaPais[1], )
+        fscanf(arquivocsv, "%c,%s,%s,%c%c,%d,%c,%d", rDados->idConecta, rDados->nomePoPs, rDados->nomePais, rDados->siglaPais[0], rDados->siglaPais[1], rDados->)
     }
 
 }
