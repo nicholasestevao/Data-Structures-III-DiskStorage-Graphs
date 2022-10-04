@@ -15,7 +15,7 @@ FILE * abrirLeitura_bin(char * nome_arquivo){
 //Abre arquivo binario para escrita
 //Atualiza o status do arquivo para (1) -> Inconsistente
 FILE * abrirEscrita_bin(char * nome_arquivo){
-    FILE *arq = fopen(nome_arquivo, "wb");
+    FILE *arq = fopen(nome_arquivo, "wb"); 
     fseek(arq, 0, SEEK_SET);
     char* status = malloc(sizeof(char)*1);
     *status = '0';
@@ -29,6 +29,7 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 void fecharArquivo_bin(FILE * arquivo_bin){
     char* status = malloc(sizeof(char)*1);
     *status = '1';
+    fseek(arquivo_bin, 0, SEEK_SET);
     fwrite(status, sizeof(char), 1, arquivo_bin);
     fclose(arquivo_bin);
     free(status);
@@ -79,7 +80,7 @@ RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
 //Le registro de cabecalho do arquivo binario
 RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin){
     RegistroCabecalho* registro;
-    alocaRegistrosCabecalho(registro);
+    alocaRegistrosCabecalho(&registro);
     fseek(arquivoBin, 0, SEEK_SET);
     fread(registro->status, sizeof(char), 1, arquivoBin);
     fread(registro->topo, sizeof(int), 1, arquivoBin);
@@ -94,13 +95,17 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin){
 //Recebe registro de cabecalho atual (pois o registro de cabecalho so sera gravado no arquivo ao fim de todas as insersoes)
 //Nao controla o numero de paginas de disco
 void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho, RegistroDados * dados){
-    if(*(dados->removido) == 1){
+    printf("ftell-98: %ld \n", ftell(arquivoBin));
+    long byteoffset = 0;
+    if(*(dados->removido) == '1'){
+        printf("Insercao de registro removido -> empilha\n");
         //Insercao de registro removido -> empilha  
         int topo = *(cabecalho->topo);
         *(cabecalho->topo) = *(cabecalho->proxRRN);
-        *(cabecalho->proxRRN) = *(cabecalho->proxRRN) + 1;
-        int byteoffset = 960 + 64*(*(cabecalho->proxRRN));
+        byteoffset = 960 + 64*(*(cabecalho->proxRRN));
         fseek(arquivoBin, byteoffset, SEEK_SET);
+        *(cabecalho->proxRRN) = *(cabecalho->proxRRN) + 1;
+        printf("ftell-107: %ld \n", ftell(arquivoBin));
         char* removido = malloc(sizeof(char));
         *removido = '1';
         int * encadeamento = malloc(sizeof(int));
@@ -117,21 +122,29 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         free(encadeamento);
         free(lixo);
     }else{
+        int tamLixo = 0;
+        printf("Insercao normal (registro nao eh removido)\n");
+        byteoffset = 0;
         //Insercao normal (registro nao eh removido)
         if(*(cabecalho->topo) == -1){
+            printf("Nao tem registros removidos -> insere no proximo RRN\n");
             //nao tem registros removidos -> insere no proximo RRN
-            int byteoffset = 960 + 64*(*(cabecalho->proxRRN));
+            byteoffset = 960 + 64*(*(cabecalho->proxRRN));
             fseek(arquivoBin, byteoffset, SEEK_SET);
+            printf("ftell-133: %ld \n", ftell(arquivoBin));
         }else{
+            printf("Existem registros removidos -> desempilha\n");
             //Existem registros removidos -> desempilha
-            int byteoffsetNovoTopo = 960 + 64*(*(cabecalho->topo)) + 1;
+            long byteoffsetNovoTopo = 960 + 64*(*(cabecalho->topo)) + 1;
             fseek(arquivoBin,byteoffsetNovoTopo, SEEK_SET);
+            printf("ftell-139: %ld \n", ftell(arquivoBin));
             int* novoTopo = malloc(sizeof(int));
             fread(novoTopo, sizeof(int), 1, arquivoBin);
             *(cabecalho->topo) = *novoTopo;
             *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) - 1;
-            int byteoffset = byteoffsetNovoTopo - 1;
+            byteoffset = byteoffsetNovoTopo - 1;
             fseek(arquivoBin,byteoffset, SEEK_SET);
+            printf("ftell-146: %ld \n", ftell(arquivoBin));
             free(novoTopo);
         }
 
@@ -144,16 +157,39 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         fwrite(dados->idPoPsConectado,sizeof(int), 1, arquivoBin);
         fwrite(dados->unidadeMedida,sizeof(char), 1, arquivoBin);
         fwrite(dados->velocidade,sizeof(int), 1, arquivoBin);
-        fwrite(dados->nomePoPs,sizeof(char), strlen(dados->nomePoPs)-1, arquivoBin);
+        fwrite(dados->nomePoPs,sizeof(char), strlen(dados->nomePoPs), arquivoBin);
         fwrite(pipe,sizeof(char), 1, arquivoBin);
-        fwrite(dados->nomePais,sizeof(char),  strlen(dados->nomePoPs)-1, arquivoBin);
+        fwrite(dados->nomePais,sizeof(char),  strlen(dados->nomePais), arquivoBin);
         fwrite(pipe,sizeof(char), 1, arquivoBin);
         free(pipe);
     }
+    int tamLixo;
+    if(byteoffset%960 == 0){
+        tamLixo = 20 + strlen(dados->nomePoPs) + strlen(dados->nomePais) + 2; //tam campos fixos + tam campos variaiveis + tam pipes
+        tamLixo += 64*14;    
+    }
+    char * lixo = malloc(sizeof(char)*960);
+    for(int i=0; i<960; i++){
+        lixo[i] = '$';
+    }
+    printf("tam lixo %d\n", tamLixo);
+    fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
+    free(lixo);
 }
 
-
 //Grava registro de cabecalho no arquivo binario
-int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho){
-
+int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho){
+    fseek(arquivoBin, 0, SEEK_SET);
+    fwrite(cabecalho->status, sizeof(char), 1, arquivoBin);
+    fwrite(cabecalho->topo, sizeof(int), 1, arquivoBin);
+    fwrite(cabecalho->proxRRN, sizeof(int), 1, arquivoBin);
+    fwrite(cabecalho->nroRegRem, sizeof(int), 1, arquivoBin);
+    fwrite(cabecalho->nroPagDisco, sizeof(int), 1, arquivoBin);
+    fwrite(cabecalho->qttCompacta, sizeof(int), 1, arquivoBin);    
+    char * lixo = malloc(sizeof(char)*960);
+    for(int i=0; i<960; i++){
+        lixo[i] = '$';
+    }
+    fwrite(lixo,sizeof(char), 960-21, arquivoBin);
+    free(lixo);
 }

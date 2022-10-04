@@ -2,6 +2,10 @@
     "files.associations": {
         "string.h": "c",
         "arquivobin.h": "c",
-        "funcionalidades.h": "c"
+        "funcionalidades.h": "c",
+        "funcoesfornecidas.h": "c",
+        "stdio.h": "c",
+        "registrodados.h": "c",
+        "registrocabecalho.h": "c"
     }
 }
