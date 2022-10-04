@@ -5,7 +5,6 @@
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
 
-
 int main(int argC, char *argV[]){
 
     int opcao;
@@ -35,9 +34,9 @@ int main(int argC, char *argV[]){
             for(int i=0; i<numBuscas; i++){
                 scanf("%s", nome_campo);
                 fgetc(stdin);
-                fgets(valor_campo, 799, stdin);
+                fgets(valor_campo, 800, stdin);
                 valor_campo[strlen(valor_campo)-1] = '\0';
-                
+        
 
 
             }
