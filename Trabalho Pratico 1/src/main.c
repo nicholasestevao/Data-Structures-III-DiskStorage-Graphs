@@ -7,8 +7,34 @@
 
 
 int main(int argC, char *argV[]){
+    RegistroDados* reg;
+    alocaRegistrosDados(&reg, 1);
+    *(reg->removido) = '0';
+    *(reg->encadeamento) = 8;
+    *(reg->idConecta) = 50;
+    *(reg->idPoPsConectado) = 7;
+    *(reg->unidadeMedida) = 'M';
+    *(reg->velocidade) = 115;
+    (reg->siglaPais) = "br";
+    (reg->nomePoPs) = "Nicholas";
+    (reg->nomePais) = "Brasil";
+    imprimeRegistroDadosTela(reg);
 
-    int opcao;
+    RegistroCabecalho* cabecalho;
+    alocaRegistrosCabecalho(&cabecalho);
+    *(cabecalho->status) = '1';
+    *(cabecalho->nroPagDisco) = 5;
+    *(cabecalho->nroRegRem) = 6;
+    *(cabecalho->proxRRN) = 7;
+    *(cabecalho->qttCompacta) = 8;    
+    *(cabecalho->topo) = -1;
+    imprimeRegistroCabecalhoTela(cabecalho);
+    FILE * arq = abrirEscrita_bin("binario.bin");
+    escreverRegistroCabecalhoArquivoBin(arq, cabecalho);
+    //inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    fecharArquivo_bin(arq);
+    return 0;
+   /*int opcao;
     char * nome_arquivo = malloc(sizeof(char)*20);
     
     scanf("%d %s", &opcao, nome_arquivo);
@@ -54,6 +80,6 @@ int main(int argC, char *argV[]){
     //Compactacao (6) - Isaac
     //cria outro binario
     
-    return 0;
+    return 0;*/
 }   
 

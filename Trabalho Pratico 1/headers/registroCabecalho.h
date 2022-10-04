@@ -14,7 +14,7 @@ typedef struct {
     int* qttCompacta;
 }RegistroCabecalho;
 
-void alocaRegistrosCabecalho(RegistroCabecalho *registro);
+void alocaRegistrosCabecalho(RegistroCabecalho **registro);
 void desalocaRegistrosCabecalho(RegistroCabecalho *registro);
-
+void imprimeRegistroCabecalhoTela(RegistroCabecalho * registro);
 #endif
