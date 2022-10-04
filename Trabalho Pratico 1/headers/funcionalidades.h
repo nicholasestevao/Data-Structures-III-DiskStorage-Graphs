@@ -7,4 +7,6 @@
 
 void funcionalidade2Select(char* nome_arquivo);
 
+void funcionalidade3SelectWere(char* nome_arquivo);
+
 #endif

@@ -34,11 +34,6 @@ int main(int argC, char *argV[]){
             for(int i=0; i<numBuscas; i++){
                 scanf("%s", nome_campo);
                 fgetc(stdin);
-                fgets(valor_campo, 800, stdin);
-                valor_campo[strlen(valor_campo)-1] = '\0';
-        
-
-
             }
     }
 
