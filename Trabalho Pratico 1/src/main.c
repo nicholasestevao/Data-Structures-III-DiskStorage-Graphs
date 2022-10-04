@@ -24,13 +24,23 @@ int main(int argC, char *argV[]){
     *(cabecalho->status) = '1';
     *(cabecalho->nroPagDisco) = 5;
     *(cabecalho->nroRegRem) = 6;
-    *(cabecalho->proxRRN) = 7;
+    *(cabecalho->proxRRN) = 0;
     *(cabecalho->qttCompacta) = 8;    
     *(cabecalho->topo) = -1;
     imprimeRegistroCabecalhoTela(cabecalho);
     FILE * arq = abrirEscrita_bin("binario.bin");
     escreverRegistroCabecalhoArquivoBin(arq, cabecalho);
-    //inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    
+    *(cabecalho->proxRRN) = 15;
+    *(reg->removido) = '1';
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    
+    *(reg->removido) = '1';
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+
+    escreverRegistroCabecalhoArquivoBin(arq, cabecalho);
+
     fecharArquivo_bin(arq);
     return 0;
    /*int opcao;
