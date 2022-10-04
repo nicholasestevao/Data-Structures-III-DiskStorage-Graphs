@@ -18,8 +18,9 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "wb");
     fseek(arq, 0, SEEK_SET);
     char* status = malloc(sizeof(char)*1);
-    status[0] = '0';
+    *status = '0';
     fwrite(status,sizeof(char), 1, arq);
+    free(status);
     return arq;
 }
 
@@ -27,17 +28,18 @@ FILE * abrirEscrita_bin(char * nome_arquivo){
 //Necessario usar essa funcao apenas quando o arquivo foi aberto para escrita
 void fecharArquivo_bin(FILE * arquivo_bin){
     char* status = malloc(sizeof(char)*1);
-    status[0] = '1';
+    *status = '1';
     fseek(arquivo_bin, 0, SEEK_SET);
     fwrite(status, sizeof(char), 1, arquivo_bin);
     fclose(arquivo_bin);
+    free(status);
 }
 
 //Le registro de dados do arquivo binario por RRN
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
     int byteoffset = 960 + 64*RRN;
     fseek(arquivoBin, byteoffset, SEEK_SET);
-    char* removido;
+    char* removido = malloc(sizeof(char));
     fread(removido, sizeof(char), 1, arquivoBin);
     RegistroDados * registro;
     if(*removido == '0'){
@@ -66,11 +68,12 @@ RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
         }
         registro->nomePoPs[indice] = '\0';
         
-        
     }else{
         //registro removido
         msg_erro_RRN_Invalido();
     }
+
+    free(removido);
 }
 
 
@@ -101,16 +104,20 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         int byteoffset = 960 + 64*(*(cabecalho->proxRRN));
         fseek(arquivoBin, byteoffset, SEEK_SET);
         char* removido = malloc(sizeof(char));
-        removido[0] = '1';
+        *removido = '1';
         int * encadeamento = malloc(sizeof(int));
-        encadeamento[0] = topo;
+        *encadeamento = topo;
         char * lixo = malloc(sizeof(char));
-        lixo[0] = '$';
+        *lixo = '$';
         fwrite(removido,sizeof(char),1, arquivoBin);
         fwrite(encadeamento,sizeof(int),1, arquivoBin);
         for(int i =0; i<59; i++){
             fwrite(lixo,sizeof(char),1, arquivoBin);
         }
+
+        free(removido);
+        free(encadeamento);
+        free(lixo);
     }else{
         int tamLixo = 0;
         printf("Insercao normal (registro nao eh removido)\n");
@@ -132,10 +139,11 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
             *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) - 1;
             byteoffset = byteoffsetNovoTopo - 1;
             fseek(arquivoBin,byteoffset, SEEK_SET);
+            free(novoTopo);
         }
 
         char * pipe = malloc(sizeof(char));
-        pipe[0] = '|';
+        *pipe = '|';
         fwrite(dados->removido,sizeof(char), 1, arquivoBin);
         fwrite(dados->encadeamento,sizeof(int), 1, arquivoBin);
         fwrite(dados->idConecta,sizeof(int), 1, arquivoBin);
@@ -159,7 +167,6 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
         free(lixo);
     }
-    
 }
 
 
