@@ -8,7 +8,7 @@
 int main(int argC, char *argV[]){
     RegistroDados* reg;
     alocaRegistrosDados(&reg, 1);
-    *(reg->removido) = '0';
+    *(reg->removido) = '1';
     *(reg->encadeamento) = 8;
     *(reg->idConecta) = 50;
     *(reg->idPoPsConectado) = 7;
@@ -22,23 +22,24 @@ int main(int argC, char *argV[]){
     RegistroCabecalho* cabecalho;
     alocaRegistrosCabecalho(&cabecalho);
     *(cabecalho->status) = '1';
-    *(cabecalho->nroPagDisco) = 5;
-    *(cabecalho->nroRegRem) = 6;
+    *(cabecalho->nroPagDisco) = 0;
+    *(cabecalho->nroRegRem) = 0;
     *(cabecalho->proxRRN) = 0;
-    *(cabecalho->qttCompacta) = 8;    
+    *(cabecalho->qttCompacta) = 0;    
     *(cabecalho->topo) = -1;
     imprimeRegistroCabecalhoTela(cabecalho);
     FILE * arq = abrirEscrita_bin("binario.bin");
     escreverRegistroCabecalhoArquivoBin(arq, cabecalho);
-    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
-    
-    *(cabecalho->proxRRN) = 15;
-    *(reg->removido) = '1';
-    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
-    
-    *(reg->removido) = '1';
-    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
 
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    
+    //*(cabecalho->proxRRN) = 15;
+    //*(reg->removido) = '1';
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    
+    *(reg->removido) = '0';
+    inserirRegistroDadosArquivoBin(arq,cabecalho,reg);
+    
     escreverRegistroCabecalhoArquivoBin(arq, cabecalho);
 
     fecharArquivo_bin(arq);
