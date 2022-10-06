@@ -71,10 +71,10 @@ void pegaDados(char *buf, RegistroDados *dados) {
     char dado[50];
     cortaDados(buf, dado);
     if((dado != NULL) && (dado[0] == '*')) {
-            *(dados->removido) = 1;
+            *(dados->removido) = '1';
             return;
     } else {
-        *(dados->removido) = 0;
+        *(dados->removido) = '0';
         *(dados->encadeamento) = -1;
         copiaInt((dados->idConecta), dado);
         
