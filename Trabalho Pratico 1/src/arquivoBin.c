@@ -98,25 +98,27 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
     //printf("ftell-98: %ld \n", ftell(arquivoBin));
     long byteoffset = 0;
     if(*(dados->removido) == '1'){
-        //printf("Insercao de registro removido -> empilha\n");
+        printf("Insercao de registro removido -> empilha\n");
         //Insercao de registro removido -> empilha  
         int topo = *(cabecalho->topo);
         *(cabecalho->topo) = *(cabecalho->proxRRN);
         byteoffset = 960 + 64*(*(cabecalho->proxRRN));
         fseek(arquivoBin, byteoffset, SEEK_SET);
         *(cabecalho->proxRRN) = *(cabecalho->proxRRN) + 1;
-        //printf("ftell-107: %ld \n", ftell(arquivoBin));
+        printf("ftell-107: %ld \n", ftell(arquivoBin));
         char* removido = malloc(sizeof(char));
         *removido = '1';
         int * encadeamento = malloc(sizeof(int));
         *encadeamento = topo;
-        char * lixo = malloc(sizeof(char));
-        *lixo = '$';
+
+        char * lixo = malloc(sizeof(char)*59);
+        for(int i = 0; i<59; i++){
+            lixo[i] = '$';
+        }
+
         fwrite(removido,sizeof(char),1, arquivoBin);
         fwrite(encadeamento,sizeof(int),1, arquivoBin);
-        for(int i =0; i<59; i++){
-            fwrite(lixo,sizeof(char),1, arquivoBin);
-        }
+        fwrite(lixo,sizeof(char),59, arquivoBin);
 
         free(removido);
         free(encadeamento);
@@ -137,11 +139,14 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
             //printf("Existem registros removidos -> desempilha\n");
             //Existem registros removidos -> desempilha
             long byteoffsetNovoTopo = 960 + 64*(*(cabecalho->topo)) + 1;
+            printf("ByteoffSet Novo Topo: %d\n", byteoffsetNovoTopo);
+            printf("Topo: %d\n", *(cabecalho->topo));
             fseek(arquivoBin,byteoffsetNovoTopo, SEEK_SET);
-            //printf("ftell-139: %ld \n", ftell(arquivoBin));
+            printf("ftell-139: %ld \n", ftell(arquivoBin));
             int* novoTopo = malloc(sizeof(int));
-            fread(novoTopo, sizeof(int), 1, arquivoBin);
+            fread(novoTopo, sizeof(int), 1, arquivoBin); //NAO TEM COMO DAR FREAD() NUM ARQUIVO ABERTO SOMENTE PARA ESCRITA
             *(cabecalho->topo) = *novoTopo;
+            printf("Novo Topo: %d\n", *(cabecalho->topo));
             *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) - 1;
             byteoffset = byteoffsetNovoTopo - 1;
             fseek(arquivoBin,byteoffset, SEEK_SET);
