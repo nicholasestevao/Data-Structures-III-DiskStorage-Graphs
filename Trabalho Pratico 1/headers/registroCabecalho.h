@@ -8,13 +8,13 @@
 typedef struct {
     char* status;
     int* topo;
-    int* proxRRN;
-    int* nroRegRem;
-    int* nroPagDisco;
-    int* qttCompacta;
+    unsigned int* proxRRN;
+    unsigned int* nroRegRem;
+    unsigned int* nroPagDisco;
+    unsigned int* qttCompacta;
 }RegistroCabecalho;
 
-void alocaRegistrosCabecalho(RegistroCabecalho *registro);
-void desalocaRegistrosCabecalho(RegistroCabecalho *registros);
-
+void alocaRegistrosCabecalho(RegistroCabecalho **registro);
+void desalocaRegistrosCabecalho(RegistroCabecalho *registro);
+void imprimeRegistroCabecalhoTela(RegistroCabecalho * registro);
 #endif
