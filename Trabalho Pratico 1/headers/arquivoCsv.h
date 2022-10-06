@@ -7,6 +7,4 @@
 FILE * abrirLeitura_csv(char * nome_arquivo);
 FILE * abrirEscrita_csv(char * nome_arquivo);
 
-
-
 #endif

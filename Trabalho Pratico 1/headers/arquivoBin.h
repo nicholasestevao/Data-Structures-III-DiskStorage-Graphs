@@ -2,6 +2,7 @@
 #define __ARQUIVOS_BIN_C__
 
 #include <stdlib.h>
+#include "arquivoCsv.h"
 #include "mensagens.h"
 #include "registroCabecalho.h"
 #include "registroDados.h"

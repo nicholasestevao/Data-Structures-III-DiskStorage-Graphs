@@ -1,13 +1,23 @@
 #include "../headers/registroCabecalho.h"
 
+void iniciaRegistrosCabecalho(RegistroCabecalho *registros) {
+    *(registros->status) = '0';
+    *(registros->topo) = -1;
+    *(registros->proxRRN) = 0;
+    *(registros->nroRegRem) = 0;
+    *(registros->nroPagDisco) = 0;
+    *(registros->qttCompacta) = 0;
+}
+
 void alocaRegistrosCabecalho(RegistroCabecalho **registros) {
-    *registros = malloc(sizeof(RegistroCabecalho));
-     (*registros)[0].status = malloc(sizeof(char) * 1);
-     (*registros)[0].topo = malloc(sizeof(int) * 1);
-     (*registros)[0].proxRRN= malloc(sizeof(int) * 1);
-     (*registros)[0].nroRegRem = malloc(sizeof(int) * 1);
-     (*registros)[0].nroPagDisco = malloc(sizeof(int) * 1);
-     (*registros)[0].qttCompacta = malloc(sizeof(int) * 1);
+    (*registros) = malloc(sizeof(RegistroCabecalho));
+    (*registros)->status = malloc(sizeof(char) * 1);
+    (*registros)->topo = malloc(sizeof(int) * 1);
+    (*registros)->proxRRN= malloc(sizeof(int) * 1);
+    (*registros)->nroRegRem = malloc(sizeof(int) * 1);
+    (*registros)->nroPagDisco = malloc(sizeof(int) * 1);
+    (*registros)->qttCompacta = malloc(sizeof(int) * 1);
+    iniciaRegistrosCabecalho((*registros));
 }
 
 void desalocaRegistrosCabecalho(RegistroCabecalho *registros) {
