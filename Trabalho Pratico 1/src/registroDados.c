@@ -31,14 +31,98 @@ void desalocaRegistrosDados(RegistroDados ** registros, int numReg) {
 }
 
 void imprimeRegistroDadosTela(RegistroDados * registro) {
-    printf("Identificador do ponto: %d\n", *(registro->idConecta));
-    printf("Nome do ponto: %s\n", registro->nomePoPs);
-    printf("Pais de localizacao: %s\n", registro->nomePais);
-    printf("Sigla do pais: %s\n", registro->siglaPais);
-    printf("Identificador do ponto conectado: %d\n", *(registro->idPoPsConectado));
-    if(registro->unidadeMedida == "$") {
-        printf("Velocidade de transmissao: %d bps\n", *(registro->velocidade));
-    } else {
-        printf("Velocidade de transmissao: %d %cbps\n", *(registro->velocidade), *(registro->unidadeMedida));
+    if(*(registro->idConecta) != -1){
+        printf("Identificador do ponto: %d\n", *(registro->idConecta));
     }
+    if((registro->nomePoPs)[0] != '\0'){
+        printf("Nome do ponto: %s\n", registro->nomePoPs);
+    }
+    if((registro->nomePais)[0] != '\0'){
+        printf("Pais de localizacao: %s\n", registro->nomePais);
+    }
+    if((registro->siglaPais)[0] != '$' && (registro->siglaPais)[0] != '\0'){
+        printf("Sigla do pais: %s\n", registro->siglaPais);
+    }
+    if(*(registro->idPoPsConectado) != -1){
+        printf("Identificador do ponto conectado: %d\n", *(registro->idPoPsConectado));
+    }
+    if(*(registro->velocidade) != -1){
+        if((registro->unidadeMedida) == "$") {
+            printf("Velocidade de transmissao: %d bps\n", *(registro->velocidade));
+        } else {
+            printf("Velocidade de transmissao: %d %cbps\n", *(registro->velocidade), *(registro->unidadeMedida));
+        }
+    }
+    
+}
+
+void lerRegistroDadosTeclado(RegistroDados *registro){
+    char* id_conecta = malloc(sizeof(char)*10);
+    char* nomePoPs = malloc(sizeof(char)*50);
+    char* nomePais = malloc(sizeof(char)*50);
+    char* siglaPais = malloc(sizeof(char)*2);
+    char* id_pops_conectado = malloc(sizeof(char)*10);
+    char* unidade = malloc(sizeof(char)*10);
+    char* velocidade = malloc(sizeof(char)*10);
+
+    scanf("%s", id_conecta);
+    scan_quote_string(nomePoPs);
+    scan_quote_string(nomePais);
+    scan_quote_string(siglaPais);
+    scanf("%s", id_pops_conectado);
+    scan_quote_string(unidade);
+    scanf("%s", velocidade);
+    printf("%s %s %s %s %s %s %s\n", id_conecta, nomePoPs, nomePais, siglaPais, id_pops_conectado, unidade, velocidade);
+
+    char* nulo = malloc(sizeof(char)*10);
+    nulo = "NULO";
+    if(strcmp(id_conecta, nulo) != 0){
+        //campo nao eh nulo
+        *(registro->idConecta) = atoi(id_conecta);
+    }else{
+        *(registro->idConecta) = -1;
+    }
+
+    if(strcmp(nomePoPs, nulo) != 0){
+        //campo nao eh nulo
+        strcpy(registro->nomePoPs, nomePoPs);
+    }else{
+        (registro->nomePoPs)[0] = '\0';
+    }
+
+    if(strcmp(nomePais, nulo) != 0){
+        //campo nao eh nulo
+        strcpy(registro->nomePais, nomePais);
+    }else{
+        (registro->nomePais)[0] = '\0';
+    }
+
+    if(strcmp(siglaPais, nulo) != 0){
+        //campo nao eh nulo
+        strcpy(registro->siglaPais, siglaPais);
+    }else{
+        (registro->siglaPais)[0] = '\0';
+    }
+    
+    if(strcmp(id_pops_conectado, nulo) != 0){
+        //campo nao eh nulo
+        *(registro->idPoPsConectado) = atoi(id_pops_conectado);
+    }else{
+        *(registro->idPoPsConectado) = -1;
+    }
+    
+    if(strcmp(unidade, nulo) != 0){
+        //campo nao eh nulo
+        *(registro->unidadeMedida) = unidade[0];
+    }else{
+        *(registro->unidadeMedida) = '\0';
+    }
+    
+    if(strcmp(velocidade, nulo) != 0){
+        //campo nao eh nulo
+        *(registro->velocidade) = atoi(velocidade);
+    }else{
+        *(registro->velocidade) = -1;
+    }
+
 }
