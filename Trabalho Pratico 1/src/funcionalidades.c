@@ -151,12 +151,13 @@ void funcionalidade5Insert(char* nome_arquivo, int nro_reg){
     RegistroDados *registro;
     alocaRegistrosDados(&registro, 1);
 
-    FILE * arquivo = abrirLeitura_bin(nome_arquivo);
+    FILE * arquivo = abrirEscrita_bin(nome_arquivo);
     
     RegistroCabecalho * cabecalho =  lerRegistroCabecalhoArquivoBin(arquivo);
     for(int i = 0; i<nro_reg; i++){
         lerRegistroDadosTeclado(registro);
         imprimeRegistroDadosTela(registro);
+        //imprimeRegistroCabecalhoTela(cabecalho);
         inserirRegistroDadosArquivoBin(arquivo,cabecalho, registro);
     }
     

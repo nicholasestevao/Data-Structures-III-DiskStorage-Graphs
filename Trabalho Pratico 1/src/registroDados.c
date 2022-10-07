@@ -12,6 +12,10 @@ void  alocaRegistrosDados(RegistroDados ** registros, int numReg){
          (*registros)[i].velocidade = malloc(sizeof(int) * 1);
          (*registros)[i].nomePoPs = malloc(sizeof(char) * 45);
          (*registros)[i].nomePais = malloc(sizeof(char) * 45);
+
+         *((*registros)[i].removido) = '0';
+         *((*registros)[i].encadeamento) = -1;
+         
     }    
 }
 
