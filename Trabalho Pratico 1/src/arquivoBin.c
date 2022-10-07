@@ -15,7 +15,10 @@ FILE * abrirLeitura_bin(char * nome_arquivo){
 //Abre arquivo binario para escrita
 //Atualiza o status do arquivo para (1) -> Inconsistente
 FILE * abrirEscrita_bin(char * nome_arquivo){
-    FILE *arq = fopen(nome_arquivo, "wb"); 
+    FILE *arq = fopen(nome_arquivo, "rb+");
+    if(arq == NULL){
+        FILE *arq = fopen(nome_arquivo, "wb+"); 
+    }    
     fseek(arq, 0, SEEK_SET);
     char* status = malloc(sizeof(char)*1);
     *status = '0';
@@ -39,41 +42,42 @@ void fecharArquivo_bin(FILE * arquivo_bin){
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
     int byteoffset = 960 + 64*RRN;
     fseek(arquivoBin, byteoffset, SEEK_SET);
-    char* removido = malloc(sizeof(char));
-    fread(removido, sizeof(char), 1, arquivoBin);
     RegistroDados * registro;
-    if(*removido == '0'){
-        alocaRegistrosDados(&registro, 1);
-        registro->removido = removido;
+    alocaRegistrosDados(&registro, 1);
+    fread(registro->removido, sizeof(char), 1, arquivoBin);
+    
+    if(*(registro->removido) == '0'){
         fread(registro->encadeamento, sizeof(int), 1, arquivoBin);
         fread(registro->idConecta, sizeof(int), 1, arquivoBin);
         fread(registro->siglaPais, sizeof(char), 2, arquivoBin);
+       (registro->siglaPais)[2] = '\0';
         fread(registro->idPoPsConectado, sizeof(int), 1, arquivoBin);
         fread(registro->unidadeMedida, sizeof(char), 1, arquivoBin);
         fread(registro->velocidade, sizeof(int), 1, arquivoBin);
+        
         int indice = 0;
-        char c = fgetc(arquivoBin);
-        while(c != '|'){
-            registro->nomePoPs[indice] = c;
-            c = fgetc(arquivoBin);
+        char *c = malloc(sizeof(char));
+        fread(c, sizeof(char), 1, arquivoBin);
+        while(*c != '|'){
+            (registro->nomePoPs)[indice] = *c;
+            fread(c, sizeof(char), 1, arquivoBin);
             indice++;
         }
         registro->nomePoPs[indice] = '\0';
         indice = 0;
-        c = fgetc(arquivoBin);
-        while(c != '|'){
-            registro->nomePais[indice] = c;
-            c = fgetc(arquivoBin);
+        fread(c, sizeof(char), 1, arquivoBin);
+        while(*c != '|'){
+            (registro->nomePais)[indice] = *c;
+            fread(c, sizeof(char), 1, arquivoBin);
             indice++;
         }
-        registro->nomePoPs[indice] = '\0';
-        
+        registro->nomePais[indice] = '\0';
     }else{
         //registro removido
-        msg_erro_RRN_Invalido();
+        //msg_erro_RRN_Invalido();
+        return NULL;
     }
-
-    free(removido);
+    return registro;
 }
 
 
@@ -82,12 +86,15 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin){
     RegistroCabecalho* registro;
     alocaRegistrosCabecalho(&registro);
     fseek(arquivoBin, 0, SEEK_SET);
+    printf("ftell: %d", ftell(arquivoBin));
     fread(registro->status, sizeof(char), 1, arquivoBin);
     fread(registro->topo, sizeof(int), 1, arquivoBin);
     fread(registro->proxRRN, sizeof(int), 1, arquivoBin);
     fread(registro->nroRegRem, sizeof(int), 1, arquivoBin);
     fread(registro->nroPagDisco, sizeof(int), 1, arquivoBin);
     fread(registro->qttCompacta, sizeof(int), 1, arquivoBin);
+    imprimeRegistroCabecalhoTela(registro);
+    return registro;
 }
 
 //Insere registro de dados no arquivo binario
@@ -97,90 +104,139 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin){
 void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho, RegistroDados * dados){
     //printf("ftell-98: %ld \n", ftell(arquivoBin));
     long byteoffset = 0;
+    int flagLixo = 0;
+    int tamLixo = 0;
     if(*(dados->removido) == '1'){
-        printf("Insercao de registro removido -> empilha\n");
+        //printf("Insercao de registro removido -> empilha\n");
         //Insercao de registro removido -> empilha  
+
+        //Pega o topo atual a atualiza o topo para o prox RRN
         int topo = *(cabecalho->topo);
         *(cabecalho->topo) = *(cabecalho->proxRRN);
+        
+        //Calcula byteoffset de onde o registro sera inserido
         byteoffset = 960 + 64*(*(cabecalho->proxRRN));
         fseek(arquivoBin, byteoffset, SEEK_SET);
+
+        //Atualiza proximo RRN disponivel (pois insercao de registro removido eh feita no final)
         *(cabecalho->proxRRN) = *(cabecalho->proxRRN) + 1;
-        printf("ftell-107: %ld \n", ftell(arquivoBin));
+         
+        //Atualiza nro de registros removidos
+        *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) + 1;
+        imprimeRegistroCabecalhoTela(cabecalho);
+        //Aloca variaveis locais
         char* removido = malloc(sizeof(char));
         *removido = '1';
         int * encadeamento = malloc(sizeof(int));
         *encadeamento = topo;
 
+        //Grava campos de controle do registro removido e completa com lixo
         char * lixo = malloc(sizeof(char)*59);
         for(int i = 0; i<59; i++){
             lixo[i] = '$';
         }
-
+    
         fwrite(removido,sizeof(char),1, arquivoBin);
         fwrite(encadeamento,sizeof(int),1, arquivoBin);
         fwrite(lixo,sizeof(char),59, arquivoBin);
-
+        //Libera variaveis locais
         free(removido);
         free(encadeamento);
         free(lixo);
+
+        //Verifica se eh o byteoffset do inicio de uma pagina de disco
+        if(byteoffset%960 == 0){
+            tamLixo = 64*14;   
+            //Atualiza quantidade de pag de disco
+            *(cabecalho->nroPagDisco) = *(cabecalho->nroPagDisco) + 1; 
+            lixo = malloc(sizeof(char)*960);
+            for(int i=0; i<960; i++){
+                lixo[i] = '$';
+            }
+            fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
+            free(lixo);
+        }
     }else{
-        int tamLixo = 0;
-        //printf("Insercao normal (registro nao eh removido)\n");
+        
+        printf("Insercao normal (registro nao eh removido)\n");
         byteoffset = 0;
         //Insercao normal (registro nao eh removido)
         if(*(cabecalho->topo) == -1){
-           // printf("Nao tem registros removidos -> insere no proximo RRN\n");
+            printf("Nao tem registros removidos -> insere no proximo RRN\n");
             //nao tem registros removidos -> insere no proximo RRN
             byteoffset = 960 + 64*(*(cabecalho->proxRRN));
             fseek(arquivoBin, byteoffset, SEEK_SET);
             *(cabecalho->proxRRN) += 1;
-            //printf("ftell-133: %ld \n", ftell(arquivoBin));
+            printf("ftell-165: %ld \n", ftell(arquivoBin));
+        
+            //Verifica se eh o byteoffset do inicio de uma pagina de disco
+            if(byteoffset%960 == 0){
+                //printf("Insercao primeiro registro da pagina de disco");
+                tamLixo = 64 -(20 + strlen(dados->nomePais) + strlen(dados->nomePoPs) + 2);
+                tamLixo += 64*14;
+                flagLixo = 1;
+            }
         }else{
-            //printf("Existem registros removidos -> desempilha\n");
+            printf("Existem registros removidos -> desempilha\n");
             //Existem registros removidos -> desempilha
             long byteoffsetNovoTopo = 960 + 64*(*(cabecalho->topo)) + 1;
-            printf("ByteoffSet Novo Topo: %d\n", byteoffsetNovoTopo);
-            printf("Topo: %d\n", *(cabecalho->topo));
-            fseek(arquivoBin,byteoffsetNovoTopo, SEEK_SET);
-            printf("ftell-139: %ld \n", ftell(arquivoBin));
-            int* novoTopo = malloc(sizeof(int));
-            fread(novoTopo, sizeof(int), 1, arquivoBin); //NAO TEM COMO DAR FREAD() NUM ARQUIVO ABERTO SOMENTE PARA ESCRITA
-            *(cabecalho->topo) = *novoTopo;
-            printf("Novo Topo: %d\n", *(cabecalho->topo));
+            
+            //Forma de manter o mesmo valor de encadeamento caso o registro tenha sido removido previamente (revisar)
+            *(dados->encadeamento) = *(cabecalho->topo);
+
+            int novoTopo;
+            fseek(arquivoBin,byteoffsetNovoTopo, SEEK_SET);            
+            fread(&novoTopo, sizeof(char), 4, arquivoBin);
+            
+            *(cabecalho->topo) = novoTopo;
             *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) - 1;
-            byteoffset = byteoffsetNovoTopo - 1;
-            fseek(arquivoBin,byteoffset, SEEK_SET);
-            //printf("ftell-146: %ld \n", ftell(arquivoBin));
-            free(novoTopo);
+
+            fseek(arquivoBin,byteoffsetNovoTopo-1, SEEK_SET);
+            printf("ftell-190: %ld - %d\n", ftell(arquivoBin), novoTopo);
+            //free(novoTopo);
+        }
+        char * lixo = malloc(sizeof(char)*960);
+        for(int i=0; i<960; i++){
+            lixo[i] = '$';
         }
 
         char * pipe = malloc(sizeof(char));
         *pipe = '|';
+        imprimeRegistroCabecalhoTela(cabecalho);
+        imprimeRegistroDadosTela(dados);
         fwrite(dados->removido,sizeof(char), 1, arquivoBin);
         fwrite(dados->encadeamento,sizeof(int), 1, arquivoBin);
         fwrite(dados->idConecta,sizeof(int), 1, arquivoBin);
-        fwrite(dados->siglaPais,sizeof(char), 2, arquivoBin);
+        if((dados->siglaPais)[0] != '\0'){
+            fwrite(dados->siglaPais,sizeof(char), 2, arquivoBin);
+        }else{
+            //Se a sigla do pais for nula escreve lixo
+            fwrite(lixo,sizeof(char), 2, arquivoBin);
+        }
+        
         fwrite(dados->idPoPsConectado,sizeof(int), 1, arquivoBin);
-        fwrite(dados->unidadeMedida,sizeof(char), 1, arquivoBin);
+        if(*(dados->unidadeMedida) != '\0'){
+            fwrite(dados->unidadeMedida,sizeof(char), 1, arquivoBin);
+        }else{
+            //Se a unidade for nula escreve lixo
+            fwrite(lixo,sizeof(char), 1, arquivoBin);
+        }
+        
         fwrite(dados->velocidade,sizeof(int), 1, arquivoBin);
         fwrite(dados->nomePoPs,sizeof(char), strlen(dados->nomePoPs), arquivoBin);
         fwrite(pipe,sizeof(char), 1, arquivoBin);
         fwrite(dados->nomePais,sizeof(char),  strlen(dados->nomePais), arquivoBin);
         fwrite(pipe,sizeof(char), 1, arquivoBin);
         free(pipe);
+        if(flagLixo){
+            //Atualiza quantidade de pag de disco
+            *(cabecalho->nroPagDisco) = *(cabecalho->nroPagDisco) + 1; 
+            fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
+            
+        }
+        free(lixo);
     }
-    int tamLixo;
-    if(byteoffset%960 == 0){
-        tamLixo = 20 + strlen(dados->nomePoPs) + strlen(dados->nomePais) + 2; //tam campos fixos + tam campos variaiveis + tam pipes
-        tamLixo += 64*14;    
-    }
-    char * lixo = malloc(sizeof(char)*960);
-    for(int i=0; i<960; i++){
-        lixo[i] = '$';
-    }
-    //printf("tam lixo %d\n\n", tamLixo);
-    fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
-    free(lixo);
+    
 }
 
 //Grava registro de cabecalho no arquivo binario

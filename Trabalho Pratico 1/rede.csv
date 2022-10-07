@@ -1,0 +1,5 @@
+idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade
+56,Paris,France,FR,77.0,G,5.0
+43,Frankfurt,Germany,,75.0,G,10.0
+55,Valdivia,Chile,,56.0,M,155.0
+*3,Cuiaba,Brazil,BR,18.0,G,3.0

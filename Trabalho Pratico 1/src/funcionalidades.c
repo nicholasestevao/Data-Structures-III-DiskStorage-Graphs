@@ -49,21 +49,19 @@ void copiaInt(int *dest, char *src) {
 }
 
 void copiaStrFix(char *dest, char *src) {
-    if((src != NULL) && (src[0] != '\0')) {
+    if(src[0] == '\0'){
+        dest[0] = '\0';
+    }else if((src != NULL) && (src[0] != '\0')) {
         strcpy(dest, src);
     }
-    for(int i = strlen(dest); i < sizeof(dest); i++) {
-        dest[i] = '$';
-    }
+    
 }
 
 void copiaStrVar(char *dest, char *src) {
     if((src != NULL) && (src[0] != '\0')) {
         strcpy(dest, src);
-        int i = strlen((src));
-        src[i] = '|';
     } else {
-        dest[0] = '|';
+        dest[0] = '\0';
     }
 }
 
@@ -86,13 +84,11 @@ void pegaDados(char *buf, RegistroDados *dados) {
 
         cortaDados(buf, dado);
         copiaStrFix((dados->siglaPais), dado);
-
         cortaDados(buf, dado);
         copiaInt((dados->idPoPsConectado), dado);
 
         cortaDados(buf, dado);
         copiaStrFix((dados->unidadeMedida), dado);
-        
         cortaDados(buf, dado);
         copiaInt((dados->velocidade), dado);
     }
@@ -107,7 +103,7 @@ void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv) 
     alocaRegistrosDados(&dados, 1);
 
     char *buf = malloc(sizeof(char) * 100);
-
+    
     fgets(buf, 100, arquivoCSV);
     for (int i = 0; i < 100; i++) {
         buf[i] = '\0';
@@ -116,10 +112,11 @@ void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv) 
     while (fgets(buf, 100, arquivoCSV) != NULL) {
         int i = strlen(buf);
         buf[i-1] = '\0';
-
+        //printf("buf: %s\n", buf);
         pegaDados(buf, dados);
-
+        //imprimeRegistroDadosTela(dados);
         inserirRegistroDadosArquivoBin(arquivoBin, cabecalho, dados);
+        //printf("Topo: %d\n", *(cabecalho->topo));
     }
     
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
@@ -129,6 +126,7 @@ void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv) 
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
     free(buf);
+    binarioNaTela(nome_arquivo_bin);
 }
 
 void funcionalidade2Select(char* nome_arquivo){
@@ -137,10 +135,33 @@ void funcionalidade2Select(char* nome_arquivo){
     RegistroDados * dados;
     for(int i = 0; i<*(cabecalho->proxRRN); i++){
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
-        imprimeRegistroDadosTela(dados);
-        desalocaRegistrosDados(&dados,1);
+        if(dados !=  NULL){
+            imprimeRegistroDadosTela(dados);
+            printf("\n");
+            desalocaRegistrosDados(&dados,1);
+        }
+        
     }
-    printf("Numero de paginas de disco: %d\n", cabecalho->nroPagDisco);
+    printf("Numero de paginas de disco: %d\n", *(cabecalho->nroPagDisco));
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
+}
+
+void funcionalidade5Insert(char* nome_arquivo, int nro_reg){
+    RegistroDados *registro;
+    alocaRegistrosDados(&registro, 1);
+
+    FILE * arquivo = abrirEscrita_bin(nome_arquivo);
+    
+    RegistroCabecalho * cabecalho =  lerRegistroCabecalhoArquivoBin(arquivo);
+    for(int i = 0; i<nro_reg; i++){
+        lerRegistroDadosTeclado(registro);
+        imprimeRegistroDadosTela(registro);
+        //imprimeRegistroCabecalhoTela(cabecalho);
+        inserirRegistroDadosArquivoBin(arquivo,cabecalho, registro);
+    }
+    
+    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+    fecharArquivo_bin(arquivo);
+    desalocaRegistrosDados(&registro, 1);
 }

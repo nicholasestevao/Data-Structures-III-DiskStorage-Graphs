@@ -14,10 +14,10 @@ int main(int argC, char *argV[]){
     //Create table (1) - Isaac e Nicholas
     //le do csv
     if(opcao == 1) {
-        char* nome_arquivo_csv = malloc(sizeof(char)*20);
-        scanf("%s", nome_arquivo_csv);
-        funcionalidade1CreateTable(nome_arquivo, nome_arquivo_csv);
-        free(nome_arquivo_csv);
+        char* nome_arquivo_bin = malloc(sizeof(char)*20);
+        scanf("%s", nome_arquivo_bin);
+        funcionalidade1CreateTable(nome_arquivo_bin, nome_arquivo);
+        free(nome_arquivo_bin);
     }
     
     //Select (2) - Nicholas
@@ -49,7 +49,11 @@ int main(int argC, char *argV[]){
     //Insercao (5) - Nicholas
     //insere no binario
     //le da tela
-
+    if(opcao == 5){
+        int nro_reg;
+        scanf("%d", &nro_reg);
+        funcionalidade5Insert(nome_arquivo, nro_reg);
+    }
     //Compactacao (6) - Isaac
     //cria outro binario
     
