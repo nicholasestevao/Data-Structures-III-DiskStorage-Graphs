@@ -15,5 +15,6 @@ void funcionalidade3SelectWere(char* nome_arquivo);
 
 void funcionalidade5Insert(char* nome_arquivo, int nro_reg);
 
+void funcionalidade6Compactacao(char* nome_arquivo);
 
 #endif

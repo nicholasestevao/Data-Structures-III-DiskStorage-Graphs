@@ -156,12 +156,46 @@ void funcionalidade5Insert(char* nome_arquivo, int nro_reg){
     RegistroCabecalho * cabecalho =  lerRegistroCabecalhoArquivoBin(arquivo);
     for(int i = 0; i<nro_reg; i++){
         lerRegistroDadosTeclado(registro);
-        imprimeRegistroDadosTela(registro);
+        //imprimeRegistroDadosTela(registro);
         //imprimeRegistroCabecalhoTela(cabecalho);
         inserirRegistroDadosArquivoBin(arquivo,cabecalho, registro);
     }
     
     escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+    binarioNaTela(nome_arquivo);
     fecharArquivo_bin(arquivo);
     desalocaRegistrosDados(&registro, 1);
+}
+
+void funcionalidade6Compactacao(char* nome_arquivo){
+    RegistroCabecalho *cabecalhoNovo;
+    alocaRegistrosCabecalho(&cabecalhoNovo);
+    FILE *arq_compactado = fopen("compactado.bin", "wb+");
+
+    FILE * arq_original = abrirLeitura_bin(nome_arquivo);
+    RegistroCabecalho *cabecalhoAntigo = lerRegistroCabecalhoArquivoBin(arq_original);
+
+    for(int i=0; i<*(cabecalhoAntigo->proxRRN); i++){
+        RegistroDados * dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
+        if(dados == NULL){
+            //Registro removido
+            //printf("registro removido\n");
+        }else{
+            inserirRegistroDadosArquivoBin(arq_compactado, cabecalhoNovo, dados);
+            desalocaRegistrosDados(&dados, 1);
+        }        
+    }
+    *(cabecalhoNovo->qttCompacta) = *(cabecalhoAntigo->qttCompacta) + 1;
+    escreverRegistroCabecalhoArquivoBin(arq_compactado, cabecalhoNovo);
+    desalocaRegistrosCabecalho(cabecalhoNovo);
+    desalocaRegistrosCabecalho(cabecalhoAntigo);
+
+    binarioNaTela(nome_arquivo);
+    fecharArquivo_bin(arq_compactado);
+    fecharArquivo_bin(arq_original);
+
+    remove(nome_arquivo);
+    rename("compactado.bin", nome_arquivo);
+    
+
 }
