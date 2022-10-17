@@ -54,9 +54,11 @@ int main(int argC, char *argV[]){
         scanf("%d", &nro_reg);
         funcionalidade5Insert(nome_arquivo, nro_reg);
     }
-    //Compactacao (6) - Isaac
+    //Compactacao (6) - Nicholas
     //cria outro binario
-    
+    if(opcao == 6){
+        funcionalidade6Compactacao(nome_arquivo);
+    }
     return 0;
 }   
 

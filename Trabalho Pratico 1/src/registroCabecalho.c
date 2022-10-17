@@ -5,7 +5,7 @@ void iniciaRegistrosCabecalho(RegistroCabecalho *registros) {
     *(registros->topo) = -1;
     *(registros->proxRRN) = 0;
     *(registros->nroRegRem) = 0;
-    *(registros->nroPagDisco) = 0;
+    *(registros->nroPagDisco) = 1;
     *(registros->qttCompacta) = 0;
 }
 

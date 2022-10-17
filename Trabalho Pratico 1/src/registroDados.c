@@ -76,7 +76,7 @@ void lerRegistroDadosTeclado(RegistroDados *registro){
     scanf("%s", id_pops_conectado);
     scan_quote_string(unidade);
     scanf("%s", velocidade);
-    printf("%s %s %s %s %s %s %s\n", id_conecta, nomePoPs, nomePais, siglaPais, id_pops_conectado, unidade, velocidade);
+    //printf("%s %s %s %s %s %s %s\n", id_conecta, nomePoPs, nomePais, siglaPais, id_pops_conectado, unidade, velocidade);
 
     char* nulo = malloc(sizeof(char)*10);
     nulo = "NULO";
