@@ -15,7 +15,6 @@
  * @return Retorna um ponteiro de arquivo em modo de leitura.
  * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
  */
-//
 FILE * abrirLeitura_bin(char * nome_arquivo);
 
 /**

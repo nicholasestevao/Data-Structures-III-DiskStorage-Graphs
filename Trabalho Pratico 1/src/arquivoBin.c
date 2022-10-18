@@ -107,10 +107,8 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
     long byteoffset = 0;
     int flagLixo = 0;
     int tamLixo = 0;
-    if(*(dados->removido) == '1'){
-        //printf("Insercao de registro removido -> empilha\n");
-        //Insercao de registro removido -> empilha  
-
+      
+    if(*(dados->removido) == '1'){//Insercao de registro removido -> empilha  
         //Pega o topo atual a atualiza o topo para o prox RRN
         int topo = *(cabecalho->topo);
         *(cabecalho->topo) = *(cabecalho->proxRRN);
@@ -136,10 +134,10 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         for(int i = 0; i<59; i++){
             lixo[i] = '$';
         }
-    
         fwrite(removido,sizeof(char),1, arquivoBin);
         fwrite(encadeamento,sizeof(int),1, arquivoBin);
         fwrite(lixo,sizeof(char),59, arquivoBin);
+
         //Libera variaveis locais
         free(removido);
         free(encadeamento);
@@ -157,14 +155,10 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
             fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
             free(lixo);
         }
-    }else{
-        
-        //printf("Insercao normal (registro nao eh removido)\n");
+    }else{ //Insercao normal (registro nao eh removido)
+        //inicia byoffset em zero
         byteoffset = 0;
-        //Insercao normal (registro nao eh removido)
-        if(*(cabecalho->topo) == -1){
-            //printf("Nao tem registros removidos -> insere no proximo RRN\n");
-            //nao tem registros removidos -> insere no proximo RRN
+        if(*(cabecalho->topo) == -1){//nao tem registros removidos -> insere no proximo RRN 
             byteoffset = 960 + 64*(*(cabecalho->proxRRN));
             fseek(arquivoBin, byteoffset, SEEK_SET);
             *(cabecalho->proxRRN) += 1;
@@ -177,9 +171,7 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
                 tamLixo += 64*14;
                 flagLixo = 1;
             }
-        }else{
-            //printf("Existem registros removidos -> desempilha\n");
-            //Existem registros removidos -> desempilha
+        }else{//Existem registros removidos -> desempilha
             long byteoffsetNovoTopo = 960 + 64*(*(cabecalho->topo)) + 1;
             
             //Forma de manter o mesmo valor de encadeamento caso o registro tenha sido removido previamente (revisar)
@@ -193,8 +185,6 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
             *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) - 1;
 
             fseek(arquivoBin,byteoffsetNovoTopo-1, SEEK_SET);
-            //printf("ftell-190: %ld - %d\n", ftell(arquivoBin), novoTopo);
-            //free(novoTopo);
         }
         char * lixo = malloc(sizeof(char)*960);
         for(int i=0; i<960; i++){
@@ -203,23 +193,20 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
 
         char * pipe = malloc(sizeof(char));
         *pipe = '|';
-        //imprimeRegistroCabecalhoTela(cabecalho);
-        //imprimeRegistroDadosTela(dados);
+        
         fwrite(dados->removido,sizeof(char), 1, arquivoBin);
         fwrite(dados->encadeamento,sizeof(int), 1, arquivoBin);
         fwrite(dados->idConecta,sizeof(int), 1, arquivoBin);
         if((dados->siglaPais)[0] != '\0'){
             fwrite(dados->siglaPais,sizeof(char), 2, arquivoBin);
-        }else{
-            //Se a sigla do pais for nula escreve lixo
+        }else{ //Se a sigla do pais for nula escreve lixo
             fwrite(lixo,sizeof(char), 2, arquivoBin);
         }
         
         fwrite(dados->idPoPsConectado,sizeof(int), 1, arquivoBin);
         if(*(dados->unidadeMedida) != '\0'){
             fwrite(dados->unidadeMedida,sizeof(char), 1, arquivoBin);
-        }else{
-            //Se a unidade for nula escreve lixo
+        }else{//Se a unidade for nula escreve lixo
             fwrite(lixo,sizeof(char), 1, arquivoBin);
         }
         
@@ -229,11 +216,9 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
         fwrite(dados->nomePais,sizeof(char),  strlen(dados->nomePais), arquivoBin);
         fwrite(pipe,sizeof(char), 1, arquivoBin);
         free(pipe);
-        if(flagLixo){
-            //Atualiza quantidade de pag de disco
+        if(flagLixo){//Atualiza quantidade de pag de disco
             *(cabecalho->nroPagDisco) = *(cabecalho->nroPagDisco) + 1; 
-            fwrite(lixo,sizeof(char), tamLixo, arquivoBin);
-            
+            fwrite(lixo,sizeof(char), tamLixo, arquivoBin); 
         }
         free(lixo);
     }
