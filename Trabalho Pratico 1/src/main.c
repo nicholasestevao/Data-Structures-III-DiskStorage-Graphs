@@ -29,22 +29,14 @@ int main(int argC, char *argV[]){
     //Select where (3) - Isaac
     //le comando da tela
     if(opcao == 3){
-            //numeros de buscas a serem realizadas
-            int numBuscas;
-            scanf("%d", &numBuscas);
-            printf("%d--%s--%d--", opcao, nome_arquivo,numBuscas);
-            char * nome_campo = malloc(sizeof(char)*20);
-            char * valor_campo = malloc(sizeof(char)*800);
-             
-            for(int i=0; i<numBuscas; i++){
-                scanf("%s", nome_campo);
-                fgetc(stdin);
-            }
+        funcionalidade3SelectWhere(nome_arquivo);
     }
-
 
     //Remocao logica (4) - Isaac
     //le comando da tela
+    if(opcao == 4){
+        funcionalidade4Remove(nome_arquivo);
+    }
 
     //Insercao (5) - Nicholas
     //insere no binario
@@ -54,11 +46,13 @@ int main(int argC, char *argV[]){
         scanf("%d", &nro_reg);
         funcionalidade5Insert(nome_arquivo, nro_reg);
     }
+
     //Compactacao (6) - Nicholas
     //cria outro binario
     if(opcao == 6){
         funcionalidade6Compactacao(nome_arquivo);
     }
+
     return 0;
 }   
 

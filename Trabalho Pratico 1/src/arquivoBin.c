@@ -241,7 +241,7 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
 }
 
 //Grava registro de cabecalho no arquivo binario
-int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho){
+void escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabecalho){
     fseek(arquivoBin, 0, SEEK_SET);
     fwrite(cabecalho->status, sizeof(char), 1, arquivoBin);
     fwrite(cabecalho->topo, sizeof(int), 1, arquivoBin);
@@ -254,5 +254,33 @@ int escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * c
         lixo[i] = '$';
     }
     fwrite(lixo,sizeof(char), 960-21, arquivoBin);
+    free(lixo);
+}
+
+//Remove logicamente um registro do arquivo binario por RRN
+//e atualiza a pilha de registros removidos.
+void removeRegistroDadosArquivoBin_RRN(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, const int RRN) {
+    //Byteoffset do RRN a ser removio
+    int byteoffset = 960 + 64*RRN;
+    fseek(arquivoBin, byteoffset, SEEK_SET);
+    
+    //Lixo a ser gravado no arquivo binario
+    char *lixo = malloc(sizeof(char) * 59);
+    for(int i = 0; i < 59; i++) {
+        lixo[i] = '$';
+    }
+    //Marca como removido no arquivo binario
+    fwrite("1", sizeof(char), 1, arquivoBin);
+    //Escreve o proximo RRN da lista
+    fwrite(registroCabecalho->topo, sizeof(int), 1, arquivoBin);
+    //Coloca lixo no resto do Registro
+    fwrite(lixo, sizeof(char), 59, arquivoBin);
+
+    //Atualiza topo da lista
+    *(registroCabecalho->topo) = RRN;
+    //Aumenta numero de regitros removidos
+    *(registroCabecalho->nroRegRem) += 1;
+
+    //Libera memoria alocada
     free(lixo);
 }

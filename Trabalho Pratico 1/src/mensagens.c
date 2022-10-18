@@ -1,5 +1,13 @@
 #include "../headers/mensagens.h"
 
+void msg_erro_Arq_FalhaCriacao() {
+    printf("Falha no processamento do arquivo.");
+}
+
+void msg_erro_Arq_Inconsistente() {
+    printf("Falha no processamento do arquivo.");
+}
+
 void msg_erro_Arq_Inexistente(){
     printf("Falha no processamento do arquivo.");
 }
