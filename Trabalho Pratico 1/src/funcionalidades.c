@@ -1,250 +1,21 @@
 #include "../headers/funcionalidades.h"
 
-void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv) {
-    FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
-    if(arquivoBin == NULL) {
-        msg_erro_Arq_FalhaCriacao();
-        return;
-    }
-    FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
-    if(arquivoCSV == NULL) {
-        msg_erro_Arq_Inexistente();
-        return;
-    }
-    RegistroCabecalho *cabecalho;
-    alocaRegistrosCabecalho(&cabecalho);
-    RegistroDados *dados;
-    alocaRegistrosDados(&dados, 1);
-
-    char *buf = malloc(sizeof(char) * 100);
-    
-    //Pega a primeira linha do arquivo CSV e descarta
-    fgets(buf, 100, arquivoCSV);
-    for (int i = 0; i < 100; i++) {
-        buf[i] = '\0';
-    }
-    
-    //Pega linha a linha do arquivo CSV e insere no arquivo binario
-    while (fgets(buf, 100, arquivoCSV) != NULL) {
-        int i = strlen(buf);
-        buf[i-1] = '\0';
-        pegaDados(buf, dados);
-        inserirRegistroDadosArquivoBin(arquivoBin, cabecalho, dados);
-    }
-    
-    escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
-    
-    desalocaRegistrosCabecalho(cabecalho);
-    desalocaRegistrosDados(&dados, 1);
-    fecharArquivo_bin(arquivoBin);
-    fclose(arquivoCSV);
-    free(buf);
-    binarioNaTela(nome_arquivo_bin);
-}
-
-void funcionalidade2Select(char* nome_arquivo){
-    FILE * arquivoBin = abrirLeitura_bin(nome_arquivo);
-    if(arquivoBin == NULL) {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    RegistroDados * dados;
-
-    //Verifica todos os RRNs do arquivo
-    for(int i = 0; i<*(cabecalho->proxRRN); i++){
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
-        if(dados !=  NULL){
-            imprimeRegistroDadosTela(dados);
-            printf("\n");
-            desalocaRegistrosDados(&dados,1);
-        }
-    }
-    printf("Numero de paginas de disco: %d\n", *(cabecalho->nroPagDisco));
-    desalocaRegistrosCabecalho(cabecalho);
-    fecharArquivo_bin(arquivoBin);
-}
-
-void funcionalidade3SelectWhere(char* nome_arquivo) {
-    //numeros de buscas a serem realizadas
-    int numBuscas;
-    scanf("%d", &numBuscas);
-    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
-    if(arquivoBin == NULL) {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
-    char *nome_campo = malloc(sizeof(char)* 50);
-    char *valor_campo = malloc(sizeof(char)* 50);
-    //Faz n buscas
-    for(int i=0; i<numBuscas; i++){
-        //Pega o nome do campo.
-        scanf("%s", nome_campo);
-        //Pega espaco entre o nome e o valor. 
-        fgetc(stdin);
-        //Pega o valor do campo.
-        fgets(valor_campo, 50, stdin);
-    
-        printf("Busca %d\n", i + 1);
-        
-        //Se nao encontrar nenhum arquivo quebra linha.
-        if(buscaCampoImprime(nome_campo, valor_campo, arquivoBin) == 0) {
-            printf("\n");
-        }
-    }
-
-    free(nome_campo);
-    free(valor_campo);
-    fecharArquivo_bin(arquivoBin);
-}
-
-void funcionalidade4Remove(char* nome_arquivo) {
-    //Numeros de buscas a serem realizadas
-    int numBuscas;
-    scanf("%d", &numBuscas);
-    FILE *arquivoBin = abrirEscrita_bin(nome_arquivo);
-    if(arquivoBin == NULL) {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    char *nome_campo = malloc(sizeof(char)* 50);
-    char *valor_campo = malloc(sizeof(char)* 50);
-
-    //Faz n buscas 
-    for(int i=0; i<numBuscas; i++){
-        //Pega o nome do campo.
-        scanf("%s", nome_campo);
-        //Pega espaco entre o nome e o valor. 
-        fgetc(stdin);
-        //Pega o valor do campo.
-        fgets(valor_campo, 50, stdin);
-
-        buscaCampoRemove(nome_campo, valor_campo, cabecalho, arquivoBin);
-    }
-
-    //Escreve o registro de cabecalho atualizado no arquivo binario
-    escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
-
-    desalocaRegistrosCabecalho(cabecalho);
-    free(nome_campo);
-    free(valor_campo);
-    fecharArquivo_bin(arquivoBin);
-    binarioNaTela(nome_arquivo);
-}
-
-void funcionalidade5Insert(char* nome_arquivo, int nro_reg){
-    RegistroDados *registro;
-    alocaRegistrosDados(&registro, 1);
-
-    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
-    
-    RegistroCabecalho *cabecalho =  lerRegistroCabecalhoArquivoBin(arquivo);
-    //Insere n registros
-    for(int i = 0; i<nro_reg; i++){
-        lerRegistroDadosTeclado(registro);
-        inserirRegistroDadosArquivoBin(arquivo,cabecalho, registro);
-    }
-    
-    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
-    binarioNaTela(nome_arquivo);
-    fecharArquivo_bin(arquivo);
-    desalocaRegistrosDados(&registro, 1);
-}
-
-void funcionalidade6Compactacao(char* nome_arquivo){
-    RegistroCabecalho *cabecalhoNovo;
-    alocaRegistrosCabecalho(&cabecalhoNovo);
-    FILE *arq_compactado = fopen("compactado.bin", "wb+");
-    if(arq_compactado == NULL) {
-        msg_erro_Arq_FalhaCriacao();
-        return;
-    }
-
-    FILE *arq_original = abrirLeitura_bin(nome_arquivo);
-    if(arq_original == NULL) {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
-    RegistroCabecalho *cabecalhoAntigo = lerRegistroCabecalhoArquivoBin(arq_original);
-
-    for(int i=0; i<*(cabecalhoAntigo->proxRRN); i++){
-        RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
-        if(dados != NULL){
-            //Registro nao removido
-            inserirRegistroDadosArquivoBin(arq_compactado, cabecalhoNovo, dados);
-            desalocaRegistrosDados(&dados, 1);
-        }  
-    }
-    *(cabecalhoNovo->qttCompacta) = *(cabecalhoAntigo->qttCompacta) + 1;
-    escreverRegistroCabecalhoArquivoBin(arq_compactado, cabecalhoNovo);
-    desalocaRegistrosCabecalho(cabecalhoNovo);
-    desalocaRegistrosCabecalho(cabecalhoAntigo);
-
-    binarioNaTela(nome_arquivo);
-    fecharArquivo_bin(arq_compactado);
-    fecharArquivo_bin(arq_original);
-
-    remove(nome_arquivo);
-    rename("compactado.bin", nome_arquivo);
-}
-
 /**
- * Busca em um arquivo binario toos os dados que possuem um valor especifico 
- * para um campo especifico e os exibe na tela.
+ * Tira as aspas duplas de uma string deixando somente 
+ * o conteudo entre elas.
  * 
- * @param nome_campo Campo que sera buscado.
- * @param valor_campo Valor que sera buscado.
- * @param arquivoBin Arquivo binario.
- * 
- * @return Retorna 0 quando não encontrou nunhum dado
- * dado com o valor do campo procurado e 1 quando encontrou 
- * pelo menos 1 dado com o valor do campo procurado.
+ * @param str String que será tirado as "".
  */
-int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin) {
-    int flag_encontrados = 0;
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    RegistroDados * dados;
-    //Verifica todos os RRNs do arquivo
-    for(int i = 0; i<*(cabecalho->proxRRN); i++){
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
-        if(dados !=  NULL) {
-            // Se dado nao foi removido e o campo possui o dado buscado.
-            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
-                flag_encontrados = 1;
-                imprimeRegistroDadosTela(dados);
-                printf("\n");
-            }
-            desalocaRegistrosDados(&dados,1);
+void tiraAspasDuplas(char *str) {
+    //Se tiver aspas no comeco da string
+    if(str[0] == '"') {
+        int i = 0;
+        while (i+1 < (strlen(str)) && str[i+1] != '"') {//Enquanto o proximo ainda 
+            str[i] = str[i+1];
+            i++;
         }
-    }
-    desalocaRegistrosCabecalho(cabecalho);
-    return flag_encontrados;
-}
-
-/**
- * Busca em um arquivo binario toos os dados que possuem um valor especifico 
- * para um campo especifico e os remove logicamente desse arquivo.
- * 
- * @param nome_campo Campo que sera buscado.
- * @param valor_campo Valor que sera buscado.
- * @param arquivoBin Arquivo binario.
- */
-void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin) {
-    RegistroDados * dados;
-    
-    //Vai para o primeiro registro
-    fseek(arquivoBin, 960, SEEK_SET);
-    
-    //Verifica todos os RRNs do arquivo
-    for(int i = 0; i<*(cabecalho->proxRRN); i++){
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
-        if(dados !=  NULL) {
-            //Se dado nao foi removido e o campo possui o dado buscado.
-            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
-                removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
-            }
-            desalocaRegistrosDados(&dados,1);
+        for(i; i < (strlen(str)); i++) {
+            str[i] = '\0';
         }
     }
 }
@@ -447,21 +218,250 @@ void pegaDados(char *buf, RegistroDados *dados) {
 }
 
 /**
- * Tira as aspas duplas de uma string deixando somente 
- * o conteudo entre elas.
+ * Busca em um arquivo binario toos os dados que possuem um valor especifico 
+ * para um campo especifico e os exibe na tela.
  * 
- * @param str String que será tirado as "".
+ * @param nome_campo Campo que sera buscado.
+ * @param valor_campo Valor que sera buscado.
+ * @param arquivoBin Arquivo binario.
+ * 
+ * @return Retorna 0 quando não encontrou nunhum dado
+ * dado com o valor do campo procurado e 1 quando encontrou 
+ * pelo menos 1 dado com o valor do campo procurado.
  */
-void tiraAspasDuplas(char *str) {
-    //Se tiver aspas no comeco da string
-    if(str[0] == '"') {
-        int i = 0;
-        while (i+1 < (strlen(str)) && str[i+1] != '"') {//Enquanto o proximo ainda 
-            str[i] = str[i+1];
-            i++;
-        }
-        for(i; i < (strlen(str)); i++) {
-            str[i] = '\0';
+int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin) {
+    int flag_encontrados = 0;
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+    RegistroDados * dados;
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
+        if(dados !=  NULL) {
+            // Se dado nao foi removido e o campo possui o dado buscado.
+            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
+                flag_encontrados = 1;
+                imprimeRegistroDadosTela(dados);
+                printf("\n");
+            }
+            desalocaRegistrosDados(&dados,1);
         }
     }
+    desalocaRegistrosCabecalho(cabecalho);
+    return flag_encontrados;
+}
+
+/**
+ * Busca em um arquivo binario toos os dados que possuem um valor especifico 
+ * para um campo especifico e os remove logicamente desse arquivo.
+ * 
+ * @param nome_campo Campo que sera buscado.
+ * @param valor_campo Valor que sera buscado.
+ * @param arquivoBin Arquivo binario.
+ */
+void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin) {
+    RegistroDados * dados;
+    
+    //Vai para o primeiro registro
+    fseek(arquivoBin, 960, SEEK_SET);
+    
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
+        if(dados !=  NULL) {
+            //Se dado nao foi removido e o campo possui o dado buscado.
+            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
+                removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
+            }
+            desalocaRegistrosDados(&dados,1);
+        }
+    }
+}
+
+void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv) {
+    FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
+    if(arquivoBin == NULL) {
+        msg_erro_Arq_FalhaCriacao();
+        return;
+    }
+    FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
+    if(arquivoCSV == NULL) {
+        msg_erro_Arq_Inexistente();
+        return;
+    }
+    RegistroCabecalho *cabecalho;
+    alocaRegistrosCabecalho(&cabecalho);
+    RegistroDados *dados;
+    alocaRegistrosDados(&dados, 1);
+
+    char *buf = malloc(sizeof(char) * 100);
+    
+    //Pega a primeira linha do arquivo CSV e descarta
+    fgets(buf, 100, arquivoCSV);
+    for (int i = 0; i < 100; i++) {
+        buf[i] = '\0';
+    }
+    
+    //Pega linha a linha do arquivo CSV e insere no arquivo binario
+    while (fgets(buf, 100, arquivoCSV) != NULL) {
+        int i = strlen(buf);
+        buf[i-1] = '\0';
+        pegaDados(buf, dados);
+        inserirRegistroDadosArquivoBin(arquivoBin, cabecalho, dados);
+    }
+    
+    escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
+    
+    desalocaRegistrosCabecalho(cabecalho);
+    desalocaRegistrosDados(&dados, 1);
+    fecharArquivo_bin(arquivoBin);
+    fclose(arquivoCSV);
+    free(buf);
+    binarioNaTela(nome_arquivo_bin);
+}
+
+void funcionalidade2Select(char* nome_arquivo){
+    FILE * arquivoBin = abrirLeitura_bin(nome_arquivo);
+    if(arquivoBin == NULL) {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+    RegistroDados * dados;
+
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin,i);
+        if(dados !=  NULL){
+            imprimeRegistroDadosTela(dados);
+            printf("\n");
+            desalocaRegistrosDados(&dados,1);
+        }
+    }
+    printf("Numero de paginas de disco: %d\n", *(cabecalho->nroPagDisco));
+    desalocaRegistrosCabecalho(cabecalho);
+    fecharArquivo_bin(arquivoBin);
+}
+
+void funcionalidade3SelectWhere(char* nome_arquivo) {
+    //numeros de buscas a serem realizadas
+    int numBuscas;
+    scanf("%d", &numBuscas);
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
+    if(arquivoBin == NULL) {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    char *nome_campo = malloc(sizeof(char)* 50);
+    char *valor_campo = malloc(sizeof(char)* 50);
+    //Faz n buscas
+    for(int i=0; i<numBuscas; i++){
+        //Pega o nome do campo.
+        scanf("%s", nome_campo);
+        //Pega espaco entre o nome e o valor. 
+        fgetc(stdin);
+        //Pega o valor do campo.
+        fgets(valor_campo, 50, stdin);
+    
+        printf("Busca %d\n", i + 1);
+        
+        //Se nao encontrar nenhum arquivo quebra linha.
+        if(buscaCampoImprime(nome_campo, valor_campo, arquivoBin) == 0) {
+            printf("\n");
+        }
+    }
+
+    free(nome_campo);
+    free(valor_campo);
+    fecharArquivo_bin(arquivoBin);
+}
+
+void funcionalidade4Remove(char* nome_arquivo) {
+    //Numeros de buscas a serem realizadas
+    int numBuscas;
+    scanf("%d", &numBuscas);
+    FILE *arquivoBin = abrirEscrita_bin(nome_arquivo);
+    if(arquivoBin == NULL) {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+    char *nome_campo = malloc(sizeof(char)* 50);
+    char *valor_campo = malloc(sizeof(char)* 50);
+
+    //Faz n buscas 
+    for(int i=0; i<numBuscas; i++){
+        //Pega o nome do campo.
+        scanf("%s", nome_campo);
+        //Pega espaco entre o nome e o valor. 
+        fgetc(stdin);
+        //Pega o valor do campo.
+        fgets(valor_campo, 50, stdin);
+
+        buscaCampoRemove(nome_campo, valor_campo, cabecalho, arquivoBin);
+    }
+
+    //Escreve o registro de cabecalho atualizado no arquivo binario
+    escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
+
+    desalocaRegistrosCabecalho(cabecalho);
+    free(nome_campo);
+    free(valor_campo);
+    fecharArquivo_bin(arquivoBin);
+    binarioNaTela(nome_arquivo);
+}
+
+void funcionalidade5Insert(char* nome_arquivo, int nro_reg){
+    RegistroDados *registro;
+    alocaRegistrosDados(&registro, 1);
+
+    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+    
+    RegistroCabecalho *cabecalho =  lerRegistroCabecalhoArquivoBin(arquivo);
+    //Insere n registros
+    for(int i = 0; i<nro_reg; i++){
+        lerRegistroDadosTeclado(registro);
+        inserirRegistroDadosArquivoBin(arquivo,cabecalho, registro);
+    }
+    
+    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+    binarioNaTela(nome_arquivo);
+    fecharArquivo_bin(arquivo);
+    desalocaRegistrosDados(&registro, 1);
+}
+
+void funcionalidade6Compactacao(char* nome_arquivo){
+    RegistroCabecalho *cabecalhoNovo;
+    alocaRegistrosCabecalho(&cabecalhoNovo);
+    FILE *arq_compactado = fopen("compactado.bin", "wb+");
+    if(arq_compactado == NULL) {
+        msg_erro_Arq_FalhaCriacao();
+        return;
+    }
+
+    FILE *arq_original = abrirLeitura_bin(nome_arquivo);
+    if(arq_original == NULL) {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    RegistroCabecalho *cabecalhoAntigo = lerRegistroCabecalhoArquivoBin(arq_original);
+
+    for(int i=0; i<*(cabecalhoAntigo->proxRRN); i++){
+        RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
+        if(dados != NULL){
+            //Registro nao removido
+            inserirRegistroDadosArquivoBin(arq_compactado, cabecalhoNovo, dados);
+            desalocaRegistrosDados(&dados, 1);
+        }  
+    }
+    *(cabecalhoNovo->qttCompacta) = *(cabecalhoAntigo->qttCompacta) + 1;
+    escreverRegistroCabecalhoArquivoBin(arq_compactado, cabecalhoNovo);
+    desalocaRegistrosCabecalho(cabecalhoNovo);
+    desalocaRegistrosCabecalho(cabecalhoAntigo);
+
+    binarioNaTela(nome_arquivo);
+    fecharArquivo_bin(arq_compactado);
+    fecharArquivo_bin(arq_original);
+
+    remove(nome_arquivo);
+    rename("compactado.bin", nome_arquivo);
 }
