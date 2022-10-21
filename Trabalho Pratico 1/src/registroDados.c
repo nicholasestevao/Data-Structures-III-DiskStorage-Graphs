@@ -6,9 +6,9 @@ void  alocaRegistrosDados(RegistroDados ** registros, int numReg){
          (*registros)[i].removido = malloc(sizeof(char) * 1);
          (*registros)[i].encadeamento = malloc(sizeof(int) * 1);
          (*registros)[i].idConecta = malloc(sizeof(int) * 1);
-         (*registros)[i].siglaPais = malloc(sizeof(char) * 2);
+         (*registros)[i].siglaPais = malloc(sizeof(char) * 3);
          (*registros)[i].idPoPsConectado = malloc(sizeof(int) * 1);
-         (*registros)[i].unidadeMedida = malloc(sizeof(char) * 1);
+         (*registros)[i].unidadeMedida = malloc(sizeof(char) * 2);
          (*registros)[i].velocidade = malloc(sizeof(int) * 1);
          (*registros)[i].nomePoPs = malloc(sizeof(char) * 45);
          (*registros)[i].nomePais = malloc(sizeof(char) * 45);

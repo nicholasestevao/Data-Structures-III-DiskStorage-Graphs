@@ -17,7 +17,7 @@ FILE * abrirLeitura_bin(char * nome_arquivo){
 FILE * abrirEscrita_bin(char * nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "rb+");
     if(arq == NULL){
-        FILE *arq = fopen(nome_arquivo, "wb+"); 
+        arq = fopen(nome_arquivo, "wb+"); 
     }    
     fseek(arq, 0, SEEK_SET);
     char* status = malloc(sizeof(char)*1);

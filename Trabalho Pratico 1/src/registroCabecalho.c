@@ -27,6 +27,7 @@ void desalocaRegistrosCabecalho(RegistroCabecalho *registros) {
     free(registros->nroRegRem);
     free(registros->nroPagDisco);
     free(registros->qttCompacta);
+    free(registros);
 }
 
 void imprimeRegistroCabecalhoTela(RegistroCabecalho * registro) {

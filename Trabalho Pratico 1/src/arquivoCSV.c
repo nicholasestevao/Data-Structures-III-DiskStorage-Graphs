@@ -1,4 +1,4 @@
-#include "../headers/arquivoCSV.h"
+#include "../headers/arquivoCsv.h"
 
 //abre arquivo binario para leitura
 FILE * abrirLeitura_csv(char * nome_arquivo){
