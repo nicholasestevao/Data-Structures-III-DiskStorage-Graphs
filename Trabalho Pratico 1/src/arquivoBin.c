@@ -54,7 +54,6 @@ FILE *abrirEscrita_bin(char *nome_arquivo)
         }
     }    
     fseek(arq, 0, SEEK_SET);
-    char* status = malloc(sizeof(char)*1);
     *status = '0';
     fwrite(status,sizeof(char), 1, arq);
     free(status);
@@ -257,7 +256,6 @@ void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * cabec
             if(byteoffset%960 == 0){
                 tamLixo = 64 -(20 + strlen(dados->nomePais) + strlen(dados->nomePoPs) + 2);
                 tamLixo += 64*14;
-                flagLixo = 1;
             }
         }
         else
