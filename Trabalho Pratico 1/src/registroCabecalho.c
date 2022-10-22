@@ -1,7 +1,7 @@
 #include "../headers/registroCabecalho.h"
 
-//Inicia campos do RegistroCabecalho.
-void iniciaRegistrosCabecalho(RegistroCabecalho *registros) {
+void iniciaRegistrosCabecalho(RegistroCabecalho *registros)
+{
     *(registros->status) = '0';
     *(registros->topo) = -1;
     *(registros->proxRRN) = 0;
@@ -10,8 +10,8 @@ void iniciaRegistrosCabecalho(RegistroCabecalho *registros) {
     *(registros->qttCompacta) = 0;
 }
 
-//Aloca memoria para todos os ponteiros do RegistroCabecalho.
-void alocaRegistrosCabecalho(RegistroCabecalho **registros) {
+void alocaRegistrosCabecalho(RegistroCabecalho **registros)
+{
     (*registros) = malloc(sizeof(RegistroCabecalho));
     (*registros)->status = malloc(sizeof(char) * 1);
     (*registros)->topo = malloc(sizeof(int) * 1);
@@ -22,9 +22,8 @@ void alocaRegistrosCabecalho(RegistroCabecalho **registros) {
     iniciaRegistrosCabecalho((*registros));
 }
 
-
-//Desaloca memoria de todos os ponteiros do RegistroCabecalho.
-void desalocaRegistrosCabecalho(RegistroCabecalho *registros) {
+void desalocaRegistrosCabecalho(RegistroCabecalho *registros)
+{
     free(registros->status);
     free(registros->topo);
     free(registros->proxRRN);
@@ -34,9 +33,9 @@ void desalocaRegistrosCabecalho(RegistroCabecalho *registros) {
     free(registros);
 }
 
-//Exibe na tela um RegistroCabecalho.
 void imprimeRegistroCabecalhoTela(RegistroCabecalho *registro)
 {
+
     printf("Status: %c\n", *(registro->status));
     printf("Topo: %d\n", *(registro->topo));
     printf("Prox RRN: %d\n", *(registro->proxRRN));

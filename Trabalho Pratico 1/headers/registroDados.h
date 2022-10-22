@@ -6,20 +6,6 @@
 #include <string.h>
 #include "funcoesFornecidas.h"
 
-/**
- * 
- * @struct RegistroDados 
- * 
- * @var removido - status de remocao
- * @var encadeamento - proximo RRN da pilha
- * @var idConecta - campo
- * @var siglaPais - campo
- * @var idPoPsConectado - campo
- * @var unidadeMedida - campo
- * @var velocidade - campo
- * @var nomePoPs - campo
- * @var nomePais - campo
- */
 typedef struct {
     char* removido;
     int* encadeamento;
@@ -30,37 +16,21 @@ typedef struct {
     int* velocidade;
     char* nomePoPs;
     char* nomePais;
-} RegistroDados;
+}RegistroDados;
 
-/**
- * Aloca memoria para todos os ponteiros do RegistroDados.
- * 
- * @param registros vetor de RegistroDados.
- * @param numReg quantidade de itens do vetor de RegistroDados
- */
 void alocaRegistrosDados(RegistroDados ** registros, int numReg);
-
-/**
- * Desaloca memoria de todos os ponteiros do RegistroDados.
- * 
- * @param registros vetor de RegistroDados.
- * @param numReg quantidade de itens do vetor de RegistroDados.
- */
 void desalocaRegistrosDados(RegistroDados ** registros, int numReg);
-
-/**
- * Exibe na tela um RegistroDados.
- * 
- * @param  registro RegistroDados a ser exibido na tela.
- */
 void imprimeRegistroDadosTela(RegistroDados * registro);
-
-/**
- * Recebe um RegisroDados do teclado e 
- * coloca na RAM.
- * 
- * @param registro Ponteiro para o RegistroDados na RAM.
- */
 void lerRegistroDadosTeclado(RegistroDados *registro);
+
+typedef struct elemento {
+    RegistroDados *dado;
+    struct elemento *prox;
+} elem;
+
+void criaLista(elem *Lista, RegistroDados *dado);
+void destroiLista(elem *Lista);
+void imprimeLista(elem* Lista);
+void insereLista(elem* Lista, RegistroDados *dado);
 
 #endif
