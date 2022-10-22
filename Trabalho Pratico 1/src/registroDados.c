@@ -1,46 +1,43 @@
 #include "../headers/registroDados.h"
 
-void alocaRegistrosDados(RegistroDados **registros, int numReg)
-{
-    *registros = malloc(sizeof(RegistroDados) * numReg);
-    for (int i = 0; i < numReg; i++)
-    {
-        (*registros)[i].removido = malloc(sizeof(char) * 1);
-        (*registros)[i].encadeamento = malloc(sizeof(int) * 1);
-        (*registros)[i].idConecta = malloc(sizeof(int) * 1);
-        (*registros)[i].siglaPais = malloc(sizeof(char) * 3);
-        (*registros)[i].idPoPsConectado = malloc(sizeof(int) * 1);
-        (*registros)[i].unidadeMedida = malloc(sizeof(char) * 2);
-        (*registros)[i].velocidade = malloc(sizeof(int) * 1);
-        (*registros)[i].nomePoPs = malloc(sizeof(char) * 45);
-        (*registros)[i].nomePais = malloc(sizeof(char) * 45);
+//Aloca memoria para todos os ponteiros do RegistroDados.
+void  alocaRegistrosDados(RegistroDados ** registros, int numReg){
+    *registros = malloc(sizeof(RegistroDados)*numReg); 
+    for(int i = 0; i < numReg; i++) {
+         (*registros)[i].removido = malloc(sizeof(char) * 1);
+         (*registros)[i].encadeamento = malloc(sizeof(int) * 1);
+         (*registros)[i].idConecta = malloc(sizeof(int) * 1);
+         (*registros)[i].siglaPais = malloc(sizeof(char) * 2);
+         (*registros)[i].idPoPsConectado = malloc(sizeof(int) * 1);
+         (*registros)[i].unidadeMedida = malloc(sizeof(char) * 1);
+         (*registros)[i].velocidade = malloc(sizeof(int) * 1);
+         (*registros)[i].nomePoPs = malloc(sizeof(char) * 45);
+         (*registros)[i].nomePais = malloc(sizeof(char) * 45);
 
         *((*registros)[i].removido) = '0';
         *((*registros)[i].encadeamento) = -1;
     }
 }
 
-void desalocaRegistrosDados(RegistroDados **registros, int numReg)
-{
-    for (int i = 0; i < numReg; i++)
-    {
-        free((*registros)[i].removido);
-        free((*registros)[i].encadeamento);
-        free((*registros)[i].idConecta);
-        free((*registros)[i].siglaPais);
-        free((*registros)[i].idPoPsConectado);
-        free((*registros)[i].unidadeMedida);
-        free((*registros)[i].velocidade);
-        free((*registros)[i].nomePoPs);
-        free((*registros)[i].nomePais);
-    }
+//Desaloca memoria para todos os ponteiros do RegistroDados.
+void desalocaRegistrosDados(RegistroDados ** registros, int numReg) {
+    for(int i = 0; i < numReg; i++) {
+        free( (*registros)[i].removido);
+        free( (*registros)[i].encadeamento);
+        free( (*registros)[i].idConecta);
+        free( (*registros)[i].siglaPais);
+        free( (*registros)[i].idPoPsConectado);
+        free( (*registros)[i].unidadeMedida);
+        free( (*registros)[i].velocidade);
+        free( (*registros)[i].nomePoPs);
+        free( (*registros)[i].nomePais);
+    }    
     free(*registros);
 }
 
-void imprimeRegistroDadosTela(RegistroDados *registro)
-{
-    if (*(registro->idConecta) != -1)
-    {
+//Exibe na tela um RegistroDados.
+void imprimeRegistroDadosTela(RegistroDados * registro) {
+    if(*(registro->idConecta) != -1){
         printf("Identificador do ponto: %d\n", *(registro->idConecta));
     }
     if ((registro->nomePoPs)[0] != '\0')
@@ -72,15 +69,15 @@ void imprimeRegistroDadosTela(RegistroDados *registro)
     }
 }
 
-void lerRegistroDadosTeclado(RegistroDados *registro)
-{
-    char *id_conecta = malloc(sizeof(char) * 10);
-    char *nomePoPs = malloc(sizeof(char) * 50);
-    char *nomePais = malloc(sizeof(char) * 50);
-    char *siglaPais = malloc(sizeof(char) * 3);
-    char *id_pops_conectado = malloc(sizeof(char) * 10);
-    char *unidade = malloc(sizeof(char) * 10);
-    char *velocidade = malloc(sizeof(char) * 10);
+//Recebe um RegistroDados do teclado e coloca na RAM.
+void lerRegistroDadosTeclado(RegistroDados *registro){
+    char* id_conecta = malloc(sizeof(char)*10);
+    char* nomePoPs = malloc(sizeof(char)*50);
+    char* nomePais = malloc(sizeof(char)*50);
+    char* siglaPais = malloc(sizeof(char)*2);
+    char* id_pops_conectado = malloc(sizeof(char)*10);
+    char* unidade = malloc(sizeof(char)*10);
+    char* velocidade = malloc(sizeof(char)*10);
 
     scanf("%s", id_conecta);
     scan_quote_string(nomePoPs);
@@ -163,101 +160,4 @@ void lerRegistroDadosTeclado(RegistroDados *registro)
         *(registro->velocidade) = -1;
     }
 
-    free(id_conecta);
-    free(nomePoPs);
-    free(nomePais);
-    free(siglaPais);
-    free(id_pops_conectado);
-    free(unidade);
-    free(velocidade);
-    free(nulo);
-}
-
-void copiaRegistroDados(RegistroDados *dest, RegistroDados *src)
-{
-    if (dest == NULL)
-    {
-        return;
-    }
-
-    if (src == NULL)
-    {
-        alocaRegistrosDados(&src, 1);
-    }
-
-    *(src->removido) = *(dest->removido);
-    *(src->encadeamento) = *(dest->encadeamento);
-    *(src->idConecta) = *(dest->idConecta);
-    strcpy(src->siglaPais, dest->siglaPais);
-    *(src->idPoPsConectado) = *(dest->idPoPsConectado);
-    *(src->unidadeMedida) = *(dest->unidadeMedida);
-    *(src->velocidade) = *(dest->velocidade);
-    strcpy(src->nomePoPs, dest->nomePoPs);
-    strcpy(src->nomePais, dest->nomePais);
-}
-
-void criaLista(elem *lista, RegistroDados *dado)
-{
-    if (lista == NULL)
-    {
-        lista = malloc(sizeof(elem));
-    }
-
-    copiaRegistroDados(lista->dado, dado);
-    lista->prox = NULL;
-}
-
-void destroiLista(elem *lista)
-{
-    if (lista == NULL)
-    {
-        return;
-    }
-
-    elem *atual = lista;
-    elem *prox = atual->prox;
-
-    while (prox != NULL)
-    {
-        free(atual);
-        atual = prox;
-        prox = atual->prox;
-    }
-    lista = NULL;
-}
-
-void imprimeLista(elem *lista)
-{
-    if (lista == NULL)
-    {
-        return;
-    }
-
-    elem *aux = lista->prox;
-
-    while (aux != NULL)
-    {
-        imprimeRegistroDadosTela(aux->dado);
-        aux = aux->prox;
-    }
-}
-
-void insereLista(elem *lista, RegistroDados *dado)
-{
-    if (lista == NULL)
-    {
-        return;
-    }
-
-    elem *atual = lista;
-    elem *prox = atual->prox;
-
-    while (prox != NULL)
-    {
-        atual = prox;
-        prox = atual->prox;
-    }
-
-    copiaRegistroDados((atual->prox)->dado, dado);
-    (atual->prox)->prox = NULL;
 }

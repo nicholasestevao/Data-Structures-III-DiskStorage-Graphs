@@ -54,7 +54,6 @@ int main(int argC, char *argV[]){
     }
 
     free(nome_arquivo);
-
     return 0;
 }   
 

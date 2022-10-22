@@ -282,17 +282,18 @@ void pegaDados(char *buf, RegistroDados *dados)
  * dado com o valor do campo procurado e 1 quando encontrou
  * pelo menos 1 dado com o valor do campo procurado.
  */
-int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin)
-{
-    int flag_encontrados = 0;
+int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin) {
+    int flag_encontrados = 0; //flag de retorno se foi encontrado registro 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    RegistroDados *dados;
-    // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
-    {
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
-        if (dados != NULL)
-        {
+    RegistroDados * dados;
+
+    //Move ponteiro para primeira pagina de disco de dados.
+    fseek(arquivoBin, 960, SEEK_SET);
+
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        if(dados !=  NULL) {
             // Se dado nao foi removido e o campo possui o dado buscado.
             if ((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo))
             {
@@ -321,16 +322,13 @@ void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
 
     // Vai para o primeiro registro
     fseek(arquivoBin, 960, SEEK_SET);
-
-    // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
-    {
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
-        if (dados != NULL)
-        {
-            // Se dado nao foi removido e o campo possui o dado buscado.
-            if ((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo))
-            {
+    
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        if(dados !=  NULL) {
+            //Se dado nao foi removido e o campo possui o dado buscado.
+            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
                 removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
             }
             desalocaRegistrosDados(&dados, 1);
@@ -393,14 +391,14 @@ void funcionalidade2Select(char *nome_arquivo)
         return;
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    RegistroDados *dados;
+    RegistroDados * dados;
+    //Move ponteiro para primeira pagina de disco de dados.
+    fseek(arquivoBin, 960, SEEK_SET);
 
-    // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
-    {
-        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
-        if (dados != NULL)
-        {
+    //Verifica todos os RRNs do arquivo
+    for(int i = 0; i<*(cabecalho->proxRRN); i++){
+        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        if(dados !=  NULL){
             imprimeRegistroDadosTela(dados);
             printf("\n");
             desalocaRegistrosDados(&dados, 1);

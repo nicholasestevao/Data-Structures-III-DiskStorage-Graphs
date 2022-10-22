@@ -1,6 +1,6 @@
 #include "../headers/arquivoCsv.h"
 
-//abre arquivo binario para leitura
+//abre arquivo .csv para leitura
 FILE * abrirLeitura_csv(char * nome_arquivo){
     FILE * arq = fopen(nome_arquivo, "r");
     if(arq != NULL){
@@ -11,7 +11,7 @@ FILE * abrirLeitura_csv(char * nome_arquivo){
     }
 }
 
-//abre arquivo binario para escrita
+//abre arquivo .csv para escrita
 FILE * abrirEscrita_csv(char * nome_arquivo){
     return fopen(nome_arquivo, "w");
 }
