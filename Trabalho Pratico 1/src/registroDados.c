@@ -51,7 +51,7 @@ void imprimeRegistroDadosTela(RegistroDados *registro)
     {
         printf("Pais de localizacao: %s\n", registro->nomePais);
     }
-    if (/*(registro->siglaPais)[0] != '$' && */ (registro->siglaPais)[0] != '\0')
+    if ((registro->siglaPais)[0] != '$' && (registro->siglaPais)[0] != '\0')
     {
         printf("Sigla do pais: %s\n", registro->siglaPais);
     }
