@@ -53,6 +53,7 @@ int main(int argC, char *argV[]){
         funcionalidade6Compactacao(nome_arquivo);
     }
 
+    free(nome_arquivo);
     return 0;
 }   
 
