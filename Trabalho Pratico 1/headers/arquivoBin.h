@@ -48,6 +48,19 @@ void fecharArquivo_bin(FILE * arquivo_bin);
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN);
 
 /**
+ * Le registro de dados do arquivo binario sequencialmente.
+ * Para usar tem que dar fseek() para o byteoffset da primeira 
+ * pagina de disco com os dados. A partir daí essa funcao retorna 
+ * todos os dados encontrados.
+ * 
+ * @param nome_arquivo Nome do arquivo.
+ * 
+ * @return Retorna um ponteiro para o próximo dado do arquivo. 
+ * Retorna Null quando acabar os dados ou o arquivo de dados.
+ */ 
+RegistroDados * lerRegistroDadosArquivoBin_Sequencial(FILE * arquivoBin);
+
+/**
  * Le registro de cabecalho do arquivo binario
  * 
  * @param nome_arquivo Nome do arquivo.
@@ -86,6 +99,5 @@ void escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * 
  * @param RRN Numero Relativo do Registro.
  */
 void removeRegistroDadosArquivoBin_RRN(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, int RRN);
-
 
 #endif

@@ -1,5 +1,6 @@
 #include "../headers/registroCabecalho.h"
 
+//Inicia as variaveis do RegistroCabecalho com os valores padrao.
 void iniciaRegistrosCabecalho(RegistroCabecalho *registros)
 {
     *(registros->status) = '0';
@@ -10,6 +11,7 @@ void iniciaRegistrosCabecalho(RegistroCabecalho *registros)
     *(registros->qttCompacta) = 0;
 }
 
+//Aloca memoria para todos os ponteiros do RegistroCabecalho.
 void alocaRegistrosCabecalho(RegistroCabecalho **registros)
 {
     (*registros) = malloc(sizeof(RegistroCabecalho));
@@ -22,6 +24,7 @@ void alocaRegistrosCabecalho(RegistroCabecalho **registros)
     iniciaRegistrosCabecalho((*registros));
 }
 
+//Desaloca memoria de todos os ponteiros do RegistroCabecalho.
 void desalocaRegistrosCabecalho(RegistroCabecalho *registros)
 {
     free(registros->status);
@@ -33,6 +36,7 @@ void desalocaRegistrosCabecalho(RegistroCabecalho *registros)
     free(registros);
 }
 
+//Exibe na tela um RegistroCabecalho.
 void imprimeRegistroCabecalhoTela(RegistroCabecalho *registro)
 {
 

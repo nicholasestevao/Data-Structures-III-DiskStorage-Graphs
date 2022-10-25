@@ -1,5 +1,6 @@
 #include "../headers/registroDados.h"
 
+//Aloca memoria para todos os ponteiros do RegistroDados.
 void alocaRegistrosDados(RegistroDados **registros, int numReg)
 {
     *registros = malloc(sizeof(RegistroDados) * numReg);
@@ -20,6 +21,7 @@ void alocaRegistrosDados(RegistroDados **registros, int numReg)
     }
 }
 
+//Desaloca memoria para todos os ponteiros do RegistroDados.
 void desalocaRegistrosDados(RegistroDados **registros, int numReg)
 {
     for (int i = 0; i < numReg; i++)
@@ -37,6 +39,7 @@ void desalocaRegistrosDados(RegistroDados **registros, int numReg)
     free(*registros);
 }
 
+//Exibe na tela um RegistroDados.
 void imprimeRegistroDadosTela(RegistroDados *registro)
 {
     if (*(registro->idConecta) != -1)
@@ -72,6 +75,7 @@ void imprimeRegistroDadosTela(RegistroDados *registro)
     }
 }
 
+//Recebe um RegistroDados do teclado e coloca na RAM.
 void lerRegistroDadosTeclado(RegistroDados *registro)
 {
     char *id_conecta = malloc(sizeof(char) * 10);
