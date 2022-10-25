@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "mensagens.h"
 
+
 /**
  * Abre arquivo .csv para leitura. 
  * 
@@ -19,4 +20,5 @@ FILE * abrirLeitura_csv(char * nome_arquivo);
  * @return Retorna um ponteiro de arquivo em modo de escrita.
  */
 FILE * abrirEscrita_csv(char * nome_arquivo);
+
 #endif

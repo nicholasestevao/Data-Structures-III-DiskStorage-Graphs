@@ -1,6 +1,6 @@
 all: trab 
 
 trab:
-	gcc -o programaTrab ./src/*.c
+	gcc -g3 ./src/*.c -o programaTrab
 run:
 	./programaTrab

@@ -30,7 +30,7 @@ typedef struct {
     int* velocidade;
     char* nomePoPs;
     char* nomePais;
-} RegistroDados;
+}RegistroDados;
 
 /**
  * Aloca memoria para todos os ponteiros do RegistroDados.
