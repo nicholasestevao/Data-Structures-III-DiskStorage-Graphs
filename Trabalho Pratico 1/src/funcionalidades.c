@@ -293,7 +293,7 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
     //Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
-        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if (dados != NULL)
         {
             //Se dado nao foi removido e o campo possui o dado buscado.
@@ -402,7 +402,8 @@ void funcionalidade2Select(char *nome_arquivo)
     //Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
-        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
+
         if (dados != NULL)
         {
             imprimeRegistroDadosTela(dados);
@@ -416,6 +417,7 @@ void funcionalidade2Select(char *nome_arquivo)
         printf("\n\n");
     }
     printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
+
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
 }
@@ -544,7 +546,7 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 
     for (int i = 0; i < *(cabecalhoAntigo->proxRRN); i++)
     {
-        RegistroDados *dados = lerRegistroDadosArquivoBin_Sequencial(arq_original);
+        RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
         if (dados != NULL)
         {
             //Registro nao removido

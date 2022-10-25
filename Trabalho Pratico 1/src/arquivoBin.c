@@ -111,49 +111,6 @@ RegistroDados *lerRegistroDadosArquivoBin_RRN(FILE *arquivoBin, int RRN)
     return registro;
 }
 
-RegistroDados * lerRegistroDadosArquivoBin_Sequencial(FILE * arquivoBin) {
-    //Le o status de remocao do registro
-    RegistroDados * registro;
-    alocaRegistrosDados(&registro, 1);
-    size_t ret_code = fread(registro->removido, sizeof(char), 1, arquivoBin);
-
-    //Se ret_code != 1, entao é EOF.
-    //Se *(registro->removido) != '0', entao dado foi removido.
-    //Se *(registro->removido) == '$', chegou no lixo da pagina de disco.
-    if(ret_code == 1 && *(registro->removido) == '0' && *(registro->removido) != '$'){  
-        fread(registro->encadeamento, sizeof(int), 1, arquivoBin);
-        fread(registro->idConecta, sizeof(int), 1, arquivoBin);
-        fread(registro->siglaPais, sizeof(char), 2, arquivoBin);
-        (registro->siglaPais)[2] = '\0';
-        fread(registro->idPoPsConectado, sizeof(int), 1, arquivoBin);
-        fread(registro->unidadeMedida, sizeof(char), 1, arquivoBin);
-        fread(registro->velocidade, sizeof(int), 1, arquivoBin);
-        
-        int indice = 0;
-        char *c = malloc(sizeof(char));
-        fread(c, sizeof(char), 1, arquivoBin);
-        while(*c != '|'){
-            (registro->nomePoPs)[indice] = *c;
-            fread(c, sizeof(char), 1, arquivoBin);
-            indice++;
-        }
-        registro->nomePoPs[indice] = '\0';
-        indice = 0;
-        fread(c, sizeof(char), 1, arquivoBin);
-        while(*c != '|'){
-            (registro->nomePais)[indice] = *c;
-            fread(c, sizeof(char), 1, arquivoBin);
-            indice++;
-        }
-        registro->nomePais[indice] = '\0';
-        free(c);
-    }else{ //registro invalido
-        desalocaRegistrosDados(&registro, 1);
-        return NULL;
-    }
-    return registro;
-}
-
 //Le registro de cabecalho do arquivo binario
 RegistroCabecalho *lerRegistroCabecalhoArquivoBin(FILE *arquivoBin)
 {
