@@ -42,8 +42,7 @@ int comparaDado(RegistroDados * dados, char *nome_campo, char *valor_campo) {
             return 1;
         }
     } else if(!strcmp(nome_campo, "idPoPsConectado")) {
-        int valor = atoi(valor_campo);
-        if(valor == *(dados->idPoPsConectado)) {
+        if(atoi(valor_campo) == *(dados->idPoPsConectado)) {
             return 1;
         }
     } else if(!strcmp(nome_campo, "unidadeMedida")) {
@@ -242,7 +241,7 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin) {
         dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
         if(dados !=  NULL) {
             // Se dado nao foi removido e o campo possui o dado buscado.
-            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
+            if(comparaDado(dados, nome_campo, valor_campo)) {
                 flag_encontrados = 1;
                 imprimeRegistroDadosTela(dados);
                 printf("\n");
@@ -270,10 +269,10 @@ void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
     
     //Verifica todos os RRNs do arquivo
     for(int i = 0; i<*(cabecalho->proxRRN); i++){
-        dados = lerRegistroDadosArquivoBin_Sequencial(arquivoBin);
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if(dados !=  NULL) {
             //Se dado nao foi removido e o campo possui o dado buscado.
-            if((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo)) {
+            if(comparaDado(dados, nome_campo, valor_campo)) {
                 removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
             }
             desalocaRegistrosDados(&dados,1);
@@ -372,8 +371,9 @@ void funcionalidade3SelectWhere(char* nome_arquivo) {
         
         //Se nao encontrar nenhum arquivo quebra linha.
         if(buscaCampoImprime(nome_campo, valor_campo, arquivoBin) == 0) {
-            printf("\n");
+            printf("\n\n");
         }
+        printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
     }
 
     free(nome_campo);

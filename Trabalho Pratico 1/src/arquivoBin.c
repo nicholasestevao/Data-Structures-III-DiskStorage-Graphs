@@ -74,6 +74,7 @@ RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN){
         (registro->siglaPais)[2] = '\0';
         fread(registro->idPoPsConectado, sizeof(int), 1, arquivoBin);
         fread(registro->unidadeMedida, sizeof(char), 1, arquivoBin);
+        (registro->siglaPais)[1] = '\0';
         fread(registro->velocidade, sizeof(int), 1, arquivoBin);
         
         int indice = 0;
@@ -117,6 +118,7 @@ RegistroDados * lerRegistroDadosArquivoBin_Sequencial(FILE * arquivoBin) {
         (registro->siglaPais)[2] = '\0';
         fread(registro->idPoPsConectado, sizeof(int), 1, arquivoBin);
         fread(registro->unidadeMedida, sizeof(char), 1, arquivoBin);
+        (registro->siglaPais)[1] = '\0';
         fread(registro->velocidade, sizeof(int), 1, arquivoBin);
         
         int indice = 0;
