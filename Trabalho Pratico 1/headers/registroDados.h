@@ -23,14 +23,4 @@ void desalocaRegistrosDados(RegistroDados ** registros, int numReg);
 void imprimeRegistroDadosTela(RegistroDados * registro);
 void lerRegistroDadosTeclado(RegistroDados *registro);
 
-typedef struct elemento {
-    RegistroDados *dado;
-    struct elemento *prox;
-} elem;
-
-void criaLista(elem *Lista, RegistroDados *dado);
-void destroiLista(elem *Lista);
-void imprimeLista(elem* Lista);
-void insereLista(elem* Lista, RegistroDados *dado);
-
 #endif

@@ -37,6 +37,8 @@ FILE * abrirEscrita_bin(char * nome_arquivo);
  */
 void fecharArquivo_bin(FILE * arquivo_bin);
 
+int leCopiaRegistroArquivo_RRN(RegistroDados *dados, FILE *arquivoBin, int RRN);
+
 /**
  * Le registro de dados do arquivo binario por RRN
  * 
@@ -46,12 +48,14 @@ void fecharArquivo_bin(FILE * arquivo_bin);
  * @return Retorna um ponteiro para o dado do RRN.
  */ 
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN);
+
 /**
  * Le registro de cabecalho do arquivo binario
  * 
  * @param nome_arquivo Nome do arquivo.
  */
 RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin);
+
 /**
  * Insere registro de dados no arquivo binario
  * Pode inserir registro ja como removidos (caso eles 
@@ -84,5 +88,6 @@ void escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * 
  * @param RRN Numero Relativo do Registro.
  */
 void removeRegistroDadosArquivoBin_RRN(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, int RRN);
+
 
 #endif

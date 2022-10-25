@@ -39,7 +39,7 @@ int comparaDado(RegistroDados *dados, char *nome_campo, char *valor_campo)
     tiraAspasDuplas(valor_campo);
 
     if (!strcmp(nome_campo, "idConecta"))
-    {
+    {   
         if (atoi(valor_campo) == *(dados->idConecta))
         {
             return 1;
@@ -54,14 +54,13 @@ int comparaDado(RegistroDados *dados, char *nome_campo, char *valor_campo)
     }
     else if (!strcmp(nome_campo, "idPoPsConectado"))
     {
-        int valor = atoi(valor_campo);
-        if (valor == *(dados->idPoPsConectado))
+        if (atoi(valor_campo) == *(dados->idPoPsConectado))
         {
             return 1;
         }
     }
     else if (!strcmp(nome_campo, "unidadeMedida"))
-    {
+    {   
         if (!strcasecmp(valor_campo, dados->unidadeMedida))
         {
             return 1;
@@ -282,11 +281,14 @@ void pegaDados(char *buf, RegistroDados *dados)
  * dado com o valor do campo procurado e 1 quando encontrou
  * pelo menos 1 dado com o valor do campo procurado.
  */
-int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin)
+int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
 {
+    if(cabecalho == NULL) {
+        fseek(arquivoBin, 960, SEEK_SET);
+    }
     int flag_encontrados = 0;
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
     RegistroDados *dados;
+
     // Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
@@ -294,7 +296,7 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin)
         if (dados != NULL)
         {
             // Se dado nao foi removido e o campo possui o dado buscado.
-            if ((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo))
+            if (comparaDado(dados, nome_campo, valor_campo))
             {
                 flag_encontrados = 1;
                 imprimeRegistroDadosTela(dados);
@@ -303,7 +305,6 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, FILE *arquivoBin)
             desalocaRegistrosDados(&dados, 1);
         }
     }
-    desalocaRegistrosCabecalho(cabecalho);
     return flag_encontrados;
 }
 
@@ -329,8 +330,8 @@ void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
         if (dados != NULL)
         {
             // Se dado nao foi removido e o campo possui o dado buscado.
-            if ((atoi(dados->removido) == 0) && comparaDado(dados, nome_campo, valor_campo))
-            {
+            if (comparaDado(dados, nome_campo, valor_campo))
+            {   
                 removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
             }
             desalocaRegistrosDados(&dados, 1);
@@ -427,6 +428,8 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
         msg_erro_Arq_Inconsistente();
         return;
     }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
     // Faz n buscas
@@ -442,12 +445,15 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
         printf("Busca %d\n", i + 1);
 
         // Se nao encontrar nenhum arquivo quebra linha.
-        if (buscaCampoImprime(nome_campo, valor_campo, arquivoBin) == 0)
+        if (buscaCampoImprime(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
         {
-            printf("\n");
+            msg_erro_Reg_Inexistente();
+            printf("\n\n");
         }
+        printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
     }
 
+    desalocaRegistrosCabecalho(cabecalho);
     free(nome_campo);
     free(valor_campo);
     fecharArquivo_bin(arquivoBin);
