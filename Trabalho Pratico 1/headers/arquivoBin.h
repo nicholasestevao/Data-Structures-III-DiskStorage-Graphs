@@ -37,8 +37,6 @@ FILE * abrirEscrita_bin(char * nome_arquivo);
  */
 void fecharArquivo_bin(FILE * arquivo_bin);
 
-int leCopiaRegistroArquivo_RRN(RegistroDados *dados, FILE *arquivoBin, int RRN);
-
 /**
  * Le registro de dados do arquivo binario por RRN
  * 

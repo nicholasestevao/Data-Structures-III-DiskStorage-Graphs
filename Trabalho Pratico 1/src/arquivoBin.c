@@ -55,50 +55,6 @@ void fecharArquivo_bin(FILE *arquivo_bin)
     free(status);
 }
 
-int leCopiaRegistroArquivo_RRN(RegistroDados *dados, FILE *arquivoBin, int RRN) { 
-    int byteoffset = 960 + 64 * RRN;
-    fseek(arquivoBin, byteoffset, SEEK_SET);
-    fread(dados->removido, sizeof(char), 1, arquivoBin);
-
-    if (*(dados->removido) == '0')
-    {
-        fread(dados->encadeamento, sizeof(int), 1, arquivoBin);
-        fread(dados->idConecta, sizeof(int), 1, arquivoBin);
-        fread(dados->siglaPais, sizeof(char), 2, arquivoBin);
-        (dados->siglaPais)[2] = '\0';
-        fread(dados->idPoPsConectado, sizeof(int), 1, arquivoBin);
-        fread(dados->unidadeMedida, sizeof(char), 1, arquivoBin);
-        (dados->unidadeMedida)[1] = '\0';
-        fread(dados->velocidade, sizeof(int), 1, arquivoBin);
-
-        int indice = 0;
-        char *c = malloc(sizeof(char));
-        fread(c, sizeof(char), 1, arquivoBin);
-        while (*c != '|')
-        {
-            (dados->nomePoPs)[indice] = *c;
-            fread(c, sizeof(char), 1, arquivoBin);
-            indice++;
-        }
-        dados->nomePoPs[indice] = '\0';
-        indice = 0;
-        fread(c, sizeof(char), 1, arquivoBin);
-        while (*c != '|')
-        {
-            (dados->nomePais)[indice] = *c;
-            fread(c, sizeof(char), 1, arquivoBin);
-            indice++;
-        }
-        dados->nomePais[indice] = '\0';
-        free(c);
-    }
-    else
-    {
-        // msg_erro_RRN_Invalido();
-        return 0;
-    }
-    return 1;
-}
 
 // Le registro de dados do arquivo binario por RRN
 RegistroDados *lerRegistroDadosArquivoBin_RRN(FILE *arquivoBin, int RRN)
