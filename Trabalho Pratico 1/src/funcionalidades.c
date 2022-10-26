@@ -282,11 +282,16 @@ void pegaDados(char *buf, RegistroDados *dados)
  * pelo menos 1 dado com o valor do campo procurado.
  */
 int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
-{
+{   
+    //Inidcador de alocacao do cabecalho.
+    int flag_cabecalho = 0;
     if(cabecalho == NULL) {
-        //Vai para o primeiro registro
-        fseek(arquivoBin, 960, SEEK_SET);
+        //Se cabecalho for nulo aloca para poder usar na função.
+        cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+        //Indica que o cabecalho foi alocado.
+        flag_cabecalho = 1;
     }
+
     int flag_encontrados = 0;
     RegistroDados *dados;
 
@@ -306,6 +311,12 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
             desalocaRegistrosDados(&dados, 1);
         }
     }
+
+    if(flag_cabecalho == 1) {
+        desalocaRegistrosCabecalho(cabecalho);
+        cabecalho = NULL;
+    }
+
     return flag_encontrados;
 }
 
@@ -319,9 +330,13 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
  */
 void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
 {
+    //Inidcador de alocacao do cabecalho.
+    int flag_cabecalho = 0;
     if(cabecalho == NULL) {
-        //Vai para o primeiro registro
-        fseek(arquivoBin, 960, SEEK_SET);
+        //Se cabecalho for nulo aloca para poder usar na função.
+        cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+        //Indica que o cabecalho foi alocado.
+        flag_cabecalho = 1;
     }
     
     RegistroDados *dados;
@@ -339,6 +354,12 @@ void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
             }
             desalocaRegistrosDados(&dados, 1);
         }
+    }
+
+    if(flag_cabecalho == 1) {
+        escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
+        desalocaRegistrosCabecalho(cabecalho);
+        cabecalho = NULL;
     }
 }
 
