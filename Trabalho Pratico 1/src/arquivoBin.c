@@ -57,7 +57,6 @@ void fecharArquivo_bin(FILE *arquivo_bin)
     free(status);
 }
 
-
 // Le registro de dados do arquivo binario por RRN
 RegistroDados *lerRegistroDadosArquivoBin_RRN(FILE *arquivoBin, int RRN)
 {
