@@ -39,8 +39,6 @@ int main(int argC, char *argV[]){
     //insere no binario
     //le da tela
     if(opcao == 5){
-        int nro_reg;
-        scanf("%d", &nro_reg);
         funcionalidade5Insert(nome_arquivo, nro_reg);
     }
 

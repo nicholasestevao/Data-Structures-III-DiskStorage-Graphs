@@ -529,8 +529,12 @@ void funcionalidade4Remove(char *nome_arquivo)
     binarioNaTela(nome_arquivo);
 }
 
-void funcionalidade5Insert(char *nome_arquivo, int nro_reg)
+void funcionalidade5Insert(char *nome_arquivo)
 {
+    //Recebe quantidade de registros a serem inseridos
+    int nro_reg;
+    scanf("%d", &nro_reg);
+
     RegistroDados *registro;
     alocaRegistrosDados(&registro, 1);
 

@@ -20,7 +20,7 @@ void funcionalidade1CreateTable(char* nome_arquivo_csv);
  * Exibe na tela todos os registros de campos não nulos dos 
  * resgitros não removidos de um arquivo binario.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo Nome do arquivo .bin.
  */
 void funcionalidade2Select(char* nome_arquivo);
 
@@ -29,7 +29,7 @@ void funcionalidade2Select(char* nome_arquivo);
  * Exibe na tela todos os registros que possuem um valor, 
  * de um campo específico, igual ao valor do campo buscado.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo Nome do arquivo binario.
  */
 void funcionalidade3SelectWhere(char* nome_arquivo);
 
@@ -38,7 +38,7 @@ void funcionalidade3SelectWhere(char* nome_arquivo);
  * Remove todos registros logicamente que possuem o valor, 
  * de um campo específico, igual ao valor do campo buscado.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo Nome do arquivo .bin.
  */
 void funcionalidade4Remove(char* nome_arquivo);
 
@@ -46,15 +46,15 @@ void funcionalidade4Remove(char* nome_arquivo);
  * Insert (Funcionalidade_5).
  * Insere registro, com valores obitidos do teclado, no arquivo binario.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo Nome do arquivo .bin.
  */
-void funcionalidade5Insert(char* nome_arquivo, int nro_reg);
+void funcionalidade5Insert(char* nome_arquivo);
 
 /**
  * Compactacao (Funcionalidade_6).
  * Retira todos os registros logicamente removidos do arquivo binario.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo Nome do arquivo .bin.
  */
 void funcionalidade6Compactacao(char* nome_arquivo);
 
