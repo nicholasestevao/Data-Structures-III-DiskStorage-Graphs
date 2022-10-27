@@ -64,7 +64,7 @@ void imprimeRegistroDadosTela(RegistroDados *registro)
     }
     if (*(registro->velocidade) != -1)
     {
-        if ((registro->unidadeMedida) == "$")
+        if ((registro->unidadeMedida)[0] == '$')
         {
             printf("Velocidade de transmissao: %d bps\n", *(registro->velocidade));
         }

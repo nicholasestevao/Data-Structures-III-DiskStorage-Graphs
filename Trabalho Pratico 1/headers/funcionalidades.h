@@ -11,9 +11,9 @@
  * Create Table (Funcionalidade_1).
  * Cria o arquivo binario a partir de uma tabela csv.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param nome_arquivo_csv Nome do arquivo .csv.
  */
-void funcionalidade1CreateTable(char* nome_arquivo_bin, char* nome_arquivo_csv);
+void funcionalidade1CreateTable(char* nome_arquivo_csv);
 
 /**
  * Select (Funcionalidade_2).

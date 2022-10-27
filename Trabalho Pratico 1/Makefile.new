@@ -1,33 +1,45 @@
 CC := gcc
 SRC := ./src
 BIN := ./bin
-DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration -fsanitize=address,undefined
+DEBUG_FLAGS := -g3 -pedantic -Werror=implicit-function-declaration
 FLAGS       := -Wall -Werror #$(DEBUG_FLAGS)
-
-
 
 all : trab
 
 run : 
 	./trab
-	
+
+trab : $(BIN)/main.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/mensagens.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o
+	$(CC) $(FLAGS) -o trab $(BIN)/main.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/mensagens.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o
+
+rm : $(BIN)/*.o
+	rm $(BIN)/*.o *.exe
+
+
+##__$(BIN)/*.o_Files__
+
 $(BIN)/main.o: $(SRC)/main.c
 	$(CC) $(FLAGS) -o $(BIN)/main.o -c $(SRC)/main.c
 
-$(BIN)/mensagens.o: $(SRC)/mensagens.c
-	$(CC) $(FLAGS) -o $(BIN)/mensagens.o -c $(SRC)/mensagens.c
+$(BIN)/arquivoBin.o: $(SRC)/arquivoBin.c
+	$(CC) $(FLAGS) -o $(BIN)/arquivoBin.o -c $(SRC)/arquivoBin.c
 
-$(BIN)/arquivos.o: $(SRC)/arquivos.c
-	$(CC) $(FLAGS) -o $(BIN)/arquivos.o -c $(SRC)/arquivos.c
+$(BIN)/arquivoCsv.o: $(SRC)/arquivoCsv.c
+	$(CC) $(FLAGS) -o $(BIN)/arquivoCsv.o -c $(SRC)/arquivoCsv.c
 
-$(BIN)/registros.o: $(SRC)/registros.c
-	$(CC) $(FLAGS) -o $(BIN)/registros.o -c $(SRC)/registros.c
+$(BIN)/funcionalidades.o: $(SRC)/funcionalidades.c
+	$(CC) $(FLAGS) -o $(BIN)/funcionalidades.o -c $(SRC)/funcionalidades.c
 
 $(BIN)/funcoesFornecidas.o: $(SRC)/funcoesFornecidas.c
 	$(CC) $(FLAGS) -o $(BIN)/funcoesFornecidas.o -c $(SRC)/funcoesFornecidas.c	
 
-trab : $(BIN)/main.o $(BIN)/arquivos.o $(BIN)/mensagens.o $(BIN)/registros.o $(BIN)/funcoesFornecidas.o
-	$(CC) $(FLAGS) -o trab $(BIN)/main.o $(BIN)/arquivos.o $(BIN)/mensagens.o $(BIN)/registros.o $(BIN)/funcoesFornecidas.o
+$(BIN)/mensagens.o: $(SRC)/mensagens.c
+	$(CC) $(FLAGS) -o $(BIN)/mensagens.o -c $(SRC)/mensagens.c
 
-rm: $(BIN)/*.o
-	rm $(BIN)/*.o *.exe
+$(BIN)/registroCabecalho.o: $(SRC)/registroCabecalho.c
+	$(CC) $(FLAGS) -o $(BIN)/registroCabecalho.o -c $(SRC)/registroCabecalho.c
+
+$(BIN)/registroDados.o: $(SRC)/registroDados.c
+	$(CC) $(FLAGS) -o $(BIN)/registroDados.o -c $(SRC)/registroDados.c
+
+##--------------------

@@ -14,10 +14,7 @@ int main(int argC, char *argV[]){
     //Create table (1) - Isaac e Nicholas
     //le do csv
     if(opcao == 1) {
-        char* nome_arquivo_bin = malloc(sizeof(char)*20);
-        scanf("%s", nome_arquivo_bin);
-        funcionalidade1CreateTable(nome_arquivo_bin, nome_arquivo);
-        free(nome_arquivo_bin);
+        funcionalidade1CreateTable(nome_arquivo);
     }
     
     //Select (2) - Nicholas

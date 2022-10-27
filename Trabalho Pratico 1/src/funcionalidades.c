@@ -17,9 +17,9 @@ void tiraAspasDuplas(char *str)
             str[i] = str[i + 1];
             i++;
         }
-        for (i; i < (strlen(str)); i++)
+        for (int j = i; j < (strlen(str)); j++)
         {
-            str[i] = '\0';
+            str[j] = '\0';
         }
     }
 }
@@ -234,7 +234,7 @@ void pegaDados(char *buf, RegistroDados *dados)
     cortaDados(buf, dado);
 
     //Se o dado for nulo ou marcado removido
-    if ((dado != NULL) && (dado[0] == '*'))
+    if ((dado[0] == '*'))
     {
         //Marca o dado como removido e retorna
         *(dados->removido) = '1';
@@ -363,8 +363,12 @@ void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
     }
 }
 
-void funcionalidade1CreateTable(char *nome_arquivo_bin, char *nome_arquivo_csv)
-{
+void funcionalidade1CreateTable(char *nome_arquivo_csv)
+{   
+    //Recebe nome do arquivo bin
+    char* nome_arquivo_bin = malloc(sizeof(char)*20);
+    scanf("%s", nome_arquivo_bin);
+
     FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
     if (arquivoCSV == NULL)
     { //Mensagem de erro ja eh exibida pela funcao abrirLeitura_csv()
@@ -401,12 +405,14 @@ void funcionalidade1CreateTable(char *nome_arquivo_bin, char *nome_arquivo_csv)
 
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
+
     desalocaRegistrosCabecalho(cabecalho);
     desalocaRegistrosDados(&dados, 1);
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
     free(buf);
     binarioNaTela(nome_arquivo_bin);
+    free(nome_arquivo_bin);
 }
 
 void funcionalidade2Select(char *nome_arquivo)
