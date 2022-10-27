@@ -38,8 +38,8 @@ int main(int argC, char *argV[]){
     //Insercao (5) - Nicholas
     //insere no binario
     //le da tela
-    if(opcao == 5){
-        funcionalidade5Insert(nome_arquivo, nro_reg);
+    if(opcao == 5) {
+        funcionalidade5Insert(nome_arquivo);
     }
 
     //Compactacao (6) - Nicholas
