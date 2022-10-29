@@ -19,5 +19,4 @@ void alocaCabecalhoArvB(cabecalhoArvB **registro);
 void desalocaCabecalhoArvB(cabecalhoArvB *registro);
 
 
-//void imprimeCabecalhoArvBTela(cabecalhoArvB * registro);
 #endif

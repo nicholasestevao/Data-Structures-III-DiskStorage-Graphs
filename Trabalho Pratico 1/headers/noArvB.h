@@ -30,8 +30,4 @@ void alocaNoArvB(noArvB ** registros, int numReg);
 
 void desalocaNoArvB(noArvB ** registros, int numReg);
 
-//void imprimeNoArvBTela(noArvB * registro);
-
-void lerRegistroDadosTeclado(RegistroDados *registro);
-
 #endif
