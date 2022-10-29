@@ -30,4 +30,5 @@ void alocaNoArvB(noArvB ** registros, int numReg);
 
 void desalocaNoArvB(noArvB ** registros, int numReg);
 
+
 #endif
