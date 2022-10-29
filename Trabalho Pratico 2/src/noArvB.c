@@ -1,5 +1,6 @@
 #include "../headers/noArvB.h"
 
+//Aloca memoria para todos os ponteiros do RegistroDados.
 void alocaNoArvB(noArvB ** registros, int numReg){
     *registros = malloc(sizeof(noArvB) * numReg);
     for (int i = 0; i < numReg; i++)
@@ -43,6 +44,7 @@ void alocaNoArvB(noArvB ** registros, int numReg){
     }
 }
 
+//Desaloca memoria de todos os ponteiros do RegistroDados.
 void desalocaNoArvB(noArvB ** registros, int numReg){
     for (int i = 0; i < numReg; i++)
     {
@@ -65,4 +67,9 @@ void desalocaNoArvB(noArvB ** registros, int numReg){
         free((*registros)[i].P5);
     }
     free(*registros);
+}
+
+//Insere uma chave de forma ordenada em um no da arvore-B.
+void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn) {
+
 }

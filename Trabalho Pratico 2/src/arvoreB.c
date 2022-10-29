@@ -15,7 +15,32 @@ cabecalhoArvB* lecabecalhoArvB(FILE *arquivoArvB) {
 }
 
 noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN) {
+    noArvB *no;
+    alocaNoArvB(&no, 1);
 
+    long byteofset = (RRN * TAM_PAGINA_DISCO_ARV_B) + TAM_PAGINA_DISCO_ARV_B;
+
+    fseek(arquivoArvB, byteofset, SEEK_SET);
+    
+    fread(no->folha, sizeof(char), 1, arquivoArvB);
+    fread(no->nroChavesNo, sizeof(int), 1, arquivoArvB);
+    fread(no->alturaNo, sizeof(int), 1, arquivoArvB);
+    fread(no->RRNdoNo, sizeof(int), 1, arquivoArvB);
+    fread(no->P1, sizeof(int), 1, arquivoArvB);
+    fread(no->C1, sizeof(int), 1, arquivoArvB);
+    fread(no->PR1, sizeof(int), 1, arquivoArvB);
+    fread(no->P2, sizeof(int), 1, arquivoArvB);
+    fread(no->C2, sizeof(int), 1, arquivoArvB);
+    fread(no->PR2, sizeof(int), 1, arquivoArvB);
+    fread(no->P3, sizeof(int), 1, arquivoArvB);
+    fread(no->C3, sizeof(int), 1, arquivoArvB);
+    fread(no->PR3, sizeof(int), 1, arquivoArvB);
+    fread(no->P4, sizeof(int), 1, arquivoArvB);
+    fread(no->C4, sizeof(int), 1, arquivoArvB);
+    fread(no->PR4, sizeof(int), 1, arquivoArvB);
+    fread(no->P5, sizeof(int), 1, arquivoArvB);
+
+    return no;
 }
 
 int buscaArvoreB(FILE *arquivoArvB) {
