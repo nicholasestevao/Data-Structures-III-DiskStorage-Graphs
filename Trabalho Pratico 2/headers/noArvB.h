@@ -65,7 +65,6 @@ void alocaNoArvB(noArvB ** registros, int numReg);
  */
 void desalocaNoArvB(noArvB ** registros, int numReg);
 
-
 /**
  * Insere uma chave de forma ordenada em um no da arvore-B.
  * 
