@@ -82,11 +82,11 @@ cabecalhoArvB* lecabecalhoArvB(FILE *arquivoArvB);
  */ 
 noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN);
 
-int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArv * resultado);
+int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
 
 void escreveNoArqIndice(FILE *arqIndice, noArvB * no, int rrn);
 
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
-void splitNosArvB(noArvB * no1, noArvB * no2);
+void splitNosArvB(int chave, int filho_chave, noArvB ** pagina, int* chave_promocao, int * filho_chave_promocao, noArvB ** novaPagina);
 #endif

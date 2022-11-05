@@ -1,3 +1,7 @@
+#define PROMOCAO 0
+#define SEM_PROMOCAO 1
+#define ERRO 2
+
 #include "../headers/arvoreB.h"
 
 cabecalhoArvB* lecabecalhoArvB(FILE *arquivoArvB) {
@@ -44,6 +48,51 @@ noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN) {
 }
 
 int buscaArvoreB(FILE *arquivoArvB) {
+
+}
+
+int buscaChaveNo(noArvB * no, int chave, int* rrnBusca){
+    printf("implementar");
+}
+
+
+int insercaoRecursiva(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho, int RRN_atual, int* chave_promocao, int* filho_chave_promocao){
+    noArvB * pagina;
+    int resBusca = -1;
+    int rrnBusca; // rrn de onde a chave buscada deveria estar
+
+    if(RRN_atual == -1){
+        *chave_promocao = Cn;
+        *filho_chave_promocao = PRn; //fiz mudancaaa
+        return PROMOCAO;
+    }else{
+        pagina = leNoArvB_RRN(arqIndice, RRN_atual);
+        resBusca = buscaChaveNo(pagina, Cn, &rrnBusca);
+    }
+
+    if(resBusca != -1){
+        printf("Chave duplicada");
+        return ERRO;
+    }
+    int chave_promocao_below = -1;
+    int filho_chave_promocao_below = -1;
+
+    int retorno = insercaoRecursiva(arqIndice, Cn, PRn, raiz, cabecalho, rrnBusca, &chave_promocao_below, &filho_chave_promocao_below);
+
+    if(retorno == SEM_PROMOCAO || retorno == ERRO){
+        return retorno;
+    }else if(pagina->nroChavesNo <4){ // se tem espaço no nó
+        insereChaveOrdenadaNoArvB(pagina, chave_promocao_below, filho_chave_promocao_below);
+        return SEM_PROMOCAO;
+    }else{
+        noArvB * nova_pagina;
+        alocaNoArvB(nova_pagina, 1);
+        splitNosArvB(chave_promocao_below, filho_chave_promocao_below, pagina, chave_promocao, filho_chave_promocao, nova_pagina);
+        escreveNoArqIndice(arqIndice, pagina, RRN_atual);
+        escreveNoArqIndice(arqIndice, nova_pagina, filho_chave_promocao);
+        return PROMOCAO;
+    }
+
 
 }
 
