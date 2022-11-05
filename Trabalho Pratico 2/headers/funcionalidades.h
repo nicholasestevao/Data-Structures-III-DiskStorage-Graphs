@@ -5,6 +5,7 @@
 #include "mensagens.h"
 #include "arquivoBin.h"
 #include "arquivoCsv.h"
+#include "arvoreB.h"
 #include "funcoesFornecidas.h"
 
 /**
@@ -57,5 +58,7 @@ void funcionalidade5Insert(char* nome_arquivo);
  * @param nome_arquivo Nome do arquivo .bin.
  */
 void funcionalidade6Compactacao(char* nome_arquivo);
+
+void funcionalidade7CreateIndex(char * nome_arquivo);
 
 #endif
