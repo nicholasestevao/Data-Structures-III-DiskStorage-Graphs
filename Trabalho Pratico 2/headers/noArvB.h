@@ -74,4 +74,6 @@ void desalocaNoArvB(noArvB ** registros, int numReg);
  */
 void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn);
 
+void imprimeNoTela(noArvB * no);
+
 #endif

@@ -70,6 +70,68 @@ void desalocaNoArvB(noArvB ** registros, int numReg){
 }
 
 //Insere uma chave de forma ordenada em um no da arvore-B.
-void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn) {
+void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn){
+    printf("inserindo ordenado na pagina\n");
+    *(no->folha) = 0;
+    *(no->nroChavesNo) +=1;
+    if(Cn <= *(no->C1) || *(no->C1)==-1){
+        printf("menor chave\n");
+        if(Cn == *(no->C1)){
+            return; //encontrada
+        }
+        *(no->P5) = *(no->P4);
+        *(no->P4) = *(no->P3);
+        *(no->P3) = *(no->P2);
+        *(no->P2) = *(no->P1);
+        *(no->P1) = -1;
+        *(no->C4) = *(no->C3);
+        *(no->C3) = *(no->C2);
+        *(no->C2) = *(no->C1);
+        *(no->C1) = Cn;
+        *(no->PR4) = *(no->PR3);
+        *(no->PR3) = *(no->PR2);
+        *(no->PR2) = *(no->PR1);
+        *(no->PR1) = PRn;
+        imprimeNoTela(no);
+    }else if(Cn <= *(no->C2) || *(no->C2)==-1){
+        if(Cn == *(no->C2)){
+            return; //encontrada
+        }
+        *(no->P5) = *(no->P4);
+        *(no->P4) = *(no->P3);
+        *(no->P3) = *(no->P2);
+        *(no->P2) = -1;
+        *(no->C4) = *(no->C3);
+        *(no->C3) = *(no->C2);
+        *(no->C2) = Cn;
+        *(no->PR4) = *(no->PR3);
+        *(no->PR3) = *(no->PR2);
+        *(no->PR2) =  PRn;
+    }else if(Cn <= *(no->C3) || *(no->C3)==-1){
+        if(Cn == *(no->C3)){
+            return; //encontrada
+        }
+        *(no->P5) = *(no->P4);
+        *(no->P4) = *(no->P3);
+        *(no->P3) = -1;
+        *(no->C4) = *(no->C3);
+        *(no->C3) =  Cn;
+        *(no->PR4) = *(no->PR3);
+        *(no->PR3) = PRn;
+    }else{
+        if(Cn == *(no->C4)){
+            return; //encontrada
+        }
+        *(no->P5) = *(no->P4);
+        *(no->P4) = -1;
+        *(no->C4) = Cn;
+        *(no->PR4) = PRn;
+    }
+}
 
+void imprimeNoTela(noArvB * no){
+    printf("%d %d %d\n", *(no->P1), *(no->C1), *(no->PR1));
+    printf("%d %d %d\n", *(no->P2), *(no->C2), *(no->PR2));
+    printf("%d %d %d\n", *(no->P3), *(no->C3), *(no->PR3));
+    printf("%d %d %d %d\n", *(no->P4), *(no->C4), *(no->PR4), *(no->P5));
 }
