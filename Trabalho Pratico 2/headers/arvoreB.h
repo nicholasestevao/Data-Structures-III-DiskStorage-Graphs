@@ -9,7 +9,7 @@
 #include "noArvB.h"
 
 /**
- * @def Tamanho da pagina de disco do arquivo da arvore-B.
+ * Tamanho da pagina de disco do arquivo da arvore-B.
  */
 #define TAM_PAGINA_DISCO_ARV_B 65
 
@@ -52,7 +52,7 @@ void fecharArquivo_ArvB(FILE * arquivo_ArvB);
  * @param cabecalho Ponteiro para cabecalho a ser 
  * escrito no aquivo da arvore-B.  
  */
-void escreverCabecalhoArquivoAvrB(FILE *arquivoArvB, cabecalhoArvB *cabecalho); 
+void escreverCabecalhoArquivoAvrB(FILE* arquivoArvB, cabecalhoArvB* cabecalho); 
 
 /**
  * Escreve noh no arquivo da arvore-B.
@@ -63,14 +63,14 @@ void escreverCabecalhoArquivoAvrB(FILE *arquivoArvB, cabecalhoArvB *cabecalho);
  * @param no Ponteiro para no a ser 
  * escrito no arquivo da arvore-B.
  */
-void escreveNoArvB(FILE *arquivoArvB,  cabecalhoArvB *cabecalho, noArvB *no);
+void escreveNoArvB(FILE* arquivoArvB,  cabecalhoArvB* cabecalho, noArvB* no);
 
 /**
  * Le registro de cabecalho do arquivo da arvore-B.
  * 
  * @param arquivoArvB Nome do arquivo.
  */
-cabecalhoArvB* lecabecalhoArvB(FILE *arquivoArvB);
+cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
 
 /**
  * Le registro de dados do arquivo da arvore-B por RRN
@@ -80,11 +80,11 @@ cabecalhoArvB* lecabecalhoArvB(FILE *arquivoArvB);
  * 
  * @return Retorna um ponteiro para o dado do RRN.
  */ 
-noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN);
+noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
 int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
 
-void escreveNoArqIndice(FILE *arqIndice, noArvB * no, int rrn);
+void escreveNoArqIndice(FILE* arqIndice, noArvB* no, int rrn);
 
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 

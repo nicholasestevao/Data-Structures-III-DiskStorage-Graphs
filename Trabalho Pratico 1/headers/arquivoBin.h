@@ -31,16 +31,16 @@ FILE * abrirEscrita_bin(char * nome_arquivo);
 /**
  * Fecha arquivo binario atualizando status
  * Necessario usar essa funcao apenas quando o arquivo foi aberto 
- * para escrita
+ * para escrita.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param arquivo_bin Ponteiro para arquivo binario.
  */
 void fecharArquivo_bin(FILE * arquivo_bin);
 
 /**
- * Le registro de dados do arquivo binario por RRN
+ * Le registro de dados do arquivo binario por RRN.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param arquivo_bin Ponteiro para arquivo binario.
  * @param RRN Numero Relativo do Registro.
  * 
  * @return Retorna um ponteiro para o dado do RRN.
@@ -48,18 +48,18 @@ void fecharArquivo_bin(FILE * arquivo_bin);
 RegistroDados * lerRegistroDadosArquivoBin_RRN(FILE * arquivoBin,int RRN);
 
 /**
- * Le registro de cabecalho do arquivo binario
+ * Le registro de cabecalho do arquivo binario.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param arquivo_bin Nome do arquivo.
  */
 RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin);
 
 /**
  * Insere registro de dados no arquivo binario
  * Pode inserir registro ja como removidos (caso eles 
- * venham assim do arquivo CSV)
+ * venham assim do arquivo CSV).
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param arquivo_bin Ponteiro para arquivo binario.
  * @param registroCabecalho Registro de Cabecalho 
  * utilizado na insersao de dados no arquivo binario.
  * @param registroDados Registro de Dados a ser inserido no binario.
@@ -67,9 +67,9 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin);
 void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, RegistroDados * registroDados);
 
 /**
- * Grava registro de cabecalho no arquivo binario
+ * Grava registro de cabecalho no arquivo binario.
  * 
- * @param nome_arquivo Nome do arquivo.
+ * @param arquivo_bin Ponteiro para arquivo binario.
  * @param registroCabecalho Registro de Cabecalho 
  * a ser inserido no arquivo binario. 
  */
@@ -79,7 +79,7 @@ void escreverRegistroCabecalhoArquivoBin(FILE * arquivoBin, RegistroCabecalho * 
  * Remove logicamente um registro do arquivo binario por RRN
  * e atualiza a pilha de registros removidos.
  * 
- * @param arquivoBin ponteiro apra um arquivo binario.
+ * @param arquivo_bin Ponteiro para arquivo binario.
  * @param registroCabecalho Registro de Cabecalho 
  * utilizado na remocao de dados no arquivo binario 
  * para atualizar o topo da pilha de remocao.
