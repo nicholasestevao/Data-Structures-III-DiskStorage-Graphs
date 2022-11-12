@@ -25,9 +25,9 @@ void desalocaCabecalhoArvB(cabecalhoArvB *registro){
 }
 
 void imprimeCabecalhoArvBTela(cabecalhoArvB * cabecalho){
-    printf("%c\n", *(cabecalho->status));
-    printf("%d\n", *(cabecalho->alturaArvore));
-    printf("%d\n", *(cabecalho->noRaiz));
-    printf("%d\n", *(cabecalho->nroChavesTotal));
-    printf("%d\n", *(cabecalho->RRNproxNo));
+    printf("Status:\t\t%c\n", *(cabecalho->status));
+    printf("Altura:\t\t%d\n", *(cabecalho->alturaArvore));
+    printf("Raiz:\t\t%d\n", *(cabecalho->noRaiz));
+    printf("Nro Chaves:\t%d\n", *(cabecalho->nroChavesTotal));
+    printf("Prox. RRN:\t%d\n", *(cabecalho->RRNproxNo));
 }
