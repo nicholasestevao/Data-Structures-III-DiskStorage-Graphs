@@ -603,23 +603,37 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
     scanf("%s", nome_arq_indice);
     FILE * arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
-    RegistroDados * reg = lerRegistroDadosArquivoBin_RRN(arq_dados, 0);
-    imprimeRegistroDadosTela(reg);
+
+    RegistroDados * reg;
+    //imprimeRegistroDadosTela(reg);
+
     cabecalhoArvB* cabecalho;
     alocaCabecalhoArvB(&cabecalho);
-    imprimeCabecalhoArvBTela(cabecalho);
+    //printf("Cabecalho arvore B: \n");
+    //imprimeCabecalhoArvBTela(cabecalho);
+
     noArvB * raiz;
     alocaNoArvB(&raiz, 1);
-    insercaoArvoreB(arq_indice, *(reg->idConecta), 0, raiz, cabecalho);
+    for(int i= 0; i< 10; i++){
+        reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
+        //imprimeRegistroDadosTela(reg);
+        insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
+    }
     
-    imprimeNoTela(raiz);
-    imprimeCabecalhoArvBTela(cabecalho);
-
-    reg = lerRegistroDadosArquivoBin_RRN(arq_dados, 1);
-    imprimeRegistroDadosTela(reg);
-    insercaoArvoreB(arq_indice, *(reg->idConecta), 1, raiz, cabecalho);
-    imprimeNoTela(raiz);
     imprimeCabecalhoArvBTela(cabecalho);
 
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
+
+    noArvB *no = leNoArvB_RRN(arq_indice, 0);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 1);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 2);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 3);
+    imprimeNoTela(no);
+
+    fecharArquivo_bin(arq_indice);
+    fclose(arq_dados);
+    
 }

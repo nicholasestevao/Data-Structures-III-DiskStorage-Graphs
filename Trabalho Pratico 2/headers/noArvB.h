@@ -6,47 +6,23 @@
 #include <string.h>
 #include "funcoesFornecidas.h"
 
-/**
- * 
- * @struct noArvB 
- * 
- * @var folha - 
- * @var nroChavesNo - 
- * @var alturaNo - 
- * @var RRNdoNo - 
- * @var P1 -
- * @var C1 -
- * @var PR1 -
- * @var P2 -
- * @var C2 -
- * @var PR2 -
- * @var P3 -
- * @var C3 -
- * @var PR3 -
- * @var P4 -
- * @var C4 -
- * @var PR4 -
- * @var P5 - 
- */
+
+typedef struct {
+    int* chave;
+    int* rrnDados;
+}Chave;
+
 typedef struct {
     char* folha;
     int* nroChavesNo;
     int* alturaNo;
     int* RRNdoNo;
-    int* P1;
-    int* C1;
-    int* PR1;
-    int* P2;
-    int* C2;
-    int* PR2;
-    int* P3;
-    int* C3;
-    int* PR3;
-    int* P4;
-    int* C4;
-    int* PR4;
-    int* P5;
+    Chave* chaves;
+    int* descendentes;
 }noArvB;
+
+
+
 
 
 /**
@@ -72,8 +48,10 @@ void desalocaNoArvB(noArvB ** registros, int numReg);
  * @param Cn Chave a ser inserida.
  * @param PRn RRN da chave (Cn) no arquivo de dados.
  */
-void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn);
+void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho);
 
 void imprimeNoTela(noArvB * no);
+
+void inicializaNoArvB(noArvB * no);
 
 #endif
