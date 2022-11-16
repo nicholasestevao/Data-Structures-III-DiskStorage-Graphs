@@ -71,7 +71,9 @@ void desalocaNoArvB(noArvB ** registros, int numReg);
  * @param  no No onde sera inserido a chave de forma ordenada.
  * @param Cn Chave a ser inserida.
  * @param PRn RRN da chave (Cn) no arquivo de dados.
+ * 
+ * @return Retorna 1 se inseriu e retorna 0 se nao inseriu.
  */
-void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn);
+int insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn);
 
 #endif

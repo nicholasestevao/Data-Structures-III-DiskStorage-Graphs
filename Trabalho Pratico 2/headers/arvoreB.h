@@ -9,9 +9,21 @@
 #include "noArvB.h"
 
 /**
+ * Tamanho do registro de dados (no da arv-B) do 
+ * arquivo da arvore-B.
+ */
+#define TAM_REGISTRO_DADOS_ARV_B 65
+
+/**
+ * Tamanho do registro de cabecalho (no da arv-B) do 
+ * arquivo da arvore-B.
+ */
+#define TAM_REGISTRO_CABECALHO_ARV_B 17
+
+/**
  * Tamanho da pagina de disco do arquivo da arvore-B.
  */
-#define TAM_PAGINA_DISCO_ARV_B 65
+#define TAM_PAGINA_DISCO_ARV_B TAM_REGISTRO_DADOS_ARV_B
 
 //=====================================================================
 
@@ -23,7 +35,7 @@
  * @return Retorna um ponteiro de arquivo em modo de leitura.
  * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
  */
-FILE* abrirLeitura_ArvB(char * nome_arquivo);
+FILE* abrirLeitura_ArvB(char* nome_arquivo);
 
 /**
  * Abre arquivo da arvore-B para escrita. 
@@ -34,19 +46,15 @@ FILE* abrirLeitura_ArvB(char * nome_arquivo);
  * @return Retorna um ponteiro de arquivo em modo de leitrua + escrita.
  * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
  */
-FILE* abrirEscrita_ArvB(char * nome_arquivo);
+FILE* abrirEscrita_ArvB(char* nome_arquivo);
 
 /**
- * Fecha arquivo binario atualizando status
- * Necessario usar essa funcao apenas quando o arquivo foi aberto 
- * para escrita.
  * 
- * @param arquivo_ArvB Ponteiro para arquivo da arvore-B.
  */
-void fecharArquivo_ArvB(FILE * arquivo_ArvB);
+int buscaChaveArvoreB(FILE* arquivoArvB, int Cn, noArvB* raiz, noArvB* resultado);
 
 /**
- * Grava registro de cabecalho no arquivo da arvore-B.
+ * Escreve registro de cabecalho no arquivo da arvore-B.
  * 
  * @param arquivoArvB Ponteiro para arquivo da arcore-B.
  * @param cabecalho Ponteiro para cabecalho a ser 
@@ -55,15 +63,33 @@ void fecharArquivo_ArvB(FILE * arquivo_ArvB);
 void escreverCabecalhoArquivoAvrB(FILE* arquivoArvB, cabecalhoArvB* cabecalho); 
 
 /**
- * Escreve noh no arquivo da arvore-B.
+ * Escreve noh no arquivo da arvore-B no RRN do noh.
  * 
- * @param arquivoArvB Ponteiro para arquivo da arcore-B.
- * @param cabecalho Ponteiro para cabecalho a ser 
- * escrito no aquivo da arvore-B. 
+ * @param arquivoArvB Ponteiro para arquivo da arvore-B.
  * @param no Ponteiro para no a ser 
  * escrito no arquivo da arvore-B.
+ * @param RRN onde sera escrito o no no arquivo da arvore-B.
  */
-void escreveNoArvB(FILE* arquivoArvB,  cabecalhoArvB* cabecalho, noArvB* no);
+void escreveNoArvB(FILE* arquivoArvB, noArvB* no);
+
+/**
+ * Não Lembro o q era pra fazer.
+ */
+void escreveNoArqIndice(FILE* arqIndice, noArvB* no, long RRN);
+
+/**
+ * Fecha arquivo binario atualizando status
+ * Necessario usar essa funcao apenas quando o arquivo foi aberto 
+ * para escrita.
+ * 
+ * @param arquivo_ArvB Ponteiro para arquivo da arvore-B.
+ */
+void fecharArquivo_ArvB(FILE* arquivo_ArvB);
+
+/**
+ * 
+ */
+int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
 /**
  * Le registro de cabecalho do arquivo da arvore-B.
@@ -73,20 +99,18 @@ void escreveNoArvB(FILE* arquivoArvB,  cabecalhoArvB* cabecalho, noArvB* no);
 cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
 
 /**
- * Le registro de dados do arquivo da arvore-B por RRN
+ * Le registro de dados do arquivo da arvore-B por RRN.
  * 
  * @param arquivoArvB Nome do arquivo.
  * @param RRN Numero Relativo do Registro.
  * 
  * @return Retorna um ponteiro para o dado do RRN.
  */ 
-noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
+noArvB* leNoArvB_RRN(FILE* arquivoArvB, long RRN);
 
-int buscaChaveArvoreB(FILE* arquivoArvB, int Cn, noArvB* raiz, noArvB* resultado);
-
-void escreveNoArqIndice(FILE* arqIndice, noArvB* no, int rrn);
-
-int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
-
+/**
+ * 
+ */
 void splitNosArvB(noArvB* no1, noArvB* no2);
+
 #endif

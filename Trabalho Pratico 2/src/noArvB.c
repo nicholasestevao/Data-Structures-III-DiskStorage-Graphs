@@ -70,6 +70,72 @@ void desalocaNoArvB(noArvB ** registros, int numReg){
 }
 
 //Insere uma chave de forma ordenada em um no da arvore-B.
-void insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn) {
+int insereChaveOrdenadaNoArvB(noArvB *no, int Cn, int PRn) {
+    if(*(no->nroChavesNo) == 0) {//Se o noh estiver vazio.
+    //Insere na primeira chave.
+        *(no->C1) = Cn;
+        *(no->PR1) = PRn;
+    } else {//Noh nao esta vazio.
+        if(*(no->C4) > Cn) {
+        //Se Cn for menor que C4 insere antes.
+            *(no->P5) = *(no->P4);
+            *(no->C4) = Cn;
+            *(no->PR4) = PRn;
 
+            *(no->P4) = -1;
+        }else if (*(no->C3) > Cn) {
+        //Se Cn for menor que C3 insere antes.
+            *(no->P5) = *(no->P4);
+            *(no->C4) = *(no->C3);
+            *(no->PR4) = *(no->PR3);
+
+            *(no->P4) = *(no->P3);
+            *(no->C3) = Cn;
+            *(no->PR3) = PRn;
+
+            *(no->P3) = -1;
+        } else if (*(no->C2) > Cn) {
+        //Se Cn for menor que C2 insere antes.
+            *(no->P5) = *(no->P4);
+            *(no->C4) = *(no->C3);
+            *(no->PR4) = *(no->PR3);
+
+            *(no->P4) = *(no->P3);
+            *(no->C3) = *(no->C2);
+            *(no->PR3) = *(no->PR2);
+
+            *(no->P3) = *(no->P2);
+            *(no->C2) = Cn;
+            *(no->PR2) = PRn;
+
+            *(no->P2) = -1;
+        } else if (*(no->C1) > Cn) {
+        //Se Cn for menor que C1 insere antes.
+            *(no->P5) = *(no->P4);
+            *(no->C4) = *(no->C3);
+            *(no->PR4) = *(no->PR3);
+
+            *(no->P4) = *(no->P3);
+            *(no->C3) = *(no->C2);
+            *(no->PR3) = *(no->PR2);
+            
+            *(no->P3) = *(no->P2);
+            *(no->C2) = *(no->C1);
+            *(no->PR2) = *(no->PR2);
+
+            *(no->P2) = *(no->P1);
+            *(no->C1) = Cn;
+            *(no->PR1) = PRn;
+
+            *(no->P1) = -1;
+        } else {
+        //Se Cn for maior que C4 nao insere.
+            return 0;
+        }
+    }
+
+    //Conseguiu inserir a chave, logo aumenta numero de chaves do noh.
+    *(no->nroChavesNo) = *(no->nroChavesNo) + 1;
+
+    return 1;
 }

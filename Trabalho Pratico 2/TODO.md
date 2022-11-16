@@ -3,11 +3,12 @@
 ## Isaac
 
 - [ ] buscaChaveArvB
-- [ ] abrirLeitura_ArvB
-- [ ] abrirEscrita_ArvB
-- [ ] fecharArquivo_ArvB
-- [ ] escreverCabecalhoArquivoAvrB
-- [ ] escreveNoArvB
+- [ ] insereChaveOrdenadaNoArvB
+- [x] abrirLeitura_ArvB
+- [x] abrirEscrita_ArvB
+- [x] fecharArquivo_ArvB
+- [x] escreverCabecalhoArquivoAvrB
+- [x] escreveNoArvB
 
 ## Nicholas
 

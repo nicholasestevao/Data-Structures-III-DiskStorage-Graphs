@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../headers/funcoesFornecidas.h"
+#include "../headers/arvoreB.h"
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
+#include "../headers/funcoesFornecidas.h"
 
 int main(int argC, char *argV[]){
     int opcao;
@@ -46,6 +47,36 @@ int main(int argC, char *argV[]){
     //cria outro binario
     if(opcao == 6){
         funcionalidade6Compactacao(nome_arquivo);
+    }
+
+    if(opcao == 7){
+        FILE *arquivoArvB = abrirEscrita_ArvB(nome_arquivo);
+
+        cabecalhoArvB *cabecalho;
+        alocaCabecalhoArvB(&cabecalho);
+
+        noArvB *no;
+        alocaNoArvB(&no, 1);
+
+        
+        insereChaveOrdenadaNoArvB(no, 1, 2);
+        escreveNoArvB(arquivoArvB, no);
+
+        *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
+        *(no->RRNdoNo) = *(cabecalho->RRNproxNo);
+        insereChaveOrdenadaNoArvB(no, 4, 0);
+        escreveNoArvB(arquivoArvB, no);
+
+        *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
+        *(no->RRNdoNo) = *(cabecalho->RRNproxNo);
+        insereChaveOrdenadaNoArvB(no, 0, 5);
+        escreveNoArvB(arquivoArvB, no);
+
+        escreverCabecalhoArquivoAvrB(arquivoArvB, cabecalho);
+
+        desalocaCabecalhoArvB(cabecalho);
+        desalocaNoArvB(&no, 1);
+        fecharArquivo_ArvB(arquivoArvB);
     }
 
     free(nome_arquivo);
