@@ -61,4 +61,6 @@ void funcionalidade6Compactacao(char* nome_arquivo);
 
 void funcionalidade7CreateIndex(char * nome_arquivo);
 
+void funcionalidade9InsertArvB(char *nome_arquivo);
+
 #endif

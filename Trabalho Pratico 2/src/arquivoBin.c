@@ -131,11 +131,13 @@ RegistroCabecalho *lerRegistroCabecalhoArquivoBin(FILE *arquivoBin)
 //Pode inserir registro ja como removidos (caso eles venham assim do arquivo CSV)
 //Recebe registro de cabecalho atual (pois o registro de cabecalho so sera gravado no arquivo ao fim de todas as insersoes)
 //Nao controla o numero de paginas de disco
-void inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecalho, RegistroDados *dados)
+int inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecalho, RegistroDados *dados)
 {
     long byteoffset = 0;
     int flagNovaPag = 0;
     int tamLixo = 0;
+
+    int rrnRegistro = 0; // RRN usado para inserir na arvore B
 
     if (*(dados->removido) == '1')
     { //Insercao de registro removido -> empilha
@@ -196,6 +198,7 @@ void inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecal
         if (*(cabecalho->topo) == -1)
         { //Nao tem registros removidos -> insere no proximo RRN
             byteoffset = 960 + 64 * (*(cabecalho->proxRRN));
+            rrnRegistro = *(cabecalho->proxRRN);
             fseek(arquivoBin, byteoffset, SEEK_SET);
             *(cabecalho->proxRRN) += 1;
 
@@ -211,7 +214,7 @@ void inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecal
         else
         { //Existem registros removidos -> desempilha
             long byteoffsetNovoTopo = 960 + 64 * (*(cabecalho->topo)) + 1;
-
+            rrnRegistro = *(cabecalho->topo);
             int novoTopo;
             fseek(arquivoBin, byteoffsetNovoTopo, SEEK_SET);
             fread(&novoTopo, sizeof(char), 4, arquivoBin);
@@ -265,6 +268,7 @@ void inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecal
         }
         free(lixo);
     }
+    return rrnRegistro;
 }
 
 //Grava registro de cabecalho no arquivo binario
