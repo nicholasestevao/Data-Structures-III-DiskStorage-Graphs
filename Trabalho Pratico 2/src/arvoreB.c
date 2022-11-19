@@ -53,8 +53,8 @@ int buscaArvoreB(FILE *arquivoArvB) {
 
 int buscaChaveNo(noArvB * no, int chave, int* rrnBusca){
     int i = 0;
-    printf("Buscando %d\n", chave);
-    imprimeNoTela(no);
+    //printf("Buscando %d\n", chave);
+    //imprimeNoTela(no);
     while(i< *(no->nroChavesNo) && *((no->chaves[i]).chave) <= chave){
         if(*((no->chaves[i]).chave) == chave){
             *rrnBusca = -1;
@@ -62,7 +62,7 @@ int buscaChaveNo(noArvB * no, int chave, int* rrnBusca){
         }
         i++;
     }
-    printf("Filho da posicao %d\n", i);
+    //printf("Filho da posicao %d\n", i);
     *rrnBusca = no->descendentes[i];
     return i;
 }
@@ -107,11 +107,10 @@ void escreveCabecalhoArqIndice(FILE* arqIndice, cabecalhoArvB* cabecalho){
 }
 
 
-
-void splitNosArvB(Chave chave, int filho_chave, noArvB * pagina, Chave* chave_promocao, int * filho_chave_promocao, noArvB * novaPagina, int rrnNovaPagina){
+void splitNosArvB(FILE * arq_indice, Chave chave, int filho_chave, noArvB * pagina, Chave* chave_promocao, int * filho_chave_promocao, noArvB * novaPagina, int rrnNovaPagina){
     //recebe um no cheio, uma chave para inserir e um no vazio
     //retorna a chave que foi promovida
-    printf("Split para inserir chave %d\n", *(chave.chave));
+    //printf("Split para inserir chave %d\n", *(chave.chave));
     int no[16];
     for(int i=0; i<4; i++){
         no[i*3] = pagina->descendentes[i];
@@ -127,7 +126,7 @@ void splitNosArvB(Chave chave, int filho_chave, noArvB * pagina, Chave* chave_pr
     }
    // printf("\n ");
     int i = 0;
-    while(i<5 && no[i*3 + 1] < *(chave.chave)){
+    while(i<4 && no[i*3 + 1] < *(chave.chave)){
         i++;
     }
     //printf("i: %d", i);
@@ -138,6 +137,7 @@ void splitNosArvB(Chave chave, int filho_chave, noArvB * pagina, Chave* chave_pr
     }
     no[3*i+1] = *(chave.chave);
     no[3*i+2] = *(chave.rrnDados); 
+    no[3*i+3] = filho_chave;
 
     for(int i=0; i<16; i++){
         //printf("%d ", no[i]);
@@ -172,10 +172,11 @@ void splitNosArvB(Chave chave, int filho_chave, noArvB * pagina, Chave* chave_pr
     *(novaPagina->nroChavesNo) = 2;
     
     *(novaPagina->RRNdoNo) = rrnNovaPagina;
-    printf("Promoveu: %d (rrn: %d), filho: %d rrn novo: %d\n", *(chave_promocao->chave), *(chave_promocao->rrnDados), *filho_chave_promocao, rrnNovaPagina);
-    printf("Fez split: \n");
-    imprimeNoTela(pagina);
-    imprimeNoTela(novaPagina);
+    
+    *(novaPagina->alturaNo) = *(pagina->alturaNo);
+    
+    //printf("Promoveu: %d (rrn: %d), filho: %d rrn novo: %d\n", *(chave_promocao->chave), *(chave_promocao->rrnDados), *filho_chave_promocao, rrnNovaPagina);
+    
 }
 
 int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* cabecalho, int RRN_atual, Chave* chave_promocao, int* filho_chave_promocao){
@@ -183,29 +184,28 @@ int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* ca
     noArvB * pagina;
     int resBusca = -1;    
     int rrnBusca = -1; // rrn de onde a chave buscada deveria estar
-    printf("insercao recursiva. RRN Atual: %d\n", RRN_atual);
+    //printf("insercao recursiva. RRN Atual: %d\n", RRN_atual);
 
     if(RRN_atual == -1){
         *chave_promocao = Cn;
         *filho_chave_promocao = -1; //fiz mudancaaa
-        printf("voltou na recursao para promover\n");
+        //printf("voltou na recursao para promover\n");
         return PROMOCAO;
     }else{
         if(RRN_atual == *(cabecalho->noRaiz)){
             pagina = raiz;
-            imprimeNoTela(pagina);
         }else{
             pagina = leNoArvB_RRN(arqIndice, RRN_atual);
         }    
-        printf("Buscando no %d\n", rrnBusca);    
+        //printf("Buscando no %d\n", rrnBusca);    
         resBusca = buscaChaveNo(pagina, *(Cn.chave), &rrnBusca);
     }
 
     if(resBusca == -1){
-        printf("Chave duplicada\n");
+        //printf("Chave duplicada\n");
         return ERRO;
     }else{
-        printf("Chave nao duplicada. Resultado busca: %d - RRN Atual: %d\n", rrnBusca, RRN_atual);
+        //printf("Chave nao duplicada. Resultado busca: %d - RRN Atual: %d\n", rrnBusca, RRN_atual);
     }
     Chave chave_promocao_below;
     chave_promocao_below.chave = malloc(sizeof(int));
@@ -215,28 +215,38 @@ int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* ca
     int filho_chave_promocao_below = -1;
 
     int retorno = insercaoRecursiva(arqIndice, Cn, raiz, cabecalho, rrnBusca, &chave_promocao_below, &filho_chave_promocao_below);
-
+    //printf("Voltou da recursao. Chaves atuais: %d %d\n", *(chave_promocao->chave), *filho_chave_promocao);
     if(retorno == SEM_PROMOCAO || retorno == ERRO){
         return retorno;
     }else if(*(pagina->nroChavesNo) <4){ // se tem espaço no nó
-        printf("promoveu: %d (rrn: %d) filho: %d\n",*(chave_promocao_below.chave), *(chave_promocao_below.rrnDados), filho_chave_promocao_below);
-        imprimeNoTela(pagina);
+        //printf("promoveu: %d (rrn: %d) filho: %d\n",*(chave_promocao_below.chave), *(chave_promocao_below.rrnDados), filho_chave_promocao_below);
+        
         insereChaveOrdenadaNoArvB(pagina, chave_promocao_below, filho_chave_promocao_below);
-        *(cabecalho->nroChavesTotal) +=1;
+        //imprimeNoTela(pagina);
         escreveNoArqIndice(arqIndice, cabecalho, pagina, *(pagina->RRNdoNo));
         return SEM_PROMOCAO;
     }else{
         noArvB * nova_pagina;
         alocaNoArvB(&nova_pagina, 1);
-        splitNosArvB(chave_promocao_below, filho_chave_promocao_below, pagina, chave_promocao, filho_chave_promocao, nova_pagina, *(cabecalho->RRNproxNo));
-
-        *(cabecalho->nroChavesTotal) +=1;
+        //printf("Split para inserir %d (filho: %d)", *(chave_promocao_below.chave), filho_chave_promocao_below);
+        splitNosArvB(arqIndice, chave_promocao_below, filho_chave_promocao_below, pagina, chave_promocao, filho_chave_promocao, nova_pagina, *(cabecalho->RRNproxNo));
+        //printf("Fez split: \n");
+        //imprimeNoTela(pagina);
+        //imprimeNoTela(nova_pagina);
+        
         *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
-        *(cabecalho->alturaArvore) +=1;
-        escreveNoArqIndice(arqIndice, cabecalho, pagina, RRN_atual);
-        escreveNoArqIndice(arqIndice, cabecalho, nova_pagina, *filho_chave_promocao);
+        //*(cabecalho->alturaArvore) +=1;
+        //printf("Altura apos split: %d %d\n !!!!!!!", *(pagina->alturaNo), *(nova_pagina->alturaNo));
+        //printf("RRNs: %d, %d\n", *(pagina->RRNdoNo), *(nova_pagina->RRNdoNo));
+        escreveNoArqIndice(arqIndice, cabecalho, pagina, *(pagina->RRNdoNo));
+        //noArvB* no1 =  leNoArvB_RRN(arqIndice, *(pagina->RRNdoNo));
+        //imprimeNoTela(no1);
+        escreveNoArqIndice(arqIndice, cabecalho, nova_pagina, *(nova_pagina->RRNdoNo));
+        //noArvB* no2 =  leNoArvB_RRN(arqIndice, *(nova_pagina->RRNdoNo));
+        //imprimeNoTela(no2);
         //incrementar proximo rrn e tals  (conferir se função escrever faz isso)
-        printf("Retornou promocao\n");
+
+        //printf("Retornou promocao\n");
         return PROMOCAO;      
         
     }
@@ -253,10 +263,10 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
     
     if(*(cabecalho->noRaiz) == -1){
         //Situacao inicial (nenhum nó nem registro) 
-        printf("Nenhum no ainda\n");
+        //printf("Nenhum no ainda\n");
         insereChaveOrdenadaNoArvB(raiz, chave, -1);
-        *(raiz->folha) = 1;
-        *(raiz->alturaNo) = 0;
+        *(raiz->folha) = '1';
+        *(raiz->alturaNo) = 1;
         *(raiz->nroChavesNo) = 1;
         *(raiz->RRNdoNo) = 0;
         escreveNoArqIndice(arqIndice, cabecalho, raiz, 0);
@@ -273,22 +283,45 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
         *(chave_promo.rrnDados) = -1;
         int filho_chave_promo = -1;
 
-       if( insercaoRecursiva(arqIndice, chave, raiz, cabecalho, *(cabecalho->noRaiz), &chave_promo, &filho_chave_promo) == PROMOCAO){
-            printf("Ocorreu split na raiz\n");
-            inicializaNoArvB(raiz);
-            *(raiz->RRNdoNo)  = *(cabecalho->RRNproxNo);
-            raiz->descendentes[0] = *(cabecalho->noRaiz);
-            raiz->descendentes[1] = filho_chave_promo;
-            *(raiz->chaves[0].chave) = *(chave_promo.chave); 
-            *(raiz->chaves[0].rrnDados) = *(chave_promo.rrnDados); 
-            *(raiz->nroChavesNo) = 1;
-            *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
-            *(cabecalho->noRaiz) = *(raiz->RRNdoNo);
-            //printf("Nova raiz:\n");
-            //imprimeNoTela(raiz);
-            escreveCabecalhoArqIndice(arqIndice,cabecalho);
-            escreveNoArqIndice(arqIndice, cabecalho, raiz, *(raiz->RRNdoNo));
+        if( insercaoRecursiva(arqIndice, chave, raiz, cabecalho, *(cabecalho->noRaiz), &chave_promo, &filho_chave_promo) == PROMOCAO){
+                printf("Split na raiz");
+                imprimeNoTela(raiz);
+                inicializaNoArvB(raiz);
+                *(raiz->RRNdoNo)  = *(cabecalho->RRNproxNo);
+                raiz->descendentes[0] = *(cabecalho->noRaiz);
+                raiz->descendentes[1] = filho_chave_promo;
+                *(raiz->chaves[0].chave) = *(chave_promo.chave); 
+                *(raiz->chaves[0].rrnDados) = *(chave_promo.rrnDados); 
+                *(raiz->nroChavesNo) = 1;
+                *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
+                *(cabecalho->noRaiz) = *(raiz->RRNdoNo);
+                *(raiz->alturaNo) = *(cabecalho->alturaArvore) + 1;
+                *(cabecalho->alturaArvore) = *(cabecalho->alturaArvore) + 1;
+                //printf("Nova raiz: (%d)\n", *(raiz->RRNdoNo));
+                //imprimeNoTela(raiz);
+                escreveCabecalhoArqIndice(arqIndice,cabecalho);
+                escreveNoArqIndice(arqIndice, cabecalho, raiz, *(raiz->RRNdoNo));
+                //noArvB* no2 =  leNoArvB_RRN(arqIndice, *(raiz->RRNdoNo));
+                //imprimeNoTela(no2);
+            
+            
 
        }
+       *(cabecalho->nroChavesTotal) = *(cabecalho->nroChavesTotal) + 1;
+    }
+}
+
+void imprimeOrdenado(FILE * arq_indice, int rrn){
+    noArvB * no_atual = leNoArvB_RRN(arq_indice, rrn);
+    for(int i = 0; i<4; i++){
+        if(no_atual->descendentes[i] != -1){
+            imprimeOrdenado(arq_indice, no_atual->descendentes[i]);
+            printf("%d ", *(no_atual->chaves[i].chave));
+        }else if(*(no_atual->chaves[i].chave) != -1){
+            printf("%d ", *(no_atual->chaves[i].chave));
+        }else{
+            break;
+        }
+        
     }
 }

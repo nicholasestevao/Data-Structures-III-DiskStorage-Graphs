@@ -90,4 +90,6 @@ void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
 
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
+void imprimeOrdenado(FILE * arq_indice, int rrn);
+
 #endif
