@@ -605,7 +605,7 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
     FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
 
     RegistroDados * reg;
-    //imprimeRegistroDadosTela(reg);
+    RegistroCabecalho * cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
     cabecalhoArvB* cabecalho;
     alocaCabecalhoArvB(&cabecalho);
@@ -614,24 +614,46 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
 
     noArvB * raiz;
     alocaNoArvB(&raiz, 1);
-    for(int i= 0; i< 10; i++){
+    for(int i= 0; i< *(cabecalhoCsv->proxRRN); i++){
         reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
         //imprimeRegistroDadosTela(reg);
         insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
     }
+
+    //SECAO DE DEBUG
+    /* int chave;
+    printf("Digite a chave: ");
+    scanf("%d", &chave);
+    int i = 0;
+    while(chave != -2){
+        insercaoArvoreB(arq_indice, chave, i++, raiz, cabecalho);
+        printf("Digite a chave: ");
+        scanf("%d", &chave);
+        if(chave == -1){
+            for(int i = 0; i< *(cabecalho->RRNproxNo); i++){        
+                noArvB *no = leNoArvB_RRN(arq_indice, i);
+                imprimeNoTela(no);
+                desalocaNoArvB(&no, 1);
+            }
+            printf("Digite a chave: ");
+            scanf("%d", &chave);
+        }
+    }
     
-    imprimeCabecalhoArvBTela(cabecalho);
+    //imprimeCabecalhoArvBTela(cabecalho);
 
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
 
-    noArvB *no = leNoArvB_RRN(arq_indice, 0);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 1);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 2);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 3);
-    imprimeNoTela(no);
+    for(int i = 0; i< *(cabecalho->RRNproxNo); i++){        
+        noArvB *no = leNoArvB_RRN(arq_indice, i);
+        imprimeNoTela(no);
+        desalocaNoArvB(&no, 1);
+    }*/
+    //FIM SECAO DE DEBUG
+
+    imprimeCabecalhoArvBTela(cabecalho);
+    printf("Raiz: %d\n", *(raiz->chaves[0].chave));
+    imprimeOrdenado(arq_indice, *(cabecalho->noRaiz));
 
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
