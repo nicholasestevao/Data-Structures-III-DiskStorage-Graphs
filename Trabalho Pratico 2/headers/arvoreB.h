@@ -34,7 +34,7 @@ FILE* abrirLeitura_ArvB(char * nome_arquivo);
  * @return Retorna um ponteiro de arquivo em modo de leitrua + escrita.
  * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
  */
-FILE* abrirEscrita_ArvB(char * nome_arquivo);
+//FILE* abrirEscrita_ArvB(char * nome_arquivo);
 
 /**
  * Fecha arquivo binario atualizando status
@@ -43,7 +43,7 @@ FILE* abrirEscrita_ArvB(char * nome_arquivo);
  * 
  * @param arquivo_ArvB Ponteiro para arquivo da arvore-B.
  */
-void fecharArquivo_ArvB(FILE * arquivo_ArvB);
+//void fecharArquivo_ArvB(FILE * arquivo_ArvB);
 
 /**
  * Grava registro de cabecalho no arquivo da arvore-B.
@@ -82,14 +82,29 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  */ 
 noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
+/**
+ * Busca um chave num no da arvore B
+*/
 int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
 
+/**
+ * Escreve um no da arvore B no arquivo de indice binario
+*/
 void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn);
 
+/**
+ * Escreve o cabecalho da arvore B no arquivo de indice binario
+*/
 void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
 
+/**
+ * Insere um no na arvore B
+*/
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
+/**
+ * Imprime a arvore ordenada (para debug)
+*/
 void imprimeOrdenado(FILE * arq_indice, int rrn);
 
 #endif

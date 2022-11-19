@@ -609,53 +609,66 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
 
     cabecalhoArvB* cabecalho;
     alocaCabecalhoArvB(&cabecalho);
-    //printf("Cabecalho arvore B: \n");
-    //imprimeCabecalhoArvBTela(cabecalho);
-
+    
     noArvB * raiz;
     alocaNoArvB(&raiz, 1);
-    for(int i= 0; i< *(cabecalhoCsv->proxRRN); i++){
+    for(int i= 0; i < *(cabecalhoCsv->proxRRN); i++){
         reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
-        //imprimeRegistroDadosTela(reg);
-        insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
+        if(reg != NULL){
+            //imprimeRegistroDadosTela(reg);
+            insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho); 
+            desalocaRegistrosDados(&reg, 1); 
+        }                      
     }
-
-    //SECAO DE DEBUG
-    /* int chave;
-    printf("Digite a chave: ");
-    scanf("%d", &chave);
-    int i = 0;
-    while(chave != -2){
-        insercaoArvoreB(arq_indice, chave, i++, raiz, cabecalho);
-        printf("Digite a chave: ");
-        scanf("%d", &chave);
-        if(chave == -1){
-            for(int i = 0; i< *(cabecalho->RRNproxNo); i++){        
-                noArvB *no = leNoArvB_RRN(arq_indice, i);
-                imprimeNoTela(no);
-                desalocaNoArvB(&no, 1);
-            }
-            printf("Digite a chave: ");
-            scanf("%d", &chave);
-        }
-    }
-    
-    //imprimeCabecalhoArvBTela(cabecalho);
 
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
 
-    for(int i = 0; i< *(cabecalho->RRNproxNo); i++){        
-        noArvB *no = leNoArvB_RRN(arq_indice, i);
-        imprimeNoTela(no);
-        desalocaNoArvB(&no, 1);
-    }*/
-    //FIM SECAO DE DEBUG
-
-    imprimeCabecalhoArvBTela(cabecalho);
-    printf("Raiz: %d\n", *(raiz->chaves[0].chave));
-    imprimeOrdenado(arq_indice, *(cabecalho->noRaiz));
-
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
+    binarioNaTela(nome_arq_indice);
     
+}
+
+void funcionalidade9InsertArvB(char *nome_arquivo)
+{
+    char * nome_arq_indice = malloc(sizeof(char)*50);
+    scanf("%s", nome_arq_indice);
+    FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
+
+    //Recebe quantidade de registros a serem inseridos
+    int nro_reg;
+    scanf("%d", &nro_reg);
+
+    RegistroDados *registro;
+    alocaRegistrosDados(&registro, 1);
+
+    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
+
+    cabecalhoArvB * cabecalhoArvB = lecabecalhoArvB(arq_indice);
+    noArvB * raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
+
+    //Insere n registros
+    for (int i = 0; i < nro_reg; i++)
+    {
+        lerRegistroDadosTeclado(registro);
+        int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
+        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB); 
+    }
+
+    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+    fecharArquivo_bin(arquivo);
+    desalocaRegistrosDados(&registro, 1);
+    desalocaRegistrosCabecalho(cabecalho);
+    
+    escreveCabecalhoArqIndice(arq_indice, cabecalhoArvB);
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    if(raiz != NULL){
+        desalocaNoArvB(&raiz, 1);
+    }
+    fecharArquivo_bin(arq_indice);
+
+    binarioNaTela(nome_arquivo);
+    binarioNaTela(nome_arq_indice);
 }

@@ -52,6 +52,10 @@ int main(int argC, char *argV[]){
         funcionalidade7CreateIndex(nome_arquivo);
     }
 
+    if(opcao == 9){
+        funcionalidade9InsertArvB(nome_arquivo);
+    }
+
     free(nome_arquivo);
 
     return 0;

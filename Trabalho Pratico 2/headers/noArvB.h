@@ -50,8 +50,14 @@ void desalocaNoArvB(noArvB ** registros, int numReg);
  */
 void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho);
 
+/**
+ * Imprime no da arvore B na tela
+*/
 void imprimeNoTela(noArvB * no);
 
+/**
+ * Preenche os valores padrao de um no da arvore B
+*/
 void inicializaNoArvB(noArvB * no);
 
 #endif

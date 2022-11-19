@@ -63,8 +63,9 @@ RegistroCabecalho * lerRegistroCabecalhoArquivoBin(FILE * arquivoBin);
  * @param registroCabecalho Registro de Cabecalho 
  * utilizado na insersao de dados no arquivo binario.
  * @param registroDados Registro de Dados a ser inserido no binario.
+ * @return RRN no qual o registro foi inserido
  */
-void inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, RegistroDados * registroDados);
+int inserirRegistroDadosArquivoBin(FILE * arquivoBin, RegistroCabecalho * registroCabecalho, RegistroDados * registroDados);
 
 /**
  * Grava registro de cabecalho no arquivo binario.
