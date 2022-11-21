@@ -106,11 +106,14 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  * 
  * @return Retorna um ponteiro para o dado do RRN.
  */ 
-noArvB* leNoArvB_RRN(FILE* arquivoArvB, long RRN);
+noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
-/**
- * 
- */
-void splitNosArvB(noArvB* no1, noArvB* no2);
+int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
+
+void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn);
+
+void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
+
+int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
 #endif

@@ -50,33 +50,7 @@ int main(int argC, char *argV[]){
     }
 
     if(opcao == 7){
-        FILE *arquivoArvB = abrirEscrita_ArvB(nome_arquivo);
-
-        cabecalhoArvB *cabecalho;
-        alocaCabecalhoArvB(&cabecalho);
-
-        noArvB *no;
-        alocaNoArvB(&no, 1);
-
-        
-        insereChaveOrdenadaNoArvB(no, 1, 2);
-        escreveNoArvB(arquivoArvB, no);
-
-        *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
-        *(no->RRNdoNo) = *(cabecalho->RRNproxNo);
-        insereChaveOrdenadaNoArvB(no, 4, 0);
-        escreveNoArvB(arquivoArvB, no);
-
-        *(cabecalho->RRNproxNo) = *(cabecalho->RRNproxNo) + 1;
-        *(no->RRNdoNo) = *(cabecalho->RRNproxNo);
-        insereChaveOrdenadaNoArvB(no, 0, 5);
-        escreveNoArvB(arquivoArvB, no);
-
-        escreverCabecalhoArquivoAvrB(arquivoArvB, cabecalho);
-
-        desalocaCabecalhoArvB(cabecalho);
-        desalocaNoArvB(&no, 1);
-        fecharArquivo_ArvB(arquivoArvB);
+        funcionalidade7CreateIndex(nome_arquivo);
     }
 
     free(nome_arquivo);

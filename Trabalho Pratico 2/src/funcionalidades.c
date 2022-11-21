@@ -597,3 +597,43 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 
     binarioNaTela(nome_arquivo);
 }
+
+void funcionalidade7CreateIndex(char * nome_arquivo){
+    char * nome_arq_indice = malloc(sizeof(char)*50);
+    scanf("%s", nome_arq_indice);
+    FILE * arq_dados = abrirLeitura_bin(nome_arquivo);
+    FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
+
+    RegistroDados * reg;
+    //imprimeRegistroDadosTela(reg);
+
+    cabecalhoArvB* cabecalho;
+    alocaCabecalhoArvB(&cabecalho);
+    //printf("Cabecalho arvore B: \n");
+    //imprimeCabecalhoArvBTela(cabecalho);
+
+    noArvB * raiz;
+    alocaNoArvB(&raiz, 1);
+    for(int i= 0; i< 10; i++){
+        reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
+        //imprimeRegistroDadosTela(reg);
+        insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
+    }
+    
+    imprimeCabecalhoArvBTela(cabecalho);
+
+    escreveCabecalhoArqIndice(arq_indice, cabecalho);
+
+    noArvB *no = leNoArvB_RRN(arq_indice, 0);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 1);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 2);
+    imprimeNoTela(no);
+    no = leNoArvB_RRN(arq_indice, 3);
+    imprimeNoTela(no);
+
+    fecharArquivo_bin(arq_indice);
+    fclose(arq_dados);
+    
+}
