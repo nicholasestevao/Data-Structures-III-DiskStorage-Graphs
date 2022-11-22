@@ -1,6 +1,11 @@
+CC := gcc
+DEBUGFLAGS := -Wall -g3
+CFLAGS := -o3 -march=native $(DEBUGFLAGS)
+
 all: trab 
 
 trab:
-	gcc -o3 -march=native ./src/*.c -o programaTrab
+	$(CC) $(CFLAGS) ./src/*.c -o programaTrab
+	
 run:
 	./programaTrab

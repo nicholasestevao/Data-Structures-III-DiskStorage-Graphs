@@ -8,7 +8,6 @@ FILE *abrirLeitura_bin(char *nome_arquivo)
     FILE *arq = fopen(nome_arquivo, "rb");
     if (arq == NULL)
     { //Se o arquivo nao existir existir
-        msg_erro_Arq_Inexistente();
         return NULL;
     }
     //Se o arquivo existir
@@ -28,17 +27,26 @@ FILE *abrirLeitura_bin(char *nome_arquivo)
 }
 
 // Abre arquivo binario para escrita
-// Atualiza o status do arquivo para (1) -> Inconsistente
+// Atualiza o status do arquivo para inconsistente (1) -> (0)
 FILE *abrirEscrita_bin(char *nome_arquivo)
-{
+{   
+    char *status = malloc(sizeof(char) * 1);
+
     FILE *arq = fopen(nome_arquivo, "rb+");
     if (arq == NULL)
     {//Se o arquivo nao existir
         arq = fopen(nome_arquivo, "wb+");
+    } else {
+        fseek(arq, 0, SEEK_SET);
+        fread(status, sizeof(char), 1, arq);
+        if(*status == '0') {
+            fclose(arq);
+            free(status);
+            return NULL;
+        }
     }
     //Se o arquivo existir
     fseek(arq, 0, SEEK_SET);
-    char *status = malloc(sizeof(char) * 1);
     *status = '0';
     fwrite(status, sizeof(char), 1, arq);
     free(status);

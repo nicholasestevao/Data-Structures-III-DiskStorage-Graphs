@@ -82,7 +82,7 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  */ 
 noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
-int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
+int buscaChaveArvoreB(FILE* arquivoArvB, long RRN, int chave, noArvB *resultado, int *pos);
 
 void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn);
 

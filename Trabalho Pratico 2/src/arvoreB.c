@@ -47,11 +47,7 @@ noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN) {
     return no;
 }
 
-int buscaArvoreB(FILE *arquivoArvB) {
-
-}
-
-int buscaChaveNo(noArvB * no, int chave, int* rrnBusca){
+int buscaChaveNo(noArvB *no, int chave, int* rrnBusca){
     int i = 0;
     printf("Buscando %d\n", chave);
     imprimeNoTela(no);
@@ -65,6 +61,27 @@ int buscaChaveNo(noArvB * no, int chave, int* rrnBusca){
     printf("Filho da posicao %d\n", i);
     *rrnBusca = no->descendentes[i];
     return i;
+}
+
+int buscaChaveArvoreB(FILE* arquivoArvB, long RRN, int chave, noArvB *resultado, int *pos) {
+    long nroPagDiscoAcessadas = 0;
+    if(RRN != -1) {
+        nroPagDiscoAcessadas = 1;
+        noArvB* no = leNoArvB_RRN(arquivoArvB, RRN);
+        int i = 0 ;
+        while(i < *(no->nroChavesNo) && *((no->chaves[i]).chave) <= chave){
+            if(*((no->chaves[i]).chave) == chave) {
+                resultado = no;
+                *pos = i;
+                return nroPagDiscoAcessadas;
+            }
+            i++;
+        }
+        RRN = no->descendentes[i];
+        desalocaNoArvB(&no, 1);
+        nroPagDiscoAcessadas += buscaChaveArvoreB(arquivoArvB, RRN, chave, resultado, pos);
+    }
+    return nroPagDiscoAcessadas;
 }
 
 void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn){
@@ -291,4 +308,6 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
 
        }
     }
+
+    return PROMOCAO;
 }

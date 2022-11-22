@@ -19,7 +19,8 @@ FILE * abrirLeitura_bin(char * nome_arquivo);
 
 /**
  * Abre arquivo binario para escrita. 
- * Atualiza o status do arquivo para (1) -> Inconsistente.
+ * Atualiza o status do arquivo para Atualiza o status do 
+ * arquivo para inconsistente (1) -> (0).
  * 
  * @param nome_arquivo Nome do arquivo.
  * 
