@@ -235,6 +235,10 @@ int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *ca
 
     if(resBusca != -1){
         //Chave duplicada
+        if (RRN_atual != *(cabecalho->noRaiz))
+        {
+            desalocaNoArvB(&pagina, 1);
+        }
         return ERRO;
     }
 

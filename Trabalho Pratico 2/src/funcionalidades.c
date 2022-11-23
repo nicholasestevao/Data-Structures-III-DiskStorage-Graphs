@@ -798,6 +798,7 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     binarioNaTela(nome_arquivo);
     binarioNaTela(nome_arq_indice);
+    free(nome_arq_indice);
 }
 
 void funcionalidade10Juncao(char *nome_arquivo1) {
