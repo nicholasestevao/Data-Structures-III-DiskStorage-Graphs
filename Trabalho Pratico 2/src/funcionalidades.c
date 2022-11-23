@@ -8,12 +8,12 @@
  */
 void tiraAspasDuplas(char *str)
 {
-    //Se tiver aspas no comeco da string
+    // Se tiver aspas no comeco da string
     if (str[0] == '"')
     {
         int i = 0;
         while (i + 1 < (strlen(str)) && str[i + 1] != '"')
-        { //Enquanto o proximo ainda
+        { // Enquanto o proximo ainda
             str[i] = str[i + 1];
             i++;
         }
@@ -39,7 +39,7 @@ int comparaDado(RegistroDados *dados, char *nome_campo, char *valor_campo)
     tiraAspasDuplas(valor_campo);
 
     if (!strcmp(nome_campo, "idConecta"))
-    {   
+    {
         if (atoi(valor_campo) == *(dados->idConecta))
         {
             return 1;
@@ -60,7 +60,7 @@ int comparaDado(RegistroDados *dados, char *nome_campo, char *valor_campo)
         }
     }
     else if (!strcmp(nome_campo, "unidadeMedida"))
-    {   
+    {
         if (!strcasecmp(valor_campo, dados->unidadeMedida))
         {
             return 1;
@@ -99,15 +99,15 @@ int comparaDado(RegistroDados *dados, char *nome_campo, char *valor_campo)
  */
 void copiaInt(int *dest, char *src)
 {
-    //Se a string fonte nao for nula e nem vazia
+    // Se a string fonte nao for nula e nem vazia
     if ((src != NULL) && (src[0] != '\0'))
     {
-        //Copia da string fonte para destino
+        // Copia da string fonte para destino
         *dest = atoi(src);
     }
     else
     {
-        //Deixa destino nulo
+        // Deixa destino nulo
         *dest = -1;
     }
 }
@@ -120,15 +120,15 @@ void copiaInt(int *dest, char *src)
  */
 void copiaStrFix(char *dest, char *src)
 {
-    //Se a string fonte nao for nula e nem vazia
+    // Se a string fonte nao for nula e nem vazia
     if ((src != NULL) && (src[0] != '\0'))
     {
-        //Copia da string fonte para string destino
+        // Copia da string fonte para string destino
         strcpy(dest, src);
     }
     else if (src[0] == '\0')
     {
-        //Deixa destino nulo
+        // Deixa destino nulo
         dest[0] = '\0';
     }
 }
@@ -141,10 +141,10 @@ void copiaStrFix(char *dest, char *src)
  */
 void copiaStrVar(char *dest, char *src)
 {
-    //Se a string fonte nao for nula e nem vazia
+    // Se a string fonte nao for nula e nem vazia
     if ((src != NULL) && (src[0] != '\0'))
     {
-        //Copia da string fonte para string destino
+        // Copia da string fonte para string destino
         if (src[strlen(src) - 1] == ' ')
         {
             src[strlen(src) - 1] = '\0';
@@ -154,7 +154,7 @@ void copiaStrVar(char *dest, char *src)
     }
     else
     {
-        //Deixa destino nulo
+        // Deixa destino nulo
         dest[0] = '\0';
     }
 }
@@ -171,27 +171,27 @@ void copiaStrVar(char *dest, char *src)
  */
 void cortaDados(char *buf, char *dado)
 {
-    //Garante dado vazio
+    // Garante dado vazio
     for (int i = 0; i < sizeof(dado); i++)
     {
         dado[i] = '\0';
     }
 
-    //Verifica se o buffer recebido esta vazio
+    // Verifica se o buffer recebido esta vazio
     if (buf == NULL)
     {
-        return; //Encerra a funcao
+        return; // Encerra a funcao
     }
 
-    //Cria buffer para copia do restante do buffer
+    // Cria buffer para copia do restante do buffer
     char buf_res[100];
-    //Garate que buf_res vaizo
+    // Garate que buf_res vaizo
     for (int i = 0; i < 100; i++)
     {
         buf_res[i] = '\0';
     }
 
-    //Enquanto caractere atual do buffer for diferente de '\0'
+    // Enquanto caractere atual do buffer for diferente de '\0'
     int i = 0;
     while ((buf[i] != '\0') && (buf[i] != ','))
     {
@@ -201,7 +201,7 @@ void cortaDados(char *buf, char *dado)
     dado[i] = '\0';
     i++;
 
-    //Enquanto atual caractere do buffer for diferente de '\0'
+    // Enquanto atual caractere do buffer for diferente de '\0'
     int j = 0;
     while (buf[i + j] != '\0')
     {
@@ -211,7 +211,7 @@ void cortaDados(char *buf, char *dado)
     buf_res[j] = '\0';
     strcpy(buf, buf_res);
 
-    //Enquanto o buffer nao chega no final
+    // Enquanto o buffer nao chega no final
     while (j < 100)
     {
         buf[j] = '\0';
@@ -233,22 +233,22 @@ void pegaDados(char *buf, RegistroDados *dados)
     char dado[50];
     cortaDados(buf, dado);
 
-    //Se o dado for nulo ou marcado removido
+    // Se o dado for nulo ou marcado removido
     if ((dado[0] == '*'))
     {
-        //Marca o dado como removido e retorna
+        // Marca o dado como removido e retorna
         *(dados->removido) = '1';
         return;
     }
     else
     {
-        //Marca como nao removido
+        // Marca como nao removido
         *(dados->removido) = '0';
 
-        //Inicia o encadeamento com -1
+        // Inicia o encadeamento com -1
         *(dados->encadeamento) = -1;
 
-        //Copia os dados para o Registro de dados
+        // Copia os dados para o Registro de dados
         copiaInt((dados->idConecta), dado);
 
         cortaDados(buf, dado);
@@ -286,23 +286,24 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 {   
     //Inidcador de alocacao do cabecalho.
     int flag_cabecalho = 0;
-    if(cabecalho == NULL) {
-        //Se cabecalho for nulo aloca para poder usar na função.
+    if (cabecalho == NULL)
+    {
+        // Se cabecalho for nulo aloca para poder usar na função.
         cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-        //Indica que o cabecalho foi alocado.
+        // Indica que o cabecalho foi alocado.
         flag_cabecalho = 1;
     }
 
     int flag_encontrados = 0;
     RegistroDados *dados;
 
-    //Verifica todos os RRNs do arquivo
+    // Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if (dados != NULL)
         {
-            //Se dado nao foi removido e o campo possui o dado buscado.
+            // Se dado nao foi removido e o campo possui o dado buscado.
             if (comparaDado(dados, nome_campo, valor_campo))
             {
                 flag_encontrados++;
@@ -313,7 +314,8 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
         }
     }
 
-    if(flag_cabecalho == 1) {
+    if (flag_cabecalho == 1)
+    {
         desalocaRegistrosCabecalho(cabecalho);
         cabecalho = NULL;
     }
@@ -367,33 +369,35 @@ int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, cabecalho
  */
 void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
 {
-    //Inidcador de alocacao do cabecalho.
+    // Inidcador de alocacao do cabecalho.
     int flag_cabecalho = 0;
-    if(cabecalho == NULL) {
-        //Se cabecalho for nulo aloca para poder usar na função.
+    if (cabecalho == NULL)
+    {
+        // Se cabecalho for nulo aloca para poder usar na função.
         cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-        //Indica que o cabecalho foi alocado.
+        // Indica que o cabecalho foi alocado.
         flag_cabecalho = 1;
     }
-    
+
     RegistroDados *dados;
 
-    //Verifica todos os RRNs do arquivo
+    // Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if (dados != NULL)
         {
-            //Se dado nao foi removido e o campo possui o dado buscado.
+            // Se dado nao foi removido e o campo possui o dado buscado.
             if (comparaDado(dados, nome_campo, valor_campo))
-            {   
+            {
                 removeRegistroDadosArquivoBin_RRN(arquivoBin, cabecalho, i);
             }
             desalocaRegistrosDados(&dados, 1);
         }
     }
 
-    if(flag_cabecalho == 1) {
+    if (flag_cabecalho == 1)
+    {
         escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
         desalocaRegistrosCabecalho(cabecalho);
         cabecalho = NULL;
@@ -401,14 +405,14 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 }
 
 void funcionalidade1CreateTable(char *nome_arquivo_csv)
-{   
-    //Recebe nome do arquivo bin
-    char* nome_arquivo_bin = malloc(sizeof(char)*20);
+{
+    // Recebe nome do arquivo bin
+    char *nome_arquivo_bin = malloc(sizeof(char) * 20);
     scanf("%s", nome_arquivo_bin);
 
     FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
     if (arquivoCSV == NULL)
-    { //Mensagem de erro ja eh exibida pela funcao abrirLeitura_csv()
+    { // Mensagem de erro ja eh exibida pela funcao abrirLeitura_csv()
         return;
     }
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
@@ -424,14 +428,14 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
 
     char *buf = malloc(sizeof(char) * 100);
 
-    //Pega a primeira linha do arquivo CSV e descarta
+    // Pega a primeira linha do arquivo CSV e descarta
     fgets(buf, 100, arquivoCSV);
     for (int i = 0; i < 100; i++)
     {
         buf[i] = '\0';
     }
 
-    //Pega linha a linha do arquivo CSV e insere no arquivo binario
+    // Pega linha a linha do arquivo CSV e insere no arquivo binario
     while (fgets(buf, 100, arquivoCSV) != NULL)
     {
         int i = strlen(buf);
@@ -441,7 +445,6 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     }
 
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
-
 
     desalocaRegistrosCabecalho(cabecalho);
     desalocaRegistrosDados(&dados, 1);
@@ -463,7 +466,7 @@ void funcionalidade2Select(char *nome_arquivo)
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
     RegistroDados *dados;
 
-    //Verifica todos os RRNs do arquivo
+    // Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
@@ -488,7 +491,7 @@ void funcionalidade2Select(char *nome_arquivo)
 
 void funcionalidade3SelectWhere(char *nome_arquivo)
 {
-    //Numeros de buscas a serem realizadas
+    // Numeros de buscas a serem realizadas
     int numBuscas;
     scanf("%d", &numBuscas);
     FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
@@ -501,14 +504,14 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
 
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
-    //Faz n buscas
+    // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
-        //Pega o nome do campo.
+        // Pega o nome do campo.
         scanf("%s", nome_campo);
-        //Pega espaco entre o nome e o valor.
+        // Pega espaco entre o nome e o valor.
         fgetc(stdin);
-        //Pega o valor do campo.
+        // Pega o valor do campo.
         fgets(valor_campo, 50, stdin);
 
         printf("Busca %d\n", i + 1);
@@ -530,7 +533,7 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
 
 void funcionalidade4Remove(char *nome_arquivo)
 {
-    //Numeros de buscas a serem realizadas
+    // Numeros de buscas a serem realizadas
     int numBuscas;
     scanf("%d", &numBuscas);
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo);
@@ -544,20 +547,20 @@ void funcionalidade4Remove(char *nome_arquivo)
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
 
-    //Faz n buscas
+    // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
-        //Pega o nome do campo.
+        // Pega o nome do campo.
         scanf("%s", nome_campo);
-        //Pega espaco entre o nome e o valor.
+        // Pega espaco entre o nome e o valor.
         fgetc(stdin);
-        //Pega o valor do campo.
+        // Pega o valor do campo.
         fgets(valor_campo, 50, stdin);
 
         buscaCampoRemoveArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin);
     }
 
-    //Escreve o registro de cabecalho atualizado no arquivo binario
+    // Escreve o registro de cabecalho atualizado no arquivo binario
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
     desalocaRegistrosCabecalho(cabecalho);
@@ -569,7 +572,7 @@ void funcionalidade4Remove(char *nome_arquivo)
 
 void funcionalidade5Insert(char *nome_arquivo)
 {
-    //Recebe quantidade de registros a serem inseridos
+    // Recebe quantidade de registros a serem inseridos
     int nro_reg;
     scanf("%d", &nro_reg);
 
@@ -584,7 +587,7 @@ void funcionalidade5Insert(char *nome_arquivo)
     }
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
-    //Insere n registros
+    // Insere n registros
     for (int i = 0; i < nro_reg; i++)
     {
         lerRegistroDadosTeclado(registro);
@@ -623,7 +626,7 @@ void funcionalidade6Compactacao(char *nome_arquivo)
         RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
         if (dados != NULL)
         {
-            //Registro nao removido
+            // Registro nao removido
             inserirRegistroDadosArquivoBin(arq_compactado, cabecalhoNovo, dados);
             desalocaRegistrosDados(&dados, 1);
         }
@@ -641,48 +644,40 @@ void funcionalidade6Compactacao(char *nome_arquivo)
     binarioNaTela(nome_arquivo);
 }
 
-void funcionalidade7CreateIndex(char * nome_arquivo){
-    char *nome_arq_indice = malloc(sizeof(char)*50);
+void funcionalidade7CreateIndex(char *nome_arquivo)
+{
+    char *nome_arq_indice = malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
-
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
-    if (arq_dados == NULL)
-    {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
-
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
-    if (arq_indice == NULL)
-    {
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
 
+    RegistroDados *reg;
+    RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
-    RegistroDados * reg;
-    RegistroCabecalho * cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
-
-    cabecalhoArvB* cabecalho;
+    cabecalhoArvB *cabecalho;
     alocaCabecalhoArvB(&cabecalho);
-    
-    noArvB * raiz;
-    alocaNoArvB(&raiz, 1);
-    for(int i= 0; i < *(cabecalhoCsv->proxRRN); i++){
-        reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
-        if(reg != NULL){
-            //imprimeRegistroDadosTela(reg);
-            insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho); 
-            desalocaRegistrosDados(&reg, 1); 
-        }                      
-    }
 
+    noArvB *raiz;
+    alocaNoArvB(&raiz, 1);
+    for (int i = 0; i < *(cabecalhoCsv->proxRRN); i++)
+    {
+        reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
+        if (reg != NULL)
+        {
+            // imprimeRegistroDadosTela(reg);
+            insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
+            desalocaRegistrosDados(&reg, 1);
+        }
+    }
+    desalocaNoArvB(&raiz, 1);
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
+    desalocaCabecalhoArvB(cabecalho);
+    desalocaRegistrosCabecalho(cabecalhoCsv);
 
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
     binarioNaTela(nome_arq_indice);
-    
+    free(nome_arq_indice);
 }
 
 void funcionalidade8SelectWhere(char *nome_arquivo) {
@@ -760,11 +755,11 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
 
 void funcionalidade9InsertArvB(char *nome_arquivo)
 {
-    char * nome_arq_indice = malloc(sizeof(char)*50);
+    char *nome_arq_indice = malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
-    FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
+    FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
 
-    //Recebe quantidade de registros a serem inseridos
+    // Recebe quantidade de registros a serem inseridos
     int nro_reg;
     scanf("%d", &nro_reg);
 
@@ -775,25 +770,26 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
 
-    cabecalhoArvB * cabecalhoArvB = lecabecalhoArvB(arq_indice);
-    noArvB * raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
+    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arq_indice);
+    noArvB *raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
 
-    //Insere n registros
+    // Insere n registros
     for (int i = 0; i < nro_reg; i++)
     {
         lerRegistroDadosTeclado(registro);
         int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
-        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB); 
+        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
     }
 
     escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
     fecharArquivo_bin(arquivo);
     desalocaRegistrosDados(&registro, 1);
     desalocaRegistrosCabecalho(cabecalho);
-    
+
     escreveCabecalhoArqIndice(arq_indice, cabecalhoArvB);
     desalocaCabecalhoArvB(cabecalhoArvB);
-    if(raiz != NULL){
+    if (raiz != NULL)
+    {
         desalocaNoArvB(&raiz, 1);
     }
     fecharArquivo_bin(arq_indice);
