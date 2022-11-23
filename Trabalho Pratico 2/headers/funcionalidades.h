@@ -59,8 +59,29 @@ void funcionalidade5Insert(char* nome_arquivo);
  */
 void funcionalidade6Compactacao(char* nome_arquivo);
 
+/**
+ * CreateIndex (Funcionalidade_7).
+ * 
+ * 
+ * @param nome_arquivo Nome do arquivo .bin.
+ */
 void funcionalidade7CreateIndex(char * nome_arquivo);
 
+/**
+ * Select where (Funcionalidade_8).
+ * 
+ * @param nome_arquivo Nome do arquivo .bin.
+ */
+void funcionalidade8SelectWhere(char *nome_arquivo);
+
+
 void funcionalidade9InsertArvB(char *nome_arquivo);
+
+/**
+ * Juncao (Funcionalidade_10).
+ * 
+ * @param nome_arquivo Nome do arquivo .bin.
+ */
+void funcionalidade10Juncao(char *nome_arquivo);
 
 #endif

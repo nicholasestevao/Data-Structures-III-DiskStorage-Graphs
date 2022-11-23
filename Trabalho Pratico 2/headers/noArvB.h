@@ -57,4 +57,5 @@ void imprimeNoTela(noArvB *no);
  */
 void inicializaNoArvB(noArvB *no);
 
+int buscaChaveNo(noArvB *no, int chave, int* rrnBusca);
 #endif

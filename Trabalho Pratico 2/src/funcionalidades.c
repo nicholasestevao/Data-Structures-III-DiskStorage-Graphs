@@ -275,15 +275,16 @@ void pegaDados(char *buf, RegistroDados *dados)
  *
  * @param nome_campo Campo que sera buscado.
  * @param valor_campo Valor que sera buscado.
- * @param arquivoBin Arquivo binario.
+ * @param cabecalho Cabecalho do arquivo binario de dados.
+ * @param arquivoBin Arquivo binario de dados.
  *
  * @return Retorna 0 quando não encontrou nunhum dado
- * dado com o valor do campo procurado e 1 quando encontrou
- * pelo menos 1 dado com o valor do campo procurado.
+ * dado com o valor do campo procurado ou a quantidade 
+ * de dados com o valor do campo procurado.
  */
-int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
-{
-    // Inidcador de alocacao do cabecalho.
+int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
+{   
+    //Inidcador de alocacao do cabecalho.
     int flag_cabecalho = 0;
     if (cabecalho == NULL)
     {
@@ -305,7 +306,7 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
             // Se dado nao foi removido e o campo possui o dado buscado.
             if (comparaDado(dados, nome_campo, valor_campo))
             {
-                flag_encontrados = 1;
+                flag_encontrados++;
                 imprimeRegistroDadosTela(dados);
                 printf("\n");
             }
@@ -324,13 +325,49 @@ int buscaCampoImprime(char *nome_campo, char *valor_campo, RegistroCabecalho *ca
 
 /**
  * Busca em um arquivo binario toos os dados que possuem um valor especifico
+ * para um campo especifico e os exibe na tela.
+ *
+ * @param nome_campo Campo que sera buscado.
+ * @param valor_campo Valor que sera buscado.
+ * @param cabecalhoArvB Cabecalho do arquivo binario da arvore B.
+ * @param arquivoArvB Arquivo binario de indices (Arvore B).
+ *
+ * @return Retorna 0 quando não encontrou nunhum dado
+ * dado com o valor do campo procurado ou a quantidade 
+ * de dados com o valor do campo procurado.
+ */
+int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, cabecalhoArvB *cabecalhoArvB, FILE *arquivoArvB)
+{   
+    //Inidcador de alocacao do cabecalho.
+    int flag_cabecalho = 0;
+
+    if(cabecalhoArvB == NULL) {
+        //Se cabecalho for nulo aloca para poder usar na função.
+        cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
+        //Indica que o cabecalho foi alocado.
+        flag_cabecalho = 1;
+    }
+
+    int flag_encontrados = 0;
+    
+
+    if(flag_cabecalho == 1) {
+        desalocaCabecalhoArvB(cabecalhoArvB);
+        cabecalhoArvB = NULL;
+    }
+
+    return flag_encontrados;
+}
+
+/**
+ * Busca em um arquivo binario toos os dados que possuem um valor especifico
  * para um campo especifico e os remove logicamente desse arquivo.
  *
  * @param nome_campo Campo que sera buscado.
  * @param valor_campo Valor que sera buscado.
  * @param arquivoBin Arquivo binario.
  */
-void buscaCampoRemove(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
+void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroCabecalho *cabecalho, FILE *arquivoBin)
 {
     // Inidcador de alocacao do cabecalho.
     int flag_cabecalho = 0;
@@ -479,8 +516,8 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
 
         printf("Busca %d\n", i + 1);
 
-        // Se nao encontrar nenhum arquivo quebra linha.
-        if (buscaCampoImprime(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
+        //Se nao encontrar nenhum arquivo quebra linha.
+        if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
         {
             msg_erro_Reg_Inexistente();
             printf("\n\n");
@@ -505,6 +542,7 @@ void funcionalidade4Remove(char *nome_arquivo)
         msg_erro_Arq_Inconsistente();
         return;
     }
+
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
@@ -519,7 +557,7 @@ void funcionalidade4Remove(char *nome_arquivo)
         // Pega o valor do campo.
         fgets(valor_campo, 50, stdin);
 
-        buscaCampoRemove(nome_campo, valor_campo, cabecalho, arquivoBin);
+        buscaCampoRemoveArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin);
     }
 
     // Escreve o registro de cabecalho atualizado no arquivo binario
@@ -542,6 +580,11 @@ void funcionalidade5Insert(char *nome_arquivo)
     alocaRegistrosDados(&registro, 1);
 
     FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+    if (arquivo == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
     // Insere n registros
@@ -637,6 +680,79 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     free(nome_arq_indice);
 }
 
+void funcionalidade8SelectWhere(char *nome_arquivo) {
+    //Numeros de buscas a serem realizadas
+    int numBuscas;
+    char *nome_arquivoBin = malloc(sizeof(char)*20);
+    scanf("%s %d", nome_arquivoBin, &numBuscas);
+
+    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
+    if (arquivoArvB == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivoBin);
+    if (arquivoBin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    
+    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
+    RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin);
+
+    char *nome_campo = malloc(sizeof(char) * 50);
+    char *valor_campo = malloc(sizeof(char) * 50);
+    long nroPagDiscoAcessadas = 1;
+
+    //Faz n buscas
+    for (int i = 0; i < numBuscas; i++)
+    {
+        //Pega o nome do campo.
+        scanf("%s", nome_campo);
+        //Pega espaco entre o nome e o valor.
+        fgetc(stdin);
+        //Pega o valor do campo.
+        fgets(valor_campo, 50, stdin);
+
+        printf("Busca %d\n", i + 1);
+
+        if(!strcmp(nome_campo, "idConecta")) {
+            noArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
+            int RRN_dado = -1;
+            nroPagDiscoAcessadas += buscaChaveArvoreB(arquivoArvB, raiz, atoi(valor_campo), &RRN_dado);
+            if (RRN_dado == -1) {
+                msg_erro_Reg_Inexistente();
+                printf("\n\n");
+            } else {
+                RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin, RRN_dado);
+                imprimeRegistroDadosTela(dado);
+                printf("\n");
+                desalocaRegistrosDados(&dado, 1);
+            }
+            desalocaNoArvB(&raiz, 1);
+        } else {
+            //Se nao encontrar nenhum arquivo quebra linha.
+            if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
+                msg_erro_Reg_Inexistente();
+                printf("\n\n");
+            }
+            nroPagDiscoAcessadas = *(cabecalhoArqvBin->nroPagDisco);
+        }
+        printf("Numero de paginas de disco: %ld\n\n", nroPagDiscoAcessadas);
+    }
+
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    desalocaRegistrosCabecalho(cabecalhoArqvBin);
+    free(nome_arquivoBin);
+    free(nome_campo);
+    free(valor_campo);
+    fecharArquivo_bin(arquivoBin);
+    fecharArquivo_bin(arquivoArvB);
+}
+
 void funcionalidade9InsertArvB(char *nome_arquivo)
 {
     char *nome_arq_indice = malloc(sizeof(char) * 50);
@@ -680,5 +796,72 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     binarioNaTela(nome_arquivo);
     binarioNaTela(nome_arq_indice);
-    free(nome_arq_indice);
+}
+
+void funcionalidade10Juncao(char *nome_arquivo1) {
+    char *nome_arquivo2 = malloc(sizeof(char)*20);
+    char *campo_arq1 = malloc(sizeof(char)*25);
+    char *campo_arq2 = malloc(sizeof(char)*25);
+    char *nome_indice_aqr2 = malloc(sizeof(char)*20);
+
+    scanf("%s %s %s %s", nome_arquivo2, campo_arq1, campo_arq2, nome_indice_aqr2);
+
+    if(strcmp(campo_arq1, "idPoPsConectado") && strcmp(campo_arq2, "idConecta")) {
+        return;
+    }
+
+    FILE *arquivoBin1 = abrirLeitura_bin(nome_arquivo1);
+    if (arquivoBin1 == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+
+    FILE *arquivoBin2 = abrirLeitura_bin(nome_arquivo2);
+    if (arquivoBin2 == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+
+    FILE *arquivoArvB_arq2 = abrirLeitura_bin(nome_indice_aqr2);
+    if (arquivoArvB_arq2 == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    
+    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB_arq2);
+    RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin1);
+
+    noArvB *raiz = leNoArvB_RRN(arquivoArvB_arq2, *(cabecalhoArvB->noRaiz));
+
+    //Verifica todos os RRNs do arquivo
+    for (int i = 0; i < *(cabecalhoArqvBin->proxRRN); i++)
+    {
+        RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);
+        if (dado != NULL)
+        {
+            int RRN_buscado = -1;
+            int RRN_resultado = buscaChaveArvoreB(arquivoArvB_arq2, raiz, *(dado->idPoPsConectado), &RRN_buscado);
+            //Se dado nao foi removido e o campo possui o dado buscado.
+            if (*(dado->idPoPsConectado) != -1 && RRN_resultado == -1)
+            {
+                imprimeRegistroDadosTela(dado);
+                printf("\n");
+            }
+            desalocaRegistrosDados(&dado, 1);
+        }
+    }
+
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    desalocaNoArvB(&raiz, 1);
+    desalocaRegistrosCabecalho(cabecalhoArqvBin);
+    free(campo_arq1);
+    free(campo_arq2);
+    free(nome_arquivo2);
+    free(nome_indice_aqr2);
+    fecharArquivo_bin(arquivoBin1);
+    fecharArquivo_bin(arquivoBin2);
+    fecharArquivo_bin(arquivoArvB_arq2);
 }

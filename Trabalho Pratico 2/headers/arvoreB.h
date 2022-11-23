@@ -82,10 +82,7 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  */ 
 noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
-/**
- * Busca um chave num no da arvore B
-*/
-int buscaChaveArvoreB(FILE *arquivoArvB, int Cn, noArvB* raiz, noArvB * resultado);
+int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado);
 
 /**
  * Escreve um no da arvore B no arquivo de indice binario

@@ -49,24 +49,24 @@ noArvB *leNoArvB_RRN(FILE *arquivoArvB, int RRN)
     return no;
 }
 
-int buscaArvoreB(FILE *arquivoArvB)
-{
-}
-
-int buscaChaveNo(noArvB *no, int chave, int *rrnBusca)
-{
-    int i = 0;
-    while (i < *(no->nroChavesNo) && ((no->chaves[i]).chave) <= chave)
-    {
-        if (((no->chaves[i]).chave) == chave)
-        {
-            *rrnBusca = -1;
-            return -1; // encontrou
-        }
-        i++;
+int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado) {
+    long nroPagDiscoAcessadas = 1;
+    if(raiz == NULL) {
+        return -1;
     }
-    *rrnBusca = no->descendentes[i];
-    return i;
+    int RRN_busca = -1;
+
+    *RRN_resultado = buscaChaveNo(raiz, chave, &RRN_busca);
+    while(RRN_busca != -1) {
+        noArvB *no = leNoArvB_RRN(arquivoArvB, RRN_busca);
+        *RRN_resultado = buscaChaveNo(no, chave, &RRN_busca);
+        if(*(no->alturaNo) == 1 && *RRN_resultado == -1) {
+            break;
+        }
+        desalocaNoArvB(&no, 1);
+        nroPagDiscoAcessadas++;
+    }
+    return nroPagDiscoAcessadas;
 }
 
 void escreveNoArqIndice(FILE *arqIndice, cabecalhoArvB *cabecalho, noArvB *no, int rrn)
@@ -232,9 +232,8 @@ int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *ca
         resBusca = buscaChaveNo(pagina, (Cn.chave), &rrnBusca);
     }
 
-    if (resBusca == -1)
-    {
-        // Chave duplicada
+    if(resBusca != -1){
+        //Chave duplicada
         return ERRO;
     }
 
@@ -286,6 +285,7 @@ int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *ca
 
         return PROMOCAO;
     }
+    return ERRO;
 }
 
 int insercaoArvoreB(FILE *arqIndice, int Cn, int PRn, noArvB *raiz, cabecalhoArvB *cabecalho)
