@@ -1,6 +1,6 @@
 all: trab 
 
 trab:
-	gcc -o3 -march=native ./src/*.c -o programaTrab
+	gcc -g3 -march=native ./src/*.c -o programaTrab
 run:
 	./programaTrab
