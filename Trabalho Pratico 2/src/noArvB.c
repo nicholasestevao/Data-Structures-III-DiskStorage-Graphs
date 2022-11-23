@@ -98,3 +98,16 @@ void imprimeNoTela(noArvB * no){
     printf("%d %d %d\n", (no->descendentes[2]), *(no->chaves[2].chave), *(no->chaves[2].rrnDados));
     printf("%d %d %d %d\n", (no->descendentes[3]), *(no->chaves[3].chave), *(no->chaves[3].rrnDados), (no->descendentes[4]));
 }
+
+int buscaChaveNo(noArvB *no, int chave, int* rrnBusca) {
+    int i = 0;
+    while(i< *(no->nroChavesNo) && *((no->chaves[i]).chave) <= chave){
+        if(*((no->chaves[i]).chave) == chave){
+            *rrnBusca = -1;
+            return *((no->chaves[i]).rrnDados);//encontrou retorna RRN do dado da chave.    
+        }
+        i++;
+    }
+    *rrnBusca = no->descendentes[i];
+    return -1;
+}

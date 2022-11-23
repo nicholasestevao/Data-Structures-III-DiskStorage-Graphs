@@ -47,36 +47,22 @@ noArvB* leNoArvB_RRN(FILE *arquivoArvB, int RRN) {
     return no;
 }
 
-int buscaChaveNo(noArvB *no, int chave, int* rrnBusca){
-    int i = 0;
-    while(i< *(no->nroChavesNo) && *((no->chaves[i]).chave) <= chave){
-        if(*((no->chaves[i]).chave) == chave){
-            *rrnBusca = -1;
-            return -1;//encontrou
-        }
-        i++;
+int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado) {
+    long nroPagDiscoAcessadas = 1;
+    if(raiz == NULL) {
+        return -1;
     }
-    *rrnBusca = no->descendentes[i];
-    return i;
-}
+    int RRN_busca = -1;
 
-int buscaChaveArvoreB(FILE* arquivoArvB, long RRN, int chave, noArvB *resultado, int *pos) {
-    long nroPagDiscoAcessadas = 0;
-    if(RRN != -1) {
-        nroPagDiscoAcessadas = 1;
-        noArvB* no = leNoArvB_RRN(arquivoArvB, RRN);
-        int i = 0 ;
-        while(i < *(no->nroChavesNo) && *((no->chaves[i]).chave) <= chave){
-            if(*((no->chaves[i]).chave) == chave) {
-                resultado = no;
-                *pos = i;
-                return nroPagDiscoAcessadas;
-            }
-            i++;
+    *RRN_resultado = buscaChaveNo(raiz, chave, &RRN_busca);
+    while(RRN_busca != -1) {
+        noArvB *no = leNoArvB_RRN(arquivoArvB, RRN_busca);
+        *RRN_resultado = buscaChaveNo(no, chave, &RRN_busca);
+        if(*(no->alturaNo) == 1 && *RRN_resultado == -1) {
+            break;
         }
-        RRN = no->descendentes[i];
         desalocaNoArvB(&no, 1);
-        nroPagDiscoAcessadas += buscaChaveArvoreB(arquivoArvB, RRN, chave, resultado, pos);
+        nroPagDiscoAcessadas++;
     }
     return nroPagDiscoAcessadas;
 }
@@ -226,7 +212,7 @@ int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* ca
         resBusca = buscaChaveNo(pagina, *(Cn.chave), &rrnBusca);
     }
 
-    if(resBusca == -1){
+    if(resBusca != -1){
         //Chave duplicada
         return ERRO;
     }
@@ -288,7 +274,6 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
         *(cabecalho->alturaArvore) = 1;
         *(cabecalho->nroChavesTotal) = 1;
         *(cabecalho->RRNproxNo) = 1;
-        return SEM_PROMOCAO;
     }else{
         // Inicializa variaveis da chave promovida
         Chave chave_promo;
@@ -318,7 +303,7 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
         }
        *(cabecalho->nroChavesTotal) = *(cabecalho->nroChavesTotal) + 1;
     }
-
+    return SEM_PROMOCAO;
 }
 
 void imprimeOrdenado(FILE * arq_indice, int rrn){
@@ -333,5 +318,4 @@ void imprimeOrdenado(FILE * arq_indice, int rrn){
             break;
         }
     }
-    return PROMOCAO;
 }
