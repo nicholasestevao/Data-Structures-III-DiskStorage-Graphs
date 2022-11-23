@@ -61,6 +61,7 @@ int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resul
         noArvB *no = leNoArvB_RRN(arquivoArvB, RRN_busca);
         *RRN_resultado = buscaChaveNo(no, chave, &RRN_busca);
         if(*(no->alturaNo) == 1 && *RRN_resultado == -1) {
+            desalocaNoArvB(&no, 1);
             break;
         }
         desalocaNoArvB(&no, 1);

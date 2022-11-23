@@ -56,6 +56,13 @@ void desalocaRegistrosDados(RegistroDados ** registros, int numReg);
 void imprimeRegistroDadosTela(RegistroDados * registro);
 
 /**
+ * Exibe na tela um RegistroDados.
+ * 
+ * @param  dado1 RegistroDados a ser exibido na tela.
+ */
+void imprimeJuncaoRegistrosDados(RegistroDados *dado1, RegistroDados * dado2);
+
+/**
  * Recebe um RegisroDados do teclado e 
  * coloca na RAM.
  * 

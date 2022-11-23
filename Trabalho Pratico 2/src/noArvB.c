@@ -20,34 +20,34 @@ void inicializaNoArvB(noArvB *no)
 }
 
 // Aloca memoria para todos os ponteiros do RegistroDados.
-void alocaNoArvB(noArvB **registros, int numReg)
+void alocaNoArvB(noArvB **no, int numReg)
 {
-    *registros = malloc(sizeof(noArvB) * numReg);
+    *no = malloc(sizeof(noArvB) * numReg);
     for (int i = 0; i < numReg; i++)
     {
-        (*registros)[i].folha = malloc(sizeof(char));
-        (*registros)[i].nroChavesNo = malloc(sizeof(int));
-        (*registros)[i].alturaNo = malloc(sizeof(int));
-        (*registros)[i].RRNdoNo = malloc(sizeof(int));
-        (*registros)[i].chaves = malloc(sizeof(Chave) * 4);
-        (*registros)[i].descendentes = malloc(sizeof(int) * 5);
-        inicializaNoArvB(registros[i]);
+        (*no)[i].folha = malloc(sizeof(char));
+        (*no)[i].nroChavesNo = malloc(sizeof(int));
+        (*no)[i].alturaNo = malloc(sizeof(int));
+        (*no)[i].RRNdoNo = malloc(sizeof(int));
+        (*no)[i].chaves = malloc(sizeof(Chave) * 4);
+        (*no)[i].descendentes = malloc(sizeof(int) * 5);
+        inicializaNoArvB(no[i]);
     }
 }
 
 // Desaloca memoria de todos os ponteiros do RegistroDados.
-void desalocaNoArvB(noArvB **registros, int numReg)
+void desalocaNoArvB(noArvB **no, int numReg)
 {
     for (int i = 0; i < numReg; i++)
     {
-        free((*registros)[i].folha);
-        free((*registros)[i].nroChavesNo);
-        free((*registros)[i].alturaNo);
-        free((*registros)[i].RRNdoNo);
-        free((*registros)[i].chaves);
-        free((*registros)[i].descendentes);
+        free((*no)[i].folha);
+        free((*no)[i].nroChavesNo);
+        free((*no)[i].alturaNo);
+        free((*no)[i].RRNdoNo);
+        free((*no)[i].chaves);
+        free((*no)[i].descendentes);
     }
-    free(*registros);
+    free(*no);
 }
 
 // Insere uma chave de forma ordenada em um no da arvore-B.

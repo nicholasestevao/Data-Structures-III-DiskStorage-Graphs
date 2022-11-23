@@ -517,7 +517,7 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
         printf("Busca %d\n", i + 1);
 
         //Se nao encontrar nenhum arquivo quebra linha.
-        if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
+        if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
         {
             msg_erro_Reg_Inexistente();
             printf("\n\n");
@@ -683,17 +683,17 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
 void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Numeros de buscas a serem realizadas
     int numBuscas;
-    char *nome_arquivoBin = malloc(sizeof(char)*20);
-    scanf("%s %d", nome_arquivoBin, &numBuscas);
+    char *nome_arquivoArvB = malloc(sizeof(char)*20);
+    scanf("%s %d", nome_arquivoArvB, &numBuscas);
 
-    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
+    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivoArvB);
     if (arquivoArvB == NULL)
     {
         msg_erro_Arq_Inconsistente();
         return;
     }
 
-    FILE *arquivoBin = abrirLeitura_bin(nome_arquivoBin);
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
         msg_erro_Arq_Inconsistente();
@@ -731,22 +731,24 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
                 imprimeRegistroDadosTela(dado);
                 printf("\n");
                 desalocaRegistrosDados(&dado, 1);
+                nroPagDiscoAcessadas += 2;
             }
             desalocaNoArvB(&raiz, 1);
         } else {
             //Se nao encontrar nenhum arquivo quebra linha.
-            if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
+            if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
                 msg_erro_Reg_Inexistente();
                 printf("\n\n");
             }
             nroPagDiscoAcessadas = *(cabecalhoArqvBin->nroPagDisco);
         }
         printf("Numero de paginas de disco: %ld\n\n", nroPagDiscoAcessadas);
+        nroPagDiscoAcessadas = 1;
     }
 
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
-    free(nome_arquivoBin);
+    free(nome_arquivoArvB);
     free(nome_campo);
     free(valor_campo);
     fecharArquivo_bin(arquivoBin);
@@ -839,19 +841,24 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     //Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalhoArqvBin->proxRRN); i++)
     {
-        RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);
-        if (dado != NULL)
-        {
+        RegistroDados *dado1 = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);
+        RegistroDados *dado2;
+        if (dado1 != NULL)
+        {   
             int RRN_buscado = -1;
-            int RRN_resultado = buscaChaveArvoreB(arquivoArvB_arq2, raiz, *(dado->idPoPsConectado), &RRN_buscado);
-            //Se dado nao foi removido e o campo possui o dado buscado.
-            if (*(dado->idPoPsConectado) != -1 && RRN_resultado == -1)
-            {
-                imprimeRegistroDadosTela(dado);
-                printf("\n");
+            if(*(dado1->idPoPsConectado) != -1) {
+                buscaChaveArvoreB(arquivoArvB_arq2, raiz, *(dado1->idPoPsConectado), &RRN_buscado);
             }
-            desalocaRegistrosDados(&dado, 1);
+            //Se dado nao foi removido e o campo possui o dado buscado.
+            if (RRN_buscado != -1)
+            {   
+                dado2 = lerRegistroDadosArquivoBin_RRN(arquivoBin2, RRN_buscado);
+                imprimeJuncaoRegistrosDados(dado1, dado2);
+                printf("\n");
+                desalocaRegistrosDados(&dado2, 1);
+            }
         }
+        desalocaRegistrosDados(&dado1, 1);
     }
 
     desalocaCabecalhoArvB(cabecalhoArvB);

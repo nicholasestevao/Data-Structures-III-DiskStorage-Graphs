@@ -75,6 +75,54 @@ void imprimeRegistroDadosTela(RegistroDados *registro)
     }
 }
 
+void imprimeJuncaoRegistrosDados(RegistroDados *dado1, RegistroDados * dado2) {
+    if (*(dado1->idConecta) != -1)
+    {
+        printf("Identificador do ponto: %d\n", *(dado1->idConecta));
+    }
+    if ((dado1->nomePoPs)[0] != '\0')
+    {
+        printf("Nome do ponto: %s\n", dado1->nomePoPs);
+    }
+    if ((dado1->nomePais)[0] != '\0')
+    {
+        printf("Pais de localizacao: %s\n", dado1->nomePais);
+    }
+    if ((dado1->siglaPais)[0] != '$' && (dado1->siglaPais)[0] != '\0')
+    {
+        printf("Sigla do pais: %s\n", dado1->siglaPais);
+    }
+    if (*(dado1->idPoPsConectado) != -1)
+    {
+        printf("Identificador do ponto conectado: %d\n", *(dado1->idPoPsConectado));
+    }
+
+    if ((dado2->nomePoPs)[0] != '\0')
+    {
+        printf("Nome do ponto conectado: %s\n", dado2->nomePoPs);
+    }
+    if ((dado2->nomePais)[0] != '\0')
+    {
+        printf("Nome do pais conectado: %s\n", dado2->nomePais);
+    }
+    if ((dado2->siglaPais)[0] != '$' && (dado2->siglaPais)[0] != '\0')
+    {
+        printf("Sigla do pais: %s\n", dado2->siglaPais);
+    }
+
+    if (*(dado1->velocidade) != -1)
+    {
+        if ((dado1->unidadeMedida)[0] == '$')
+        {
+            printf("Velocidade de transmissao: %d bps\n", *(dado1->velocidade));
+        }
+        else
+        {
+            printf("Velocidade de transmissao: %d %cbps\n", *(dado1->velocidade), *(dado1->unidadeMedida));
+        }
+    }
+}
+
 //Recebe um RegistroDados do teclado e coloca na RAM.
 void lerRegistroDadosTeclado(RegistroDados *registro)
 {
