@@ -54,12 +54,13 @@ int main(int argC, char *argV[]){
             break;
             
         case 9:
-
+            //se
+            funcionalidade9InsertArvB(nome_arquivo);
             break;
-    }
 
-    if(opcao == 9){
-        funcionalidade9InsertArvB(nome_arquivo);
+        case 10:
+            funcionalidade10Juncao(nome_arquivo);
+            break;
     }
 
     free(nome_arquivo);

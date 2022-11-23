@@ -21,10 +21,6 @@ typedef struct {
     int* descendentes;
 }noArvB;
 
-
-
-
-
 /**
  * Aloca memoria para todos os ponteiros do RegistroDados.
  * 

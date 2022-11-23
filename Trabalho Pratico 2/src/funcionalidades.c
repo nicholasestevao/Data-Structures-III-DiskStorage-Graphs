@@ -685,7 +685,6 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
     
 }
 
-
 void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Numeros de buscas a serem realizadas
     int numBuscas;

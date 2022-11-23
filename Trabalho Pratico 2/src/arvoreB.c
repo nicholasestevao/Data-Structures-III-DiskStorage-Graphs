@@ -208,7 +208,6 @@ void splitNosArvB(FILE * arq_indice, Chave chave, int filho_chave, noArvB * pagi
 }
 
 int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* cabecalho, int RRN_atual, Chave* chave_promocao, int* filho_chave_promocao){
-    
     noArvB * pagina;
     int resBusca = -1;    
     int rrnBusca = -1; // rrn de onde a chave buscada deveria estar
@@ -266,8 +265,7 @@ int insercaoRecursiva(FILE* arqIndice, Chave Cn, noArvB* raiz, cabecalhoArvB* ca
         return PROMOCAO;      
         
     }
-
-
+    return ERRO;
 }
 
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho){
@@ -300,7 +298,7 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
         *(chave_promo.rrnDados) = -1;
         int filho_chave_promo = -1;
 
-        if( insercaoRecursiva(arqIndice, chave, raiz, cabecalho, *(cabecalho->noRaiz), &chave_promo, &filho_chave_promo) == PROMOCAO){
+        if(insercaoRecursiva(arqIndice, chave, raiz, cabecalho, *(cabecalho->noRaiz), &chave_promo, &filho_chave_promo) == PROMOCAO){
             // Ocorreu split na raiz (necessario criar nova raiz)
             inicializaNoArvB(raiz);
             *(raiz->RRNdoNo)  = *(cabecalho->RRNproxNo);            // nova raiz armazenada em um novo no
@@ -320,6 +318,7 @@ int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArv
         }
        *(cabecalho->nroChavesTotal) = *(cabecalho->nroChavesTotal) + 1;
     }
+
 }
 
 void imprimeOrdenado(FILE * arq_indice, int rrn){
@@ -333,8 +332,6 @@ void imprimeOrdenado(FILE * arq_indice, int rrn){
         }else{
             break;
         }
-        
     }
-
     return PROMOCAO;
 }
