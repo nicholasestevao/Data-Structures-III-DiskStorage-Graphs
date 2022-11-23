@@ -661,36 +661,27 @@ void funcionalidade7CreateIndex(char * nome_arquivo){
 
 
     RegistroDados * reg;
-    //imprimeRegistroDadosTela(reg);
+    RegistroCabecalho * cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
     cabecalhoArvB* cabecalho;
     alocaCabecalhoArvB(&cabecalho);
-    //printf("Cabecalho arvore B: \n");
-    //imprimeCabecalhoArvBTela(cabecalho);
-
+    
     noArvB * raiz;
     alocaNoArvB(&raiz, 1);
-    for(int i= 0; i< 10; i++){
+    for(int i= 0; i < *(cabecalhoCsv->proxRRN); i++){
         reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
-        //imprimeRegistroDadosTela(reg);
-        insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho);
+        if(reg != NULL){
+            //imprimeRegistroDadosTela(reg);
+            insercaoArvoreB(arq_indice, *(reg->idConecta), i, raiz, cabecalho); 
+            desalocaRegistrosDados(&reg, 1); 
+        }                      
     }
-    
-    imprimeCabecalhoArvBTela(cabecalho);
 
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
 
-    noArvB *no = leNoArvB_RRN(arq_indice, 0);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 1);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 2);
-    imprimeNoTela(no);
-    no = leNoArvB_RRN(arq_indice, 3);
-    imprimeNoTela(no);
-
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
+    binarioNaTela(nome_arq_indice);
     
 }
 
@@ -766,6 +757,50 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     free(valor_campo);
     fecharArquivo_bin(arquivoBin);
     fecharArquivo_bin(arquivoArvB);
+}
+
+void funcionalidade9InsertArvB(char *nome_arquivo)
+{
+    char * nome_arq_indice = malloc(sizeof(char)*50);
+    scanf("%s", nome_arq_indice);
+    FILE * arq_indice = abrirEscrita_bin(nome_arq_indice);
+
+    //Recebe quantidade de registros a serem inseridos
+    int nro_reg;
+    scanf("%d", &nro_reg);
+
+    RegistroDados *registro;
+    alocaRegistrosDados(&registro, 1);
+
+    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
+
+    cabecalhoArvB * cabecalhoArvB = lecabecalhoArvB(arq_indice);
+    noArvB * raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
+
+    //Insere n registros
+    for (int i = 0; i < nro_reg; i++)
+    {
+        lerRegistroDadosTeclado(registro);
+        int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
+        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB); 
+    }
+
+    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+    fecharArquivo_bin(arquivo);
+    desalocaRegistrosDados(&registro, 1);
+    desalocaRegistrosCabecalho(cabecalho);
+    
+    escreveCabecalhoArqIndice(arq_indice, cabecalhoArvB);
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    if(raiz != NULL){
+        desalocaNoArvB(&raiz, 1);
+    }
+    fecharArquivo_bin(arq_indice);
+
+    binarioNaTela(nome_arquivo);
+    binarioNaTela(nome_arq_indice);
 }
 
 void funcionalidade10Juncao(char *nome_arquivo1) {

@@ -11,9 +11,9 @@ void inicializaNoArvB(noArvB * no){
         no->descendentes[j] = -1;
     }
 
-    *(no->folha) = '0';
+    *(no->folha) = '1';
     *(no->nroChavesNo) = 0;
-    *(no->alturaNo) = 0;
+    *(no->alturaNo) = 1;
     *(no->RRNdoNo) = 0;
 }
 
@@ -61,33 +61,31 @@ void desalocaNoArvB(noArvB ** registros, int numReg){
 //Insere uma chave de forma ordenada em um no da arvore-B.
 //Assume que tem espaço
 void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho){
-    printf("Inserindo chave %d (RRN: %d) ordenada na pagina\n", *(Cn.chave), *(Cn.rrnDados));
     int i = 0;
+    // Encontra posicao onde a chave deve ser inserida
     while(i< *(no->nroChavesNo) && *((no->chaves[i]).chave) <= *(Cn.chave)){
         if(*((no->chaves[i]).chave) == *(Cn.chave)){
             return;
         }
         i++;
     }
-    printf("Antes: \n");
-    imprimeNoTela(no);
-    printf("Chave sera inserida na posicao %d do no\n", i);
 
+    // Desloca as chaves maiores do que a que será inserida para a direita
     for(int j = 3; j>i; j--){
         *(no->chaves[j].chave) = *(no->chaves[j-1].chave);
         *(no->chaves[j].rrnDados) = *(no->chaves[j-1].rrnDados);
     }
+    // Desloca os descendentes das chaves maiores do que a que será inserida para a direita
     for(int j = 4; j>i; j--){
         (no->descendentes[j]) = (no->descendentes[j-1]);
     }
+    //Insere nova chave na posicao correta
     *((no->chaves[i]).chave) = *(Cn.chave);
     *((no->chaves[i]).rrnDados) = *(Cn.rrnDados);
     no->descendentes[i+1] = filho;
-
-    *(no->folha) = 0;
+    
+    // Incrementa contagem de chaves
     *(no->nroChavesNo) +=1;
-    printf("Depois: \n");
-    imprimeNoTela(no);
 }
 
 void imprimeNoTela(noArvB * no){

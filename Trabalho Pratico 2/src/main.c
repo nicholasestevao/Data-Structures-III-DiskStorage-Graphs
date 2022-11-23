@@ -58,6 +58,10 @@ int main(int argC, char *argV[]){
             break;
     }
 
+    if(opcao == 9){
+        funcionalidade9InsertArvB(nome_arquivo);
+    }
+
     free(nome_arquivo);
 
     return 0;

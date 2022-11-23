@@ -74,12 +74,14 @@ void funcionalidade7CreateIndex(char * nome_arquivo);
  */
 void funcionalidade8SelectWhere(char *nome_arquivo);
 
+
+void funcionalidade9InsertArvB(char *nome_arquivo);
+
 /**
  * Juncao (Funcionalidade_10).
  * 
  * @param nome_arquivo Nome do arquivo .bin.
  */
 void funcionalidade10Juncao(char *nome_arquivo);
-
 
 #endif
