@@ -478,8 +478,9 @@ void funcionalidade2Select(char *nome_arquivo)
             desalocaRegistrosDados(&dados, 1);
         }
     }
-    if (*(cabecalho->proxRRN) == 0)
-    {
+
+    //Se nao tiver nenhum dado no arquivo de dados;
+    if (*(cabecalho->proxRRN) == 0) {
         msg_erro_Reg_Inexistente();
         printf("\n\n");
     }
@@ -516,8 +517,8 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
 
         printf("Busca %d\n", i + 1);
 
-        //Se nao encontrar nenhum arquivo quebra linha.
-        if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
+        //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
+        if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
         {
             msg_erro_Reg_Inexistente();
             printf("\n\n");
@@ -686,6 +687,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     char *nome_arquivoBin = malloc(sizeof(char)*20);
     scanf("%s %d", nome_arquivoBin, &numBuscas);
 
+    //Abre o arquivo de indice para leitura.
     FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
     if (arquivoArvB == NULL)
     {
@@ -693,6 +695,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
         return;
     }
 
+    //Abre o arquivo de dados para leitura.
     FILE *arquivoBin = abrirLeitura_bin(nome_arquivoBin);
     if (arquivoBin == NULL)
     {
@@ -700,12 +703,14 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
         return;
     }
     
+    //Le o cabecalho do arquivo de indice.
     cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
+
+    //Le o cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin);
 
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
-    long nroPagDiscoAcessadas = 1;
 
     //Faz n buscas
     for (int i = 0; i < numBuscas; i++)
@@ -719,31 +724,53 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
 
         printf("Busca %d\n", i + 1);
 
+        //Variavel para a contagem de numero de paginas de dados acessadas.
+        long nroPagDiscoAcessadas = 0;
+
+
         if(!strcmp(nome_campo, "idConecta")) {
+            //Le o no raiz da arvore B no arquivo de indice.
             noArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
+
             int RRN_dado = -1;
+
+            //Busca a chave no arquivo de indice e soma a quantidade de paginas de disco acessadas.
             nroPagDiscoAcessadas += buscaChaveArvoreB(arquivoArvB, raiz, atoi(valor_campo), &RRN_dado);
-            if (RRN_dado == -1) {
-                msg_erro_Reg_Inexistente();
-                printf("\n\n");
-            } else {
+            
+            //Se foi encontrado o dado buscado no arquivo de incdice.
+            if (RRN_dado != -1) {
+                //Le o dado pelo RRN da chave encontrada.
                 RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin, RRN_dado);
+
                 imprimeRegistroDadosTela(dado);
                 printf("\n");
+
                 desalocaRegistrosDados(&dado, 1);
+
+                //Soma 3 paginas de disco acessadas, pois leu o cabecalho do indice, 
+                //cabecalho do arquivo de dados e o dado em si no arquivo de dados
+                nroPagDiscoAcessadas += 3;
+            } else  {
+                //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
+                msg_erro_Reg_Inexistente();
+                printf("\n\n");
             }
             desalocaNoArvB(&raiz, 1);
         } else {
-            //Se nao encontrar nenhum arquivo quebra linha.
-            if (!buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
+            //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
+            if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
                 msg_erro_Reg_Inexistente();
                 printf("\n\n");
             }
+            //Numero de paginas de disco acessadas e a quantidade de paginas de 
+            //disco existentes no arquivo de dados pois a busca eh feita por busca exastiva.
             nroPagDiscoAcessadas = *(cabecalhoArqvBin->nroPagDisco);
         }
+
         printf("Numero de paginas de disco: %ld\n\n", nroPagDiscoAcessadas);
     }
 
+    //Desaloca memoria e fecha os arruivos utilizados.
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
     free(nome_arquivoBin);
@@ -757,7 +784,15 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 {
     char *nome_arq_indice = malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
+
+    //Abre o arquivo de indice para leitura.
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
+    if (arq_indice == NULL)
+    {
+        free(nome_arq_indice);
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
 
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
@@ -766,36 +801,62 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     RegistroDados *registro;
     alocaRegistrosDados(&registro, 1);
 
+    //Abre o arquivo de dados para leitura.
     FILE *arquivo = abrirEscrita_bin(nome_arquivo);
-
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
-
-    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arq_indice);
-    noArvB *raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
-
-    // Insere n registros
-    for (int i = 0; i < nro_reg; i++)
-    {
-        lerRegistroDadosTeclado(registro);
-        int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
-        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+    if (arquivo == NULL)
+    {   
+        msg_erro_Arq_Inconsistente();
+        free(nome_arq_indice);
+        return;
     }
 
-    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
-    fecharArquivo_bin(arquivo);
-    desalocaRegistrosDados(&registro, 1);
-    desalocaRegistrosCabecalho(cabecalho);
+    //Le o arquivo de cabecalho do arquivo de dados.
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
 
+    //Le o arquivo de cabecalho do arquivo de indice.
+    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arq_indice);
+
+    //Le o no raiz da arvore B no arquivo de indice.
+    noArvB *raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
+
+    //Insere n registros
+    for (int i = 0; i < nro_reg; i++)
+    {
+        //Le do teclado o registro a ser inserido.
+        lerRegistroDadosTeclado(registro);
+
+        //Verifica se o registro ja nao existe para evitar duplicatas.
+        int RRN_res_busca = -1;
+        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca);
+        if(RRN_res_busca == -1) {
+            //Se nao houver outro registro igual.  
+            int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
+            insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+        }
+        
+    }
+    //Atualiza o cabecalho do arquivo de dados.
+    escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
+
+    //Atualiza o cabecalho do arquivo de indice.
     escreveCabecalhoArqIndice(arq_indice, cabecalhoArvB);
+
+    //Fecha arquivos.
+    fecharArquivo_bin(arquivo);
+    fecharArquivo_bin(arq_indice);
+
+    binarioNaTela(nome_arquivo);
+    binarioNaTela(nome_arq_indice);
+
+    //Desaloca memoria utilizada.
+    free(nome_arq_indice);
     desalocaCabecalhoArvB(cabecalhoArvB);
     if (raiz != NULL)
     {
         desalocaNoArvB(&raiz, 1);
     }
-    fecharArquivo_bin(arq_indice);
-
-    binarioNaTela(nome_arquivo);
-    binarioNaTela(nome_arq_indice);
+    desalocaRegistrosCabecalho(cabecalho);
+    desalocaRegistrosDados(&registro, 1);
 }
 
 void funcionalidade10Juncao(char *nome_arquivo1) {
@@ -806,10 +867,12 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
 
     scanf("%s %s %s %s", nome_arquivo2, campo_arq1, campo_arq2, nome_indice_aqr2);
 
+    //Verifica se a juncao esta sendo feita com o idPoPsConectado e idConecta, arquivo 1 e arquivo 2 respectivamente.
     if(strcmp(campo_arq1, "idPoPsConectado") && strcmp(campo_arq2, "idConecta")) {
         return;
     }
 
+    //Abre arquivo binario de dados 1.
     FILE *arquivoBin1 = abrirLeitura_bin(nome_arquivo1);
     if (arquivoBin1 == NULL)
     {
@@ -817,6 +880,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
         return;
     }
 
+    //Abre arquivo binario de dados 2.
     FILE *arquivoBin2 = abrirLeitura_bin(nome_arquivo2);
     if (arquivoBin2 == NULL)
     {
@@ -824,6 +888,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
         return;
     }
 
+    //Abre arquivo binario de indice do arquivo binario de dados 2.
     FILE *arquivoArvB_arq2 = abrirLeitura_bin(nome_indice_aqr2);
     if (arquivoArvB_arq2 == NULL)
     {
@@ -831,29 +896,59 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
         return;
     }
     
+    //Le cabecalho do arquivo de indice.
     cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB_arq2);
+
+    //Le cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin1);
 
+    //Le o no raiz da arvore B no arquivo de indice.
     noArvB *raiz = leNoArvB_RRN(arquivoArvB_arq2, *(cabecalhoArvB->noRaiz));
+
+    //Quantidade de dados encontrados no arquivo de indice.
+    long nroDadosEncontrados = 0;
 
     //Verifica todos os RRNs do arquivo
     for (int i = 0; i < *(cabecalhoArqvBin->proxRRN); i++)
     {
-        RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);
-        if (dado != NULL)
-        {
+        //Le um dado do arquivo de dados por RRN.
+        RegistroDados *dado1 = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);
+        RegistroDados *dado2;
+        if (dado1 != NULL)
+        {   
             int RRN_buscado = -1;
-            int RRN_resultado = buscaChaveArvoreB(arquivoArvB_arq2, raiz, *(dado->idPoPsConectado), &RRN_buscado);
-            //Se dado nao foi removido e o campo possui o dado buscado.
-            if (*(dado->idPoPsConectado) != -1 && RRN_resultado == -1)
-            {
-                imprimeRegistroDadosTela(dado);
-                printf("\n");
+
+            //Se o idPoPsConectado do dado do registro de dados 1 não for nulo.
+            if(*(dado1->idPoPsConectado) != -1) {
+                buscaChaveArvoreB(arquivoArvB_arq2, raiz, *(dado1->idPoPsConectado), &RRN_buscado);
             }
-            desalocaRegistrosDados(&dado, 1);
+            //Se foi encontrado o dado buscado no arquivo de incdice.
+            if (RRN_buscado != -1)
+            {   
+                //Aumenta numero de dados encontrados.
+                nroDadosEncontrados++; 
+
+                //Le o dado do arquivo de dados pelo RRN da chave encontrada no arquivo de indice.
+                dado2 = lerRegistroDadosArquivoBin_RRN(arquivoBin2, RRN_buscado);
+
+                //Imprime na formataçao de juncao
+                imprimeJuncaoRegistrosDados(dado1, dado2);
+                printf("\n");
+
+                desalocaRegistrosDados(&dado2, 1);
+            }
         }
+
+        desalocaRegistrosDados(&dado1, 1);
     }
 
+    //Se nao foi encontrado nenhum dado.
+    if(nroDadosEncontrados == 0) {
+        msg_erro_Reg_Inexistente();
+        printf("\n\n");
+    }
+
+    //Desaloca memoria e fecha os arruivos utilizados.
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaNoArvB(&raiz, 1);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
