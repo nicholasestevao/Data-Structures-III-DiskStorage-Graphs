@@ -6,7 +6,6 @@ FILE * abrirLeitura_csv(char * nome_arquivo){
     if(arq != NULL){
         return arq;
     }else{
-        msg_erro_Arq_Inexistente();
         return NULL;
     }
 }
