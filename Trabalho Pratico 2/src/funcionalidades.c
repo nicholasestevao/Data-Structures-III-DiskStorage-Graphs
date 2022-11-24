@@ -650,6 +650,12 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     scanf("%s", nome_arq_indice);
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
+    if(arq_dados == NULL || arq_indice == NULL){
+        msg_erro_Arq_Inexistente();
+        printf("\n\n");
+        free(nome_arq_indice);
+        return;
+    }
 
     RegistroDados *reg;
     RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
@@ -779,8 +785,13 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     for (int i = 0; i < nro_reg; i++)
     {
         lerRegistroDadosTeclado(registro);
-        int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
-        insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+        int RRN_res_busca = -1;
+        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca);
+        if(RRN_res_busca == -1){
+            int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
+            insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+        }
+        
     }
 
     escreverRegistroCabecalhoArquivoBin(arquivo, cabecalho);
