@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "funcoesfornecidas.h": "c",
-        "cabecalhoarvb.h": "c"
+        "cabecalhoarvb.h": "c",
+        "stdio.h": "c"
     }
 }

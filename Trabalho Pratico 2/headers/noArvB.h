@@ -59,5 +59,8 @@ void imprimeNoTela(noArvB *no);
  */
 void inicializaNoArvB(noArvB *no);
 
+/**
+ * Busca uma chave em um na da arvore
+*/
 int buscaChaveNo(noArvB *no, int chave, int* rrnBusca);
 #endif
