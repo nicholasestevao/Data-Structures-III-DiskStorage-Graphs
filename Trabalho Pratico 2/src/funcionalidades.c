@@ -412,13 +412,17 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
 
     FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
     if (arquivoCSV == NULL)
-    { // Mensagem de erro ja eh exibida pela funcao abrirLeitura_csv()
+    {
+        free(nome_arquivo_bin);
+        msg_erro_Arq_Inconsistente();
         return;
     }
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
     if (arquivoBin == NULL)
     {
         msg_erro_Arq_FalhaCriacao();
+        fclose(arquivoCSV);
+        free(nome_arquivo_bin);
         return;
     }
     RegistroCabecalho *cabecalho;
@@ -584,6 +588,7 @@ void funcionalidade5Insert(char *nome_arquivo)
     if (arquivo == NULL)
     {
         msg_erro_Arq_Inconsistente();
+        desalocaRegistrosDados(&registro, 1);
         return;
     }
 
@@ -607,10 +612,11 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 {
     RegistroCabecalho *cabecalhoNovo;
     alocaRegistrosCabecalho(&cabecalhoNovo);
-    FILE *arq_compactado = fopen("compactado.bin", "wb+");
+    FILE *arq_compactado = abrirEscrita_bin("compactado.bin");
     if (arq_compactado == NULL)
     {
         msg_erro_Arq_FalhaCriacao();
+        desalocaRegistrosCabecalho(cabecalhoNovo);
         return;
     }
 
@@ -618,6 +624,8 @@ void funcionalidade6Compactacao(char *nome_arquivo)
     if (arq_original == NULL)
     {
         msg_erro_Arq_Inconsistente();
+        desalocaRegistrosCabecalho(cabecalhoNovo);
+        fecharArquivo_bin(arq_compactado);
         return;
     }
     RegistroCabecalho *cabecalhoAntigo = lerRegistroCabecalhoArquivoBin(arq_original);
@@ -652,7 +660,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
 
-    RegistroDados *reg;
+    //Le cabecalho do arquivo binario.
     RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
     cabecalhoArvB *cabecalho;
@@ -660,9 +668,12 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
 
     noArvB *raiz;
     alocaNoArvB(&raiz, 1);
+
+    //Percorre arquivo de dados inteiro.
     for (int i = 0; i < *(cabecalhoCsv->proxRRN); i++)
-    {
-        reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
+    {   
+        //Le dado do arquivo de dados por RRN.
+        RegistroDados *reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
         if (reg != NULL)
         {
             // imprimeRegistroDadosTela(reg);
@@ -670,6 +681,8 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
             desalocaRegistrosDados(&reg, 1);
         }
     }
+
+    //Desaloca memoria e fecha arquivos utilizados.
     desalocaNoArvB(&raiz, 1);
     escreveCabecalhoArqIndice(arq_indice, cabecalho);
     desalocaCabecalhoArvB(cabecalho);
@@ -692,6 +705,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     if (arquivoArvB == NULL)
     {
         msg_erro_Arq_Inconsistente();
+        free(nome_arquivoBin);
         return;
     }
 
@@ -700,6 +714,8 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     if (arquivoBin == NULL)
     {
         msg_erro_Arq_Inconsistente();
+        fecharArquivo_bin(arquivoArvB);
+        free(nome_arquivoBin);
         return;
     }
     
@@ -787,12 +803,6 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     //Abre o arquivo de indice para leitura.
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
-    if (arq_indice == NULL)
-    {
-        free(nome_arq_indice);
-        msg_erro_Arq_Inconsistente();
-        return;
-    }
 
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
@@ -803,12 +813,6 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     //Abre o arquivo de dados para leitura.
     FILE *arquivo = abrirEscrita_bin(nome_arquivo);
-    if (arquivo == NULL)
-    {   
-        msg_erro_Arq_Inconsistente();
-        free(nome_arq_indice);
-        return;
-    }
 
     //Le o arquivo de cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
