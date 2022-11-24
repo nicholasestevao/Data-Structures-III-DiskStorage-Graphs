@@ -659,6 +659,18 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     scanf("%s", nome_arq_indice);
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
+    if(arq_dados == NULL || arq_indice == NULL){
+        msg_erro_Arq_Inexistente();
+        printf("\n\n");
+        if(arq_indice != NULL){
+            fecharArquivo_bin(arq_indice);
+        }
+        if(arq_dados != NULL){
+            fecharArquivo_bin(arq_dados);
+        }
+        free(nome_arq_indice);
+        return;
+    }
 
     //Le cabecalho do arquivo binario.
     RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
@@ -705,17 +717,17 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     if (arquivoArvB == NULL)
     {
         msg_erro_Arq_Inconsistente();
-        free(nome_arquivoBin);
+        free(nome_arquivoArvB);
         return;
     }
 
     //Abre o arquivo de dados para leitura.
-    FILE *arquivoBin = abrirLeitura_bin(nome_arquivoBin);
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
         msg_erro_Arq_Inconsistente();
         fecharArquivo_bin(arquivoArvB);
-        free(nome_arquivoBin);
+        free(nome_arquivo);
         return;
     }
     
@@ -804,16 +816,27 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     //Abre o arquivo de indice para leitura.
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
+    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+
+    if(arquivo == NULL || arq_indice == NULL){ // Erro arquivo inconsistente
+        msg_erro_Arq_Inexistente();
+        printf("\n\n");
+        if(arq_indice != NULL){
+            fecharArquivo_bin(arq_indice);
+        }
+        if(arquivo != NULL){
+            fecharArquivo_bin(arquivo);
+        }
+        free(nome_arq_indice);
+        return;
+    }
 
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
     scanf("%d", &nro_reg);
 
     RegistroDados *registro;
-    alocaRegistrosDados(&registro, 1);
-
-    //Abre o arquivo de dados para leitura.
-    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+    alocaRegistrosDados(&registro, 1);    
 
     //Le o arquivo de cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
@@ -829,14 +852,13 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     {
         //Le do teclado o registro a ser inserido.
         lerRegistroDadosTeclado(registro);
-
-        //Verifica se o registro ja nao existe para evitar duplicatas.
         int RRN_res_busca = -1;
-        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca);
-        if(RRN_res_busca == -1) {
-            //Se nao houver outro registro igual.  
+        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca); // Busca para impedir inserção duplicada
+        if(RRN_res_busca == -1){
             int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
             insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+        }else{
+
         }
         
     }

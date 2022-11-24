@@ -16,36 +16,6 @@
 //=====================================================================
 
 /**
- * Abre arquivo da arvore-B para leitura. 
- * Nao atualiza o status.
- * 
- * @param nome_arquivo Nome do arquivo.
- * @return Retorna um ponteiro de arquivo em modo de leitura.
- * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
- */
-FILE* abrirLeitura_ArvB(char * nome_arquivo);
-
-/**
- * Abre arquivo da arvore-B para escrita. 
- * Atualiza o status do arquivo para (1) -> Inconsistente.
- * 
- * @param nome_arquivo Nome do arquivo.
- * 
- * @return Retorna um ponteiro de arquivo em modo de leitrua + escrita.
- * Se o arquivo estiver inconsistente na hora de abertura retorna NULL.
- */
-//FILE* abrirEscrita_ArvB(char * nome_arquivo);
-
-/**
- * Fecha arquivo binario atualizando status
- * Necessario usar essa funcao apenas quando o arquivo foi aberto 
- * para escrita.
- * 
- * @param arquivo_ArvB Ponteiro para arquivo da arvore-B.
- */
-//void fecharArquivo_ArvB(FILE * arquivo_ArvB);
-
-/**
  * Grava registro de cabecalho no arquivo da arvore-B.
  * 
  * @param arquivoArvB Ponteiro para arquivo da arcore-B.
@@ -82,6 +52,10 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  */ 
 noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
+
+/**
+ * Busca uma chave na arvore B
+*/
 int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado);
 
 /**
