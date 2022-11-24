@@ -23,20 +23,22 @@ typedef struct
 } noArvB;
 
 /**
- * Aloca memoria para todos os ponteiros do RegistroDados.
+ * Aloca memoria de todos os ponteiros de nos da 
+ * arvore B.
  *
- * @param registros vetor de RegistroDados.
- * @param numReg quantidade de itens do vetor de RegistroDados
+ * @param no vetor de no.
+ * @param numReg quantidade de itens do vetor de nos.
  */
 void alocaNoArvB(noArvB **registros, int numReg);
 
 /**
- * Desaloca memoria de todos os ponteiros do RegistroDados.
+ * Desaloca memoria de todos os ponteiros de nos da 
+ * arvore B.
  *
- * @param registros vetor de RegistroDados.
- * @param numReg quantidade de itens do vetor de RegistroDados.
+ * @param no vetor de no.
+ * @param numReg quantidade de itens do vetor de nos.
  */
-void desalocaNoArvB(noArvB **registros, int numReg);
+void desalocaNoArvB(noArvB **no, int numReg);
 
 /**
  * Insere uma chave de forma ordenada em um no da arvore-B.

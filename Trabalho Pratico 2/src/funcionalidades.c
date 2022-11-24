@@ -697,8 +697,8 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
 void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Numeros de buscas a serem realizadas
     int numBuscas;
-    char *nome_arquivoBin = malloc(sizeof(char)*20);
-    scanf("%s %d", nome_arquivoBin, &numBuscas);
+    char *nome_arquivoArvB = malloc(sizeof(char)*20);
+    scanf("%s %d", nome_arquivoArvB, &numBuscas);
 
     //Abre o arquivo de indice para leitura.
     FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
@@ -784,12 +784,13 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
         }
 
         printf("Numero de paginas de disco: %ld\n\n", nroPagDiscoAcessadas);
+        nroPagDiscoAcessadas = 1;
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
-    free(nome_arquivoBin);
+    free(nome_arquivoArvB);
     free(nome_campo);
     free(valor_campo);
     fecharArquivo_bin(arquivoBin);

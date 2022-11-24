@@ -1,13 +1,8 @@
 # TODO
 
 ## Isaac
-
-- [ ] buscaChaveArvB
-- [ ] abrirLeitura_ArvB
-- [ ] abrirEscrita_ArvB
-- [ ] fecharArquivo_ArvB
-- [ ] escreverCabecalhoArquivoAvrB
-- [ ] escreveNoArvB
+ - [ ] imprimeParcialRegistroDados() -> comentar
+ - [ ] imprimeJuncaoRegistrosDados() -> comentar
 
 ## Nicholas
 
