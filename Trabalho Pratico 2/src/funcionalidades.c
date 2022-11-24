@@ -653,6 +653,12 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     if(arq_dados == NULL || arq_indice == NULL){
         msg_erro_Arq_Inexistente();
         printf("\n\n");
+        if(arq_indice != NULL){
+            fecharArquivo_bin(arq_indice);
+        }
+        if(arq_dados != NULL){
+            fecharArquivo_bin(arq_dados);
+        }
         free(nome_arq_indice);
         return;
     }
@@ -766,15 +772,27 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     char *nome_arq_indice = malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
+    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+
+    if(arquivo == NULL || arq_indice == NULL){ // Erro arquivo inconsistente
+        msg_erro_Arq_Inexistente();
+        printf("\n\n");
+        if(arq_indice != NULL){
+            fecharArquivo_bin(arq_indice);
+        }
+        if(arquivo != NULL){
+            fecharArquivo_bin(arquivo);
+        }
+        free(nome_arq_indice);
+        return;
+    }
 
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
     scanf("%d", &nro_reg);
 
     RegistroDados *registro;
-    alocaRegistrosDados(&registro, 1);
-
-    FILE *arquivo = abrirEscrita_bin(nome_arquivo);
+    alocaRegistrosDados(&registro, 1);    
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
 
@@ -786,10 +804,12 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     {
         lerRegistroDadosTeclado(registro);
         int RRN_res_busca = -1;
-        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca);
+        buscaChaveArvoreB(arq_indice,raiz, *(registro->idConecta), &RRN_res_busca); // Busca para impedir inserção duplicada
         if(RRN_res_busca == -1){
             int rrn_reg = inserirRegistroDadosArquivoBin(arquivo, cabecalho, registro);
             insercaoArvoreB(arq_indice, *(registro->idConecta), rrn_reg, raiz, cabecalhoArvB);
+        }else{
+
         }
         
     }
