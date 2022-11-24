@@ -206,6 +206,17 @@ void splitNosArvB(FILE *arq_indice, Chave chave, int filho_chave, noArvB *pagina
     // printf("Promoveu: %d (rrn: %d), filho: %d rrn novo: %d\n", *(chave_promocao->chave), *(chave_promocao->rrnDados), *filho_chave_promocao, rrnNovaPagina);
 }
 
+/**
+ * Insere um no na arvore B
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param Cn Chave (par chave e RRN do dado) a ser insereida.
+ * @param raiz Noh raiz da Arvore B.
+ * @param cabecalho Cabecalho do arquivo de indice.
+ * @param RRN_atual RRN do noh atual em que a recursao estah.
+ * @param chave_promocao Chave (par chave e RRN do dado) que serah promovida.
+ * @param filho_chave_promocao filho da chave que sera promovida.
+ */
 int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *cabecalho, int RRN_atual, Chave *chave_promocao, int *filho_chave_promocao)
 {
 

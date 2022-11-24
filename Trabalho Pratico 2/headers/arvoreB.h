@@ -43,7 +43,7 @@ void escreveNoArvB(FILE* arquivoArvB,  cabecalhoArvB* cabecalho, noArvB* no);
 cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
 
 /**
- * Le registro de dados do arquivo da arvore-B por RRN
+ * Le registro de dados do arquivo da arvore-B por RRN.
  * 
  * @param arquivoArvB Nome do arquivo.
  * @param RRN Numero Relativo do Registro.
@@ -54,28 +54,54 @@ noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
 
 /**
- * Busca uma chave na arvore B
-*/
+ * Busca uma chave na arvore B.
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param raiz Noh raiz da Arvore B.
+ * @param chave Chave a ser buscada na Arvore B.
+ * @param RRN_resultado RRN do dado encontrado no arquivo de dados.
+ * 
+ * @return retorna numero de paginas de disco acessadas na busca
+ * sem contar o cabecalho, já contando o noh raiz. Ou retorna -1 
+ * caso de erro.
+ */
 int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado);
 
 /**
- * Escreve um no da arvore B no arquivo de indice binario
-*/
+ * Escreve um no da arvore B no arquivo de indice binario.
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param cabecalho Cabecalho do arquivo de indice.
+ * @param raiz Noh raiz da Arvore B.
+ */
 void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn);
 
 /**
- * Escreve o cabecalho da arvore B no arquivo de indice binario
-*/
+ * Escreve o cabecalho da arvore B no arquivo de indice binario.
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param cabecalho Cabecalho do arquivo de indice.
+ */
 void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
 
 /**
- * Insere um no na arvore B
-*/
+ * Insere um no na arvore B.
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param Cn Chave a ser insereida.
+ * @param PRn RRN do arquivo de daodos do dado que possui 
+ * a chave a ser inserida.
+ * @param raiz Noh raiz da Arvore B.
+ * @param cabecalho Cabecalho do arquivo de indice.
+ */
 int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
 
 /**
- * Imprime a arvore ordenada (para debug)
-*/
+ * Imprime a arvore ordenada (para debug).
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param rrn RRN do noh raiz. Ou primeiro noh a ser impresso.
+ */
 void imprimeOrdenado(FILE * arq_indice, int rrn);
 
 #endif

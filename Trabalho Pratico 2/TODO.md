@@ -1,9 +1,17 @@
 # TODO
 
 ## Isaac
- - [ ] imprimeParcialRegistroDados() -> comentar
- - [ ] imprimeJuncaoRegistrosDados() -> comentar
+ - [ ] insercaoRecursiva() -> comentar
+    - [ ] @param filho_chave_promocao
 
-## Nicholas
+ - [ ] splitNosArvB() - > comentar
 
-- [ ] splitNoArvB
+  - [ ] imprimeNoTela() - > comentar
+
+  - [ ] inicializaNoArvB() - > comentar
+
+  - [ ] buscaChaveNo() - > comentar
+
+  - [ ] cabecahoArvB.h - > comentar
+
+  - [ ] noArvB.h - > comentar

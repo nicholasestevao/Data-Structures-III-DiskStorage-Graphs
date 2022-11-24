@@ -56,9 +56,10 @@ void desalocaRegistrosDados(RegistroDados ** registros, int numReg);
 void imprimeRegistroDadosTela(RegistroDados * registro);
 
 /**
- * Exibe na tela um RegistroDados.
+ * Exibe na tela a juncao de dois Registro de dados.
  * 
- * @param  dado1 RegistroDados a ser exibido na tela.
+ * @param dado1 RegistroDados a ser exibido na tela.
+ * @param dado2 RegistroDados a ser exibido na tela.
  */
 void imprimeJuncaoRegistrosDados(RegistroDados *dado1, RegistroDados * dado2);
 

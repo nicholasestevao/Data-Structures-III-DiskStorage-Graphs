@@ -737,6 +737,9 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Le o cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin);
 
+    //Le o no raiz da arvore B no arquivo de indice.
+    noArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
+
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
 
@@ -755,10 +758,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
         //Variavel para a contagem de numero de paginas de dados acessadas.
         long nroPagDiscoAcessadas = 0;
 
-
         if(!strcmp(nome_campo, "idConecta")) {
-            //Le o no raiz da arvore B no arquivo de indice.
-            noArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
 
             int RRN_dado = -1;
 
@@ -776,14 +776,15 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
                 desalocaRegistrosDados(&dado, 1);
 
                 //Soma 3 paginas de disco acessadas, pois leu o cabecalho do indice, 
-                //cabecalho do arquivo de dados e o dado em si no arquivo de dados
+                //cabecalho do arquivo de dados e o dado em si no arquivo de dados.
                 nroPagDiscoAcessadas += 3;
             } else  {
                 //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
                 msg_erro_Reg_Inexistente();
                 printf("\n\n");
+                //Soma 1 pagina de disco acessada, pois leu o cabecalho do indice.
+                nroPagDiscoAcessadas += 1;
             }
-            desalocaNoArvB(&raiz, 1);
         } else {
             //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
             if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
@@ -791,15 +792,15 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
                 printf("\n\n");
             }
             //Numero de paginas de disco acessadas e a quantidade de paginas de 
-            //disco existentes no arquivo de dados pois a busca eh feita por busca exastiva.
+            //disco existentes no arquivo de dados pois a busca eh feita por busca exaustiva.
             nroPagDiscoAcessadas = *(cabecalhoArqvBin->nroPagDisco);
         }
 
         printf("Numero de paginas de disco: %ld\n\n", nroPagDiscoAcessadas);
-        nroPagDiscoAcessadas = 1;
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
+    desalocaNoArvB(&raiz, 1);
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
     free(nome_arquivoArvB);
@@ -887,6 +888,7 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 }
 
 void funcionalidade10Juncao(char *nome_arquivo1) {
+    //Aloca memoria para nomes de arquivos e campos da junacao
     char *nome_arquivo2 = malloc(sizeof(char)*20);
     char *campo_arq1 = malloc(sizeof(char)*25);
     char *campo_arq2 = malloc(sizeof(char)*25);
