@@ -6,12 +6,31 @@
 #include <string.h>
 #include "funcoesFornecidas.h"
 
+/**
+ * 
+ * @struct Chave 
+ * 
+ * @var chave - Valor da chave de indice.
+ * @var rrnDados - RRN do registro de dados equivalente
+ * no arquivo de dados.
+ */
 typedef struct
 {
     int chave;
     int rrnDados;
 } Chave;
 
+/**
+ * 
+ * @struct NoArvB 
+ * 
+ * @var folha - indicacao de no folha.
+ * @var nroChavesNo - quantidade de chaves inseridas no no.
+ * @var alturaNo - altura do na Arvore B.
+ * @var RRNdoNo - RRN do no no arquivo de indice.
+ * @var chaves - Vetor de chaves do no.
+ * @var descendentes - Descendentes de cada chave inserida no no.
+ */
 typedef struct
 {
     char *folha;
@@ -20,7 +39,7 @@ typedef struct
     int *RRNdoNo;
     Chave *chaves;
     int *descendentes;
-} noArvB;
+} NoArvB;
 
 /**
  * Aloca memoria de todos os ponteiros de nos da 
@@ -29,7 +48,7 @@ typedef struct
  * @param no vetor de no.
  * @param numReg quantidade de itens do vetor de nos.
  */
-void alocaNoArvB(noArvB **registros, int numReg);
+void alocaNoArvB(NoArvB **registros, int numReg);
 
 /**
  * Desaloca memoria de todos os ponteiros de nos da 
@@ -38,7 +57,7 @@ void alocaNoArvB(noArvB **registros, int numReg);
  * @param no vetor de no.
  * @param numReg quantidade de itens do vetor de nos.
  */
-void desalocaNoArvB(noArvB **no, int numReg);
+void desalocaNoArvB(NoArvB **no, int numReg);
 
 /**
  * Insere uma chave de forma ordenada em um no da arvore-B.
@@ -47,20 +66,32 @@ void desalocaNoArvB(noArvB **no, int numReg);
  * @param Cn Chave a ser inserida.
  * @param PRn RRN da chave (Cn) no arquivo de dados.
  */
-void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho);
+void insereChaveOrdenadaNoArvB(NoArvB *no, Chave Cn, int filho);
 
 /**
- * Imprime no da arvore B na tela
+ * Imprime no da arvore B na tela.
+ * 
+ * @param no No a ser impresso na tela.
  */
-void imprimeNoTela(noArvB *no);
+void imprimeNoTela(NoArvB *no);
 
 /**
- * Preenche os valores padrao de um no da arvore B
+ * Preenche os valores padrao de um no da arvore B.
+ * 
+ * @param no No a ser inicializado com os valores padrao. 
  */
-void inicializaNoArvB(noArvB *no);
+void inicializaNoArvB(NoArvB *no);
 
 /**
- * Busca uma chave em um na da arvore
+ * Busca uma chave em no um na da arvore B.
+ * 
+ * @param no No onde sera realizado a busca.
+ * @param chave Que sera buscada no no.
+ * @param rrnBusca Retorno por parametro do RRN do no 
+ * filho onde a chave deveria estar.
+ * 
+ * @return retorna o RRN do registro de dado equivalente 
+ * da chave encontrada.
 */
-int buscaChaveNo(noArvB *no, int chave, int* rrnBusca);
+int buscaChaveNo(NoArvB *no, int chave, int* rrnBusca);
 #endif

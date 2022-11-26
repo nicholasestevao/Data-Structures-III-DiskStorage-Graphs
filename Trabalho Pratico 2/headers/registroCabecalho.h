@@ -7,14 +7,14 @@
 
 /**
  * 
- * @struct RegistroCabecalho 
+ * @struct RegistroCabecalho.
  * 
- * @var statius - status de inconsistencia do arquivo
- * @var topo - RRN no topo da pilha
- * @var proxRRN - proximo RRN disponivel (nao removido)
- * @var nroRegRem - quantidade de registros removidos
- * @var nroPagDisco - quantidade de paginas de disco usadas
- * @var qttCompacta - quantidade de vezes que o arquivo foi compactado/desfragmentado
+ * @var statius - status de inconsistencia do arquivo.
+ * @var topo - RRN no topo da pilha.
+ * @var proxRRN - proximo RRN disponivel (nao removido).
+ * @var nroRegRem - quantidade de registros removidos.
+ * @var nroPagDisco - quantidade de paginas de disco usadas.
+ * @var qttCompacta - quantidade de vezes que o arquivo foi compactado/desfragmentado.
  */
 typedef struct {
     char* status;
@@ -28,7 +28,7 @@ typedef struct {
 /**
  * Aloca memoria para todos os ponteiros do RegistroCabecalho.
  * 
- * @param registros Ponteiro para RegistroDados.
+ * @param registros Ponteiro para RegistroCabecalho.
  */
 void alocaRegistrosCabecalho(RegistroCabecalho **registro);
 

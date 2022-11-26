@@ -1,7 +1,7 @@
 #include "../headers/noArvB.h"
 
-// inicializa no
-void inicializaNoArvB(noArvB *no)
+// inicializa no.
+void inicializaNoArvB(NoArvB *no)
 {
     for (int j = 0; j < 4; j++)
     {
@@ -19,10 +19,10 @@ void inicializaNoArvB(noArvB *no)
     *(no->RRNdoNo) = 0;
 }
 
-// Aloca memoria para todos os ponteiros do RegistroDados.
-void alocaNoArvB(noArvB **no, int numReg)
+// Aloca memoria para todos os ponteiros do NoArvB.
+void alocaNoArvB(NoArvB **no, int numReg)
 {
-    *no = malloc(sizeof(noArvB) * numReg);
+    *no = malloc(sizeof(NoArvB) * numReg);
     for (int i = 0; i < numReg; i++)
     {
         (*no)[i].folha = malloc(sizeof(char));
@@ -35,8 +35,8 @@ void alocaNoArvB(noArvB **no, int numReg)
     }
 }
 
-// Desaloca memoria de todos os ponteiros do RegistroDados.
-void desalocaNoArvB(noArvB **no, int numReg)
+// Desaloca memoria de todos os ponteiros do NoArvB.
+void desalocaNoArvB(NoArvB **no, int numReg)
 {
     for (int i = 0; i < numReg; i++)
     {
@@ -52,7 +52,7 @@ void desalocaNoArvB(noArvB **no, int numReg)
 
 // Insere uma chave de forma ordenada em um no da arvore-B.
 // Assume que tem espaço
-void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho)
+void insereChaveOrdenadaNoArvB(NoArvB *no, Chave Cn, int filho)
 {
     int i = 0;
     // Encontra posicao onde a chave deve ser inserida
@@ -85,7 +85,7 @@ void insereChaveOrdenadaNoArvB(noArvB *no, Chave Cn, int filho)
     *(no->nroChavesNo) += 1;
 }
 
-void imprimeNoTela(noArvB *no)
+void imprimeNoTela(NoArvB *no)
 {
     printf("RRN do no: %d\n", *(no->RRNdoNo));
     printf("Opupacao: %d\n", *(no->nroChavesNo));
@@ -97,7 +97,7 @@ void imprimeNoTela(noArvB *no)
     printf("%d %d %d %d\n", (no->descendentes[3]), (no->chaves[3].chave), (no->chaves[3].rrnDados), (no->descendentes[4]));
 }
 
-int buscaChaveNo(noArvB *no, int chave, int* rrnBusca) {
+int buscaChaveNo(NoArvB *no, int chave, int* rrnBusca) {
     int i = 0;
     while(i< *(no->nroChavesNo) && ((no->chaves[i]).chave) <= chave){
         if(((no->chaves[i]).chave) == chave){

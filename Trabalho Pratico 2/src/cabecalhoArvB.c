@@ -1,8 +1,8 @@
 #include "../headers/cabecalhoArvB.h"
 
-void alocaCabecalhoArvB(cabecalhoArvB **registro)
+void alocaCabecalhoArvB(CabecalhoArvB **registro)
 {
-    (*registro) = malloc(sizeof(cabecalhoArvB));
+    (*registro) = malloc(sizeof(CabecalhoArvB));
     (*registro)->status = malloc(sizeof(char) * 1);
     (*registro)->noRaiz = malloc(sizeof(int) * 1);
     (*registro)->nroChavesTotal = malloc(sizeof(int) * 1);
@@ -16,7 +16,7 @@ void alocaCabecalhoArvB(cabecalhoArvB **registro)
     *((*registro)->RRNproxNo) = 0;
 }
 
-void desalocaCabecalhoArvB(cabecalhoArvB *registro)
+void desalocaCabecalhoArvB(CabecalhoArvB *registro)
 {
     free(registro->status);
     free(registro->noRaiz);
@@ -26,7 +26,7 @@ void desalocaCabecalhoArvB(cabecalhoArvB *registro)
     free(registro);
 }
 
-void imprimeCabecalhoArvBTela(cabecalhoArvB *cabecalho)
+void imprimeCabecalhoArvBTela(CabecalhoArvB *cabecalho)
 {
     printf("Status:\t\t%c\n", *(cabecalho->status));
     printf("Altura:\t\t%d\n", *(cabecalho->alturaArvore));

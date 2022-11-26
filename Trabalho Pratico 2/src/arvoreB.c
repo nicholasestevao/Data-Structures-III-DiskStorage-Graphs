@@ -4,9 +4,9 @@
 
 #include "../headers/arvoreB.h"
 
-cabecalhoArvB *lecabecalhoArvB(FILE *arquivoArvB)
+CabecalhoArvB *lecabecalhoArvB(FILE *arquivoArvB)
 {
-    cabecalhoArvB *cabecalho;
+    CabecalhoArvB *cabecalho;
     alocaCabecalhoArvB(&cabecalho);
     fseek(arquivoArvB, 0, SEEK_SET);
 
@@ -19,9 +19,9 @@ cabecalhoArvB *lecabecalhoArvB(FILE *arquivoArvB)
     return cabecalho;
 }
 
-noArvB *leNoArvB_RRN(FILE *arquivoArvB, int RRN)
+NoArvB *leNoArvB_RRN(FILE *arquivoArvB, int RRN)
 {
-    noArvB *no;
+    NoArvB *no;
     alocaNoArvB(&no, 1);
 
     long byteofset = (RRN * TAM_PAGINA_DISCO_ARV_B) + TAM_PAGINA_DISCO_ARV_B;
@@ -49,7 +49,7 @@ noArvB *leNoArvB_RRN(FILE *arquivoArvB, int RRN)
     return no;
 }
 
-int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado) {
+int buscaChaveArvoreB(FILE* arquivoArvB, NoArvB *raiz, int chave, int *RRN_resultado) {
     long nroPagDiscoAcessadas = 1;
     if(raiz == NULL) {
         return -1;
@@ -58,7 +58,7 @@ int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resul
 
     *RRN_resultado = buscaChaveNo(raiz, chave, &RRN_busca);
     while(RRN_busca != -1) {
-        noArvB *no = leNoArvB_RRN(arquivoArvB, RRN_busca);
+        NoArvB *no = leNoArvB_RRN(arquivoArvB, RRN_busca);
         *RRN_resultado = buscaChaveNo(no, chave, &RRN_busca);
         if(*(no->alturaNo) == 1 && *RRN_resultado == -1) {
             desalocaNoArvB(&no, 1);
@@ -70,7 +70,7 @@ int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resul
     return nroPagDiscoAcessadas;
 }
 
-void escreveNoArqIndice(FILE *arqIndice, cabecalhoArvB *cabecalho, noArvB *no, int rrn)
+void escreveNoArqIndice(FILE *arqIndice, CabecalhoArvB *cabecalho, NoArvB *no, int rrn)
 {
     int byteoffset = TAM_PAGINA_DISCO_ARV_B * (rrn + 1);
     fseek(arqIndice, byteoffset, SEEK_SET);
@@ -94,7 +94,7 @@ void escreveNoArqIndice(FILE *arqIndice, cabecalhoArvB *cabecalho, noArvB *no, i
     fwrite(&(no->descendentes[4]), sizeof(int), 1, arqIndice);
 }
 
-void escreveCabecalhoArqIndice(FILE *arqIndice, cabecalhoArvB *cabecalho)
+void escreveCabecalhoArqIndice(FILE *arqIndice, CabecalhoArvB *cabecalho)
 {
     fseek(arqIndice, 0, SEEK_SET);
 
@@ -113,7 +113,21 @@ void escreveCabecalhoArqIndice(FILE *arqIndice, cabecalhoArvB *cabecalho)
     free(lixo);
 }
 
-void splitNosArvB(FILE *arq_indice, Chave chave, int filho_chave, noArvB *pagina, Chave *chave_promocao, int *filho_chave_promocao, noArvB *novaPagina, int rrnNovaPagina)
+/**
+ * Realiza a rotina de split em um no da arvoreB.
+ * Para isso recebe um nó cheio, uma chave para inserir (e seu filho a dreita se possuir) e um nó vazio.
+ * Além disso retorna por paramentro a chave promovida e o seu filho a direita.
+ * 
+ * @param arq_indice Arquivo de indice (Arvore B) .bin.
+ * @param chave Chave a ser inserida.
+ * @param filho_chave No filho da chave a ser inserida.
+ * @param pagina No cheio que ira sofrer split.
+ * @param chave_promocao Chave que foi promovida retornada por parametro.
+ * @param filho_chave_promocao Filho a direita da chave que sera promovida.
+ * @param novaPagina No vazio para realizar o split (novo no criado).
+ * @param rrnNovaPagina RRN desse novo no.
+ */
+void splitNosArvB(FILE *arq_indice, Chave chave, int filho_chave, NoArvB *pagina, Chave *chave_promocao, int *filho_chave_promocao, NoArvB *novaPagina, int rrnNovaPagina)
 {
     // Recebe um nó cheio, uma chave para inserir e um nó vazio
     // Retorna a chave que foi promovida
@@ -202,12 +216,12 @@ void splitNosArvB(FILE *arq_indice, Chave chave, int filho_chave, noArvB *pagina
         *(pagina->folha) = '1';
         *(novaPagina->folha) = '1';
     }
-
-    // printf("Promoveu: %d (rrn: %d), filho: %d rrn novo: %d\n", *(chave_promocao->chave), *(chave_promocao->rrnDados), *filho_chave_promocao, rrnNovaPagina);
 }
 
 /**
- * Insere um no na arvore B
+ * Insere um no na arvore B de forma recursiva, descendo na arvore B
+ * ate achar um no folha onde a chave deve ser inserida. Caso nao haja espaco
+ * realiza a subrotina de split.
  * 
  * @param arq_indice Arquivo de indice (Arvore B) .bin.
  * @param Cn Chave (par chave e RRN do dado) a ser insereida.
@@ -215,12 +229,12 @@ void splitNosArvB(FILE *arq_indice, Chave chave, int filho_chave, noArvB *pagina
  * @param cabecalho Cabecalho do arquivo de indice.
  * @param RRN_atual RRN do noh atual em que a recursao estah.
  * @param chave_promocao Chave (par chave e RRN do dado) que serah promovida.
- * @param filho_chave_promocao filho da chave que sera promovida.
+ * @param filho_chave_promocao Filho a direita da chave que sera promovida.
  */
-int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *cabecalho, int RRN_atual, Chave *chave_promocao, int *filho_chave_promocao)
+int insercaoRecursiva(FILE *arqIndice, Chave Cn, NoArvB *raiz, CabecalhoArvB *cabecalho, int RRN_atual, Chave *chave_promocao, int *filho_chave_promocao)
 {
 
-    noArvB *pagina;
+    NoArvB *pagina;
     int resBusca = -1;
     int rrnBusca = -1; // rrn de onde a chave buscada deveria estar
 
@@ -282,7 +296,7 @@ int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *ca
     else
     { // se nao tem espaco no nó -> ocorre split
         // Cria novo no
-        noArvB *nova_pagina;
+        NoArvB *nova_pagina;
         alocaNoArvB(&nova_pagina, 1);
         // Divide as chaves entre os nós e decide qual vai ser promovida
         splitNosArvB(arqIndice, chave_promocao_below, filho_chave_promocao_below, pagina, chave_promocao, filho_chave_promocao, nova_pagina, *(cabecalho->RRNproxNo));
@@ -304,7 +318,7 @@ int insercaoRecursiva(FILE *arqIndice, Chave Cn, noArvB *raiz, cabecalhoArvB *ca
     return ERRO;
 }
 
-int insercaoArvoreB(FILE *arqIndice, int Cn, int PRn, noArvB *raiz, cabecalhoArvB *cabecalho)
+int insercaoArvoreB(FILE *arqIndice, int Cn, int PRn, NoArvB *raiz, CabecalhoArvB *cabecalho)
 {
     // Cria nova chave
     Chave chave;
@@ -361,7 +375,7 @@ int insercaoArvoreB(FILE *arqIndice, int Cn, int PRn, noArvB *raiz, cabecalhoArv
 
 void imprimeOrdenado(FILE *arq_indice, int rrn)
 {
-    noArvB *no_atual = leNoArvB_RRN(arq_indice, rrn);
+    NoArvB *no_atual = leNoArvB_RRN(arq_indice, rrn);
     for (int i = 0; i < 4; i++)
     {
         if (no_atual->descendentes[i] != -1)

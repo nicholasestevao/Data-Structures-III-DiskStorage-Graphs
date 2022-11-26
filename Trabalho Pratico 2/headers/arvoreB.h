@@ -22,7 +22,7 @@
  * @param cabecalho Ponteiro para cabecalho a ser 
  * escrito no aquivo da arvore-B.  
  */
-void escreverCabecalhoArquivoAvrB(FILE* arquivoArvB, cabecalhoArvB* cabecalho); 
+void escreverCabecalhoArquivoAvrB(FILE* arquivoArvB, CabecalhoArvB* cabecalho); 
 
 /**
  * Escreve noh no arquivo da arvore-B.
@@ -33,14 +33,14 @@ void escreverCabecalhoArquivoAvrB(FILE* arquivoArvB, cabecalhoArvB* cabecalho);
  * @param no Ponteiro para no a ser 
  * escrito no arquivo da arvore-B.
  */
-void escreveNoArvB(FILE* arquivoArvB,  cabecalhoArvB* cabecalho, noArvB* no);
+void escreveNoArvB(FILE* arquivoArvB,  CabecalhoArvB* cabecalho, NoArvB* no);
 
 /**
  * Le registro de cabecalho do arquivo da arvore-B.
  * 
  * @param arquivoArvB Nome do arquivo.
  */
-cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
+CabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
 
 /**
  * Le registro de dados do arquivo da arvore-B por RRN.
@@ -50,7 +50,7 @@ cabecalhoArvB* lecabecalhoArvB(FILE* arquivoArvB);
  * 
  * @return Retorna um ponteiro para o dado do RRN.
  */ 
-noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
+NoArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
 
 
 /**
@@ -65,7 +65,7 @@ noArvB* leNoArvB_RRN(FILE* arquivoArvB, int RRN);
  * sem contar o cabecalho, já contando o noh raiz. Ou retorna -1 
  * caso de erro.
  */
-int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resultado);
+int buscaChaveArvoreB(FILE* arquivoArvB, NoArvB *raiz, int chave, int *RRN_resultado);
 
 /**
  * Escreve um no da arvore B no arquivo de indice binario.
@@ -74,7 +74,7 @@ int buscaChaveArvoreB(FILE* arquivoArvB, noArvB *raiz, int chave, int *RRN_resul
  * @param cabecalho Cabecalho do arquivo de indice.
  * @param raiz Noh raiz da Arvore B.
  */
-void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, int rrn);
+void escreveNoArqIndice(FILE* arqIndice,CabecalhoArvB* cabecalho ,NoArvB* no, int rrn);
 
 /**
  * Escreve o cabecalho da arvore B no arquivo de indice binario.
@@ -82,10 +82,12 @@ void escreveNoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho ,noArvB* no, in
  * @param arq_indice Arquivo de indice (Arvore B) .bin.
  * @param cabecalho Cabecalho do arquivo de indice.
  */
-void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
+void escreveCabecalhoArqIndice(FILE* arqIndice,CabecalhoArvB* cabecalho);
 
 /**
- * Insere um no na arvore B.
+ * Insere um no na arvore B. Caso nao seja a situacao inicial realiza
+ * a subrotina de insercao recursiva. E quando necessario tambem realiza 
+ * o split da raiz. 
  * 
  * @param arq_indice Arquivo de indice (Arvore B) .bin.
  * @param Cn Chave a ser insereida.
@@ -94,7 +96,7 @@ void escreveCabecalhoArqIndice(FILE* arqIndice,cabecalhoArvB* cabecalho);
  * @param raiz Noh raiz da Arvore B.
  * @param cabecalho Cabecalho do arquivo de indice.
  */
-int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, noArvB* raiz, cabecalhoArvB* cabecalho);
+int insercaoArvoreB(FILE* arqIndice, int Cn, int PRn, NoArvB* raiz, CabecalhoArvB* cabecalho);
 
 /**
  * Imprime a arvore ordenada (para debug).

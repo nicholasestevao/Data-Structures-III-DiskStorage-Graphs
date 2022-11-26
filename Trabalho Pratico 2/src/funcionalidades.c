@@ -336,7 +336,7 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
  * dado com o valor do campo procurado ou a quantidade 
  * de dados com o valor do campo procurado.
  */
-int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, cabecalhoArvB *cabecalhoArvB, FILE *arquivoArvB)
+int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, CabecalhoArvB *cabecalhoArvB, FILE *arquivoArvB)
 {   
     //Inidcador de alocacao do cabecalho.
     int flag_cabecalho = 0;
@@ -675,10 +675,10 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     //Le cabecalho do arquivo binario.
     RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
-    cabecalhoArvB *cabecalho;
+    CabecalhoArvB *cabecalho;
     alocaCabecalhoArvB(&cabecalho);
 
-    noArvB *raiz;
+    NoArvB *raiz;
     alocaNoArvB(&raiz, 1);
 
     //Percorre arquivo de dados inteiro.
@@ -732,13 +732,13 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     }
     
     //Le o cabecalho do arquivo de indice.
-    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
+    CabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
 
     //Le o cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin);
 
     //Le o no raiz da arvore B no arquivo de indice.
-    noArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
+    NoArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
 
     char *nome_campo = malloc(sizeof(char) * 50);
     char *valor_campo = malloc(sizeof(char) * 50);
@@ -843,10 +843,10 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivo);
 
     //Le o arquivo de cabecalho do arquivo de indice.
-    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arq_indice);
+    CabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arq_indice);
 
     //Le o no raiz da arvore B no arquivo de indice.
-    noArvB *raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
+    NoArvB *raiz = leNoArvB_RRN(arq_indice, *(cabecalhoArvB->noRaiz));
 
     //Insere n registros
     for (int i = 0; i < nro_reg; i++)
@@ -926,13 +926,13 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     }
     
     //Le cabecalho do arquivo de indice.
-    cabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB_arq2);
+    CabecalhoArvB *cabecalhoArvB = lecabecalhoArvB(arquivoArvB_arq2);
 
     //Le cabecalho do arquivo de dados.
     RegistroCabecalho *cabecalhoArqvBin = lerRegistroCabecalhoArquivoBin(arquivoBin1);
 
     //Le o no raiz da arvore B no arquivo de indice.
-    noArvB *raiz = leNoArvB_RRN(arquivoArvB_arq2, *(cabecalhoArvB->noRaiz));
+    NoArvB *raiz = leNoArvB_RRN(arquivoArvB_arq2, *(cabecalhoArvB->noRaiz));
 
     //Quantidade de dados encontrados no arquivo de indice.
     long nroDadosEncontrados = 0;
