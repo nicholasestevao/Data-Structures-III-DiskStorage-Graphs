@@ -782,8 +782,9 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
                 //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
                 msg_erro_Reg_Inexistente();
                 printf("\n\n");
-                //Soma 1 pagina de disco acessada, pois leu o cabecalho do indice.
-                nroPagDiscoAcessadas += 1;
+                //Soma 3 paginas de disco acessadas, pois leu o cabecalho do indice, 
+                //cabecalho do arquivo de dados.
+                nroPagDiscoAcessadas += 2;
             }
         } else {
             //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
