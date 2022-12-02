@@ -713,7 +713,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     scanf("%s %d", nome_arquivoArvB, &numBuscas);
 
     //Abre o arquivo de indice para leitura.
-    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
+    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivoArvB);
     if (arquivoArvB == NULL)
     {
         msg_erro_Arq_Inconsistente();
