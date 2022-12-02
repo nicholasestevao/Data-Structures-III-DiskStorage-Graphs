@@ -1,0 +1,161 @@
+idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade
+47,,,CL,63,G,1
+23,Natal,Brazil,BR,31,G,10
+50,Osorno,Chile,CL,55,M,155
+48,,,CL,66,G,1
+40,,,,,,
+28,Macapa,,BR,,,
+73,Frankfurt,Germany,DE,77,G,5
+100,Moscow,Russia,RU,,,
+72,Poznan,Poland,PL,79,G,5
+65,,Chile,,,,
+72,,Poland,PL,73,G,10
+16,Florianopolis,Brazil,,17,G,10
+31,Fortaleza,Brazil,BR,94,G,100
+47,,,CL,51,G,1
+83,Istanbul,Turkey,TR,,,
+76,Paris,France,FR,77,G,5
+73,Frankfurt,Germany,,75,G,10
+55,Valdivia,Chile,,56,M,155
+13,Cuiaba,Brazil,BR,18,G,3
+52,Copiapo,Chile,CL,61,G,1
+76,Paris,France,FR,103,G,5
+6,Belo Horizonte,Brazil,BR,8,G,10
+17,Sao Paulo,Brazil,BR,24,G,1
+72,Poznan,Poland,PL,88,G,1
+34,UACH,Chile,CL,55,G,2
+73,Frankfurt,,DE,98,G,10
+21,Campo Grande,Brazil,BR,,,
+94,Madrid,Spain,ES,,,
+27,Boa Vista,Brazil,BR,,,
+74,Prague,Czech Republic,CZ,92,G,5
+76,Paris,France,FR,94,G,10
+68,REUNA,Chile,CL,,,
+90,Podgorica ,Montenegro,ME,96,M,155
+48,,,,58,G,1
+48,,,CL,65,G,1
+87,Msida,Malta,MT,,,
+48,,,,64,G,1
+60,UBB,Chile,,,,
+79,Kyiv,,UA,,,
+53,Antofagasta,Chile,CL,54,M,155
+88,,,BY,,,
+10,Rio de Janeiro,Brazil,BR,17,G,10
+98,Vienna,Austria,AT,,,
+75,Luxembourg,Luxembourg,LU,76,G,10
+31,Fortaleza,Brazil,BR,93,G,100
+92,Bratislava ,Slovakia,SK,98,G,5
+15,Porto Alegre,Brazil,BR,16,G,10
+5,,Brazil,BR,11,M,200
+4,Joao Passoa,Brazil,BR,23,G,10
+73,Frankfurt,Germany,DE,,,
+107,Tallinn ,Estonia,EE,108,G,10
+17,,,BR,26,G,20
+91,Budapest ,Hungary,HU,95,G,10
+102,Dublin,Ireland,IE,103,G,10
+81,Sofia,Bulgaria,BG,89,M,155
+57,Concepcion,Chile,CL,58,M,301
+5,Brasilia,Brazil,BR,27,M,20
+30,Sao Luis,Brazil,BR,31,G,3
+67,,,CL,,,
+32,UCT,Chile,CL,45,G,1
+6,Belo Horizonte,Brazil,,17,G,10
+46,,Chile,CL,57,G,1
+18,Porto Velho,Brazil,BR,19,G,3
+78,Milan,Italy,IT,84,G,10
+5,Brasilia,Brazil,,10,G,10
+78,,Italy,,87,G,1
+105,Stockholm ,Sweden,SE,106,G,5
+81,Sofia,Bulgaria,BG,83,G,10
+5,Brasilia,Brazil,BR,6,G,10
+59,UDEC,Chile,CL,,,
+29,Belem,Brazil,BR,30,G,3
+45,,Chile,CL,56,G,1
+91,,Hungary,,96,G,5
+3,Campina Grande,Brazil,BR,4,G,10
+81,Sofia,Bulgaria,BG,91,G,10
+70,Brussels,Belgium,BE,102,G,5
+72,Poznan,Poland,PL,74,G,10
+36,UCN,Chile,CL,53,G,4
+33,ULAGOS,Chile,CL,50,G,1
+14,Curitiba,Brazil,BR,15,G,10
+62,ULS,Chile,CL,,,
+25,Inetnet Comercial,Brazil,BR,,,
+78,Milan,Italy,IT,94,G,10
+2,Maceio,Brazil,BR,7,G,10
+46,,,CL,60,G,1
+69,Amsterdam,Netherlands,NL,71,G,5
+69,Amsterdam,Netherlands,NL,70,G,5
+81,Sofia,Bulgaria,BG,82,G,10
+5,Brasilia,Brazil,BR,28,M,20
+9,Vitoria,Brazil,,10,G,10
+99,Kaunas ,Lithuania,LT,108,G,10
+61,UDA,,CL,,,
+7,Aracaju,Brazil,BR,8,G,10
+39,UTA,Chile,CL,41,G,7
+81,Sofia,Bulgaria,BG,84,G,10
+51,La Serena,Chile,CL,58,M,301
+19,Rio Branco,Brazil,,,,
+77,Geneva,Switzerland,CH,94,G,5
+41,Arica,Chile,CL,54,M,155
+6,,Brazil,BR,31,G,10
+104,Oslo,Norway,NO,105,G,5
+13,Cuiaba,Brazil,BR,21,G,3
+37,UNAP Sede Santiago,Chile,CL,68,G,5
+44,RC-Nacional,Chile,,58,G,1
+12,Goiania,Brazil,BR,13,G,3
+73,Frankfurt,Germany,DE,74,G,5
+64,UCHILE,,CL,,,
+93,Lisbon,Portugal,PT,103,G,10
+42,PITs Nacionales,Chile,CL,44,G,4
+101,Reykjavik ,Iceland,IS,103,G,3
+49,RedCLARA,Chile,CL,58,G,1
+14,,Brazil,BR,21,G,3
+106,Helsinki ,Finland,FI,,,
+103,London,United Kingdom,UK,,,
+69,Amsterdam,Netherlands,NL,73,G,5
+91,Budapest ,Hungary,,92,G,5
+89,Skopje,Macedonia,MK,,,
+52,Copiapo,Chile,CL,53,M,205
+22,Teresina,Brazil,,29,G,3
+48,,,CL,67,G,1
+17,Sao Paulo,Brazil,BR,25,G,4
+14,Curitiba,Brazil,BR,17,G,10
+73,Frankfurt,Germany,DE,86,G,3
+108,Riga ,Latvia,LV,,,
+93,Lisbon,Portugal,PT,94,G,10
+1,Recife,Brazil,BR,22,G,3
+8,Salvador,,BR,9,G,10
+85,Nicosia,Cyprus,CY,103,G,1
+56,Temuco,Chile,CL,57,M,205
+72,Poznan,Poland,PL,99,G,10
+63,AURA,Chile,CL,,,
+95,,Serbia,RS,,,
+54,Iquique,Chile,CL,,,
+69,Amsterdam,Netherlands,NL,99,G,3
+11,Manaus,Brazil,BR,,,
+47,,Chile,CL,62,G,1
+69,Amsterdam,,NL,103,G,3
+66,UMCE,Chile,CL,,,
+43,RC-12,,CL,58,G,1
+43,RC-12,Chile,,49,G,1
+48,,,CL,68,G,1
+20,Palmas,Brazil,BR,,,
+77,Geneva,Switzerland,CH,78,G,5
+82,Bucharest,Romania,RO,91,G,10
+12,Goiania,Brazil,BR,20,G,3
+78,Milan,Italy,IT,98,G,5
+1,Recife,Brazil,BR,3,G,10
+35,UFRO,Chile,CL,45,G,3
+96,Zagreb ,Croatia,HR,97,G,5
+86,Tel Aviv,Israel,IL,99,G,3
+97,Ljubljana ,Slovenia,SL,98,G,5
+58,Santiago,Chile,CL,,,
+51,La Serena,Chile,CL,52,M,205
+46,,,CL,59,G,1
+24,RedCLARA,Brazil,BR,49,G,100
+84,Athens,Greece,GR,98,G,10
+80,,,MD,82,G,1
+26,Americas Light,Brazil,BR,,,
+38,UNAP,Chile,CL,54,G,6
+73,,Germany,,85,G,1
