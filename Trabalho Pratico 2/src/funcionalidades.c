@@ -325,42 +325,6 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 
 /**
  * Busca em um arquivo binario toos os dados que possuem um valor especifico
- * para um campo especifico e os exibe na tela.
- *
- * @param nome_campo Campo que sera buscado.
- * @param valor_campo Valor que sera buscado.
- * @param cabecalhoArvB Cabecalho do arquivo binario da arvore B.
- * @param arquivoArvB Arquivo binario de indices (Arvore B).
- *
- * @return Retorna 0 quando não encontrou nunhum dado
- * dado com o valor do campo procurado ou a quantidade 
- * de dados com o valor do campo procurado.
- */
-int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, CabecalhoArvB *cabecalhoArvB, FILE *arquivoArvB)
-{   
-    //Inidcador de alocacao do cabecalho.
-    int flag_cabecalho = 0;
-
-    if(cabecalhoArvB == NULL) {
-        //Se cabecalho for nulo aloca para poder usar na função.
-        cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
-        //Indica que o cabecalho foi alocado.
-        flag_cabecalho = 1;
-    }
-
-    int flag_encontrados = 0;
-    
-
-    if(flag_cabecalho == 1) {
-        desalocaCabecalhoArvB(cabecalhoArvB);
-        cabecalhoArvB = NULL;
-    }
-
-    return flag_encontrados;
-}
-
-/**
- * Busca em um arquivo binario toos os dados que possuem um valor especifico
  * para um campo especifico e os remove logicamente desse arquivo.
  *
  * @param nome_campo Campo que sera buscado.
