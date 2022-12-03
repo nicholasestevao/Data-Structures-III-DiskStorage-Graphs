@@ -104,7 +104,7 @@ void escreveCabecalhoArqIndice(FILE *arqIndice, CabecalhoArvB *cabecalho)
     fwrite(cabecalho->alturaArvore, sizeof(int), 1, arqIndice);
     fwrite(cabecalho->RRNproxNo, sizeof(int), 1, arqIndice);
 
-    char *lixo = malloc(sizeof(char) * TAM_PAGINA_DISCO_ARV_B);
+    char *lixo = (char*) malloc(sizeof(char) * TAM_PAGINA_DISCO_ARV_B);
     for (int i = 0; i < TAM_PAGINA_DISCO_ARV_B; i++)
     {
         lixo[i] = '$';

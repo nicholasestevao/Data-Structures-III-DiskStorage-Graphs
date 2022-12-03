@@ -1,15 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
 #include "../headers/funcoesFornecidas.h"
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
 
+using std::cin;
+
 int main(int argC, char *argV[]){
     int opcao;
-    char * nome_arquivo = malloc(sizeof(char)*20);
+    char *nome_arquivo = new char[20];
     
-    scanf("%d %s", &opcao, nome_arquivo);
+    cin >> opcao >> nome_arquivo;
 
     switch (opcao)
     {
@@ -63,7 +63,7 @@ int main(int argC, char *argV[]){
             break;
     }
 
-    free(nome_arquivo);
+    delete[] nome_arquivo;
 
     return 0;
 }   

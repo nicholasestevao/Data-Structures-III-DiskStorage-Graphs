@@ -3,18 +3,18 @@
 //Aloca memoria para todos os ponteiros do RegistroDados.
 void alocaRegistrosDados(RegistroDados **registros, int numReg)
 {
-    *registros = malloc(sizeof(RegistroDados) * numReg);
+    *registros = (RegistroDados*) malloc(sizeof(RegistroDados) * numReg);
     for (int i = 0; i < numReg; i++)
     {
-        (*registros)[i].removido = malloc(sizeof(char) * 1);
-        (*registros)[i].encadeamento = malloc(sizeof(int) * 1);
-        (*registros)[i].idConecta = malloc(sizeof(int) * 1);
-        (*registros)[i].siglaPais = malloc(sizeof(char) * 3);
-        (*registros)[i].idPoPsConectado = malloc(sizeof(int) * 1);
-        (*registros)[i].unidadeMedida = malloc(sizeof(char) * 2);
-        (*registros)[i].velocidade = malloc(sizeof(int) * 1);
-        (*registros)[i].nomePoPs = malloc(sizeof(char) * 45);
-        (*registros)[i].nomePais = malloc(sizeof(char) * 45);
+        (*registros)[i].removido = (char*) malloc(sizeof(char) * 1);
+        (*registros)[i].encadeamento = (int*) malloc(sizeof(int) * 1);
+        (*registros)[i].idConecta = (int*) malloc(sizeof(int) * 1);
+        (*registros)[i].siglaPais = (char*) malloc(sizeof(char) * 3);
+        (*registros)[i].idPoPsConectado = (int*) malloc(sizeof(int) * 1);
+        (*registros)[i].unidadeMedida = (char*) malloc(sizeof(char) * 2);
+        (*registros)[i].velocidade = (int*) malloc(sizeof(int) * 1);
+        (*registros)[i].nomePoPs = (char*) malloc(sizeof(char) * 45);
+        (*registros)[i].nomePais = (char*) malloc(sizeof(char) * 45);
 
         *((*registros)[i].removido) = '0';
         *((*registros)[i].encadeamento) = -1;
@@ -126,13 +126,13 @@ void imprimeJuncaoRegistrosDados(RegistroDados *dado1, RegistroDados * dado2) {
 //Recebe um RegistroDados do teclado e coloca na RAM.
 void lerRegistroDadosTeclado(RegistroDados *registro)
 {
-    char *id_conecta = malloc(sizeof(char) * 10);
-    char *nomePoPs = malloc(sizeof(char) * 50);
-    char *nomePais = malloc(sizeof(char) * 50);
-    char *siglaPais = malloc(sizeof(char) * 3);
-    char *id_pops_conectado = malloc(sizeof(char) * 10);
-    char *unidade = malloc(sizeof(char) * 10);
-    char *velocidade = malloc(sizeof(char) * 10);
+    char *id_conecta = (char*) malloc(sizeof(char) * 10);
+    char *nomePoPs = (char*) malloc(sizeof(char) * 50);
+    char *nomePais = (char*)malloc(sizeof(char) * 50);
+    char *siglaPais = (char*) malloc(sizeof(char) * 3);
+    char *id_pops_conectado = (char*) malloc(sizeof(char) * 10);
+    char *unidade = (char*) malloc(sizeof(char) * 10);
+    char *velocidade = (char*) malloc(sizeof(char) * 10);
 
     scanf("%s", id_conecta);
     scan_quote_string(nomePoPs);
@@ -142,7 +142,7 @@ void lerRegistroDadosTeclado(RegistroDados *registro)
     scan_quote_string(unidade);
     scanf("%s", velocidade);
 
-    char *nulo = malloc(sizeof(char) * 10);
+    char *nulo = (char*) malloc(sizeof(char) * 10);
     strcpy(nulo, "NULO");
     if (strcmp(id_conecta, nulo) != 0)
     {

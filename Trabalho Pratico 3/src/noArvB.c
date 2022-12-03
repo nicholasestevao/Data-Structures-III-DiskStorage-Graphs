@@ -22,15 +22,15 @@ void inicializaNoArvB(NoArvB *no)
 // Aloca memoria para todos os ponteiros do NoArvB.
 void alocaNoArvB(NoArvB **no, int numReg)
 {
-    *no = malloc(sizeof(NoArvB) * numReg);
+    *no = (NoArvB*) malloc(sizeof(NoArvB) * numReg);
     for (int i = 0; i < numReg; i++)
     {
-        (*no)[i].folha = malloc(sizeof(char));
-        (*no)[i].nroChavesNo = malloc(sizeof(int));
-        (*no)[i].alturaNo = malloc(sizeof(int));
-        (*no)[i].RRNdoNo = malloc(sizeof(int));
-        (*no)[i].chaves = malloc(sizeof(Chave) * 4);
-        (*no)[i].descendentes = malloc(sizeof(int) * 5);
+        (*no)[i].folha = (char*) malloc(sizeof(char));
+        (*no)[i].nroChavesNo = (int*) malloc(sizeof(int));
+        (*no)[i].alturaNo = (int*) malloc(sizeof(int));
+        (*no)[i].RRNdoNo =(int*)  malloc(sizeof(int));
+        (*no)[i].chaves = (Chave*) malloc(sizeof(Chave) * 4);
+        (*no)[i].descendentes = (int*) malloc(sizeof(int) * 5);
         inicializaNoArvB(no[i]);
     }
 }
