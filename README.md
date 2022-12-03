@@ -9,7 +9,7 @@ lecionada pela Docente Cristina Dutra de Aguiar, para o curso de Engenharia de C
 
 ---
 
-## Trabalho 1 - Leitura e Escrita em arquivos binários
+## Trabalho 0 - Leitura e Escrita em arquivos binários
 
 Considere os seguintes dados a respeito de uma pessoa:
 
@@ -106,5 +106,17 @@ arquivos inexistentes a saída deverá ser “Falha no processamento do arquivo�
 2. O ‘\0’ das strings deve ser armazenado no arquivo de dados. 
 3. É necessário preencher o espaço restante do campo do registro com um caractere de lixo,
 que será o ‘$’.
+
+---
+
+## Trabalho 1 - 
+
+---
+
+## Trabalho 2 - Arquivos de Indice (Arvore B)
+
+---
+
+## Trabalho 3 - Grafos
 
 ---
