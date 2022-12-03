@@ -1,12 +1,15 @@
 #ifndef __FUNCIONALIDADES_C__
 #define __FUNCIONALIDADES_C__
 
-#include <stdlib.h>
+#include <iostream>
 #include "mensagens.h"
 #include "arquivoBin.h"
 #include "arquivoCsv.h"
 #include "arvoreB.h"
 #include "funcoesFornecidas.h"
+
+using std::cin;
+using std::cout;
 
 /**
  * Create Table (Funcionalidade_1).

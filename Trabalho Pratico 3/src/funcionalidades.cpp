@@ -325,42 +325,6 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 
 /**
  * Busca em um arquivo binario toos os dados que possuem um valor especifico
- * para um campo especifico e os exibe na tela.
- *
- * @param nome_campo Campo que sera buscado.
- * @param valor_campo Valor que sera buscado.
- * @param cabecalhoArvB Cabecalho do arquivo binario da arvore B.
- * @param arquivoArvB Arquivo binario de indices (Arvore B).
- *
- * @return Retorna 0 quando não encontrou nunhum dado
- * dado com o valor do campo procurado ou a quantidade 
- * de dados com o valor do campo procurado.
- */
-int buscaCampoImprimeArquivoIndex(char *nome_campo, char *valor_campo, CabecalhoArvB *cabecalhoArvB, FILE *arquivoArvB)
-{   
-    //Inidcador de alocacao do cabecalho.
-    int flag_cabecalho = 0;
-
-    if(cabecalhoArvB == NULL) {
-        //Se cabecalho for nulo aloca para poder usar na função.
-        cabecalhoArvB = lecabecalhoArvB(arquivoArvB);
-        //Indica que o cabecalho foi alocado.
-        flag_cabecalho = 1;
-    }
-
-    int flag_encontrados = 0;
-    
-
-    if(flag_cabecalho == 1) {
-        desalocaCabecalhoArvB(cabecalhoArvB);
-        cabecalhoArvB = NULL;
-    }
-
-    return flag_encontrados;
-}
-
-/**
- * Busca em um arquivo binario toos os dados que possuem um valor especifico
  * para um campo especifico e os remove logicamente desse arquivo.
  *
  * @param nome_campo Campo que sera buscado.
@@ -407,13 +371,13 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 void funcionalidade1CreateTable(char *nome_arquivo_csv)
 {
     // Recebe nome do arquivo bin
-    char *nome_arquivo_bin = (char*) malloc(sizeof(char) * 20);
-    scanf("%s", nome_arquivo_bin);
+    char *nome_arquivo_bin = new char[20];
+    cin >> nome_arquivo_bin;
 
     FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
     if (arquivoCSV == NULL)
     {
-        free(nome_arquivo_bin);
+        delete[] nome_arquivo_bin;
         msg_erro_Arq_Inconsistente();
         return;
     }
@@ -422,7 +386,7 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     {
         msg_erro_Arq_FalhaCriacao();
         fclose(arquivoCSV);
-        free(nome_arquivo_bin);
+        delete[] nome_arquivo_bin;
         return;
     }
     RegistroCabecalho *cabecalho;
@@ -430,7 +394,7 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     RegistroDados *dados;
     alocaRegistrosDados(&dados, 1);
 
-    char *buf = (char*) malloc(sizeof(char) * 100);
+    char *buf = new char[100];
 
     // Pega a primeira linha do arquivo CSV e descarta
     fgets(buf, 100, arquivoCSV);
@@ -454,9 +418,9 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     desalocaRegistrosDados(&dados, 1);
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
-    free(buf);
+    delete[] buf;
     binarioNaTela(nome_arquivo_bin);
-    free(nome_arquivo_bin);
+    delete[] nome_arquivo_bin;
 }
 
 void funcionalidade2Select(char *nome_arquivo)
@@ -498,7 +462,7 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
 {
     // Numeros de buscas a serem realizadas
     int numBuscas;
-    scanf("%d", &numBuscas);
+    cin >> numBuscas;
     FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
@@ -507,13 +471,13 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
 
-    char *nome_campo = (char*) malloc(sizeof(char) * 50);
-    char *valor_campo = (char*) malloc(sizeof(char) * 50);
+    char *nome_campo = new char[50];
+    char *valor_campo = new char[50];
     // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
         // Pega o nome do campo.
-        scanf("%s", nome_campo);
+        cin >> nome_campo;
         // Pega espaco entre o nome e o valor.
         fgetc(stdin);
         // Pega o valor do campo.
@@ -531,8 +495,8 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
     }
 
     desalocaRegistrosCabecalho(cabecalho);
-    free(nome_campo);
-    free(valor_campo);
+    delete[] nome_campo;
+    delete[] valor_campo;
     fecharArquivo_bin(arquivoBin);
 }
 
@@ -540,7 +504,7 @@ void funcionalidade4Remove(char *nome_arquivo)
 {
     // Numeros de buscas a serem realizadas
     int numBuscas;
-    scanf("%d", &numBuscas);
+    cin >> numBuscas;
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
@@ -549,14 +513,14 @@ void funcionalidade4Remove(char *nome_arquivo)
     }
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    char *nome_campo = (char*) malloc(sizeof(char) * 50);
-    char *valor_campo = (char*) malloc(sizeof(char) * 50);
+    char *nome_campo = new char[50];
+    char *valor_campo = new char[50];
 
     // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
         // Pega o nome do campo.
-        scanf("%s", nome_campo);
+        cin >> nome_campo;
         // Pega espaco entre o nome e o valor.
         fgetc(stdin);
         // Pega o valor do campo.
@@ -569,8 +533,8 @@ void funcionalidade4Remove(char *nome_arquivo)
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
     desalocaRegistrosCabecalho(cabecalho);
-    free(nome_campo);
-    free(valor_campo);
+    delete[] nome_campo;
+    delete[] valor_campo;
     fecharArquivo_bin(arquivoBin);
     binarioNaTela(nome_arquivo);
 }
@@ -579,7 +543,7 @@ void funcionalidade5Insert(char *nome_arquivo)
 {
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
-    scanf("%d", &nro_reg);
+    cin >> nro_reg;
 
     RegistroDados *registro;
     alocaRegistrosDados(&registro, 1);
@@ -655,8 +619,8 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 
 void funcionalidade7CreateIndex(char *nome_arquivo)
 {
-    char *nome_arq_indice = (char*) malloc(sizeof(char) * 50);
-    scanf("%s", nome_arq_indice);
+    char *nome_arq_indice = new char[50];
+    cin >> nome_arq_indice;
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
     if(arq_dados == NULL || arq_indice == NULL){
@@ -668,7 +632,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
         if(arq_dados != NULL){
             fecharArquivo_bin(arq_dados);
         }
-        free(nome_arq_indice);
+        delete[] nome_arq_indice;
         return;
     }
 
@@ -703,21 +667,21 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
     binarioNaTela(nome_arq_indice);
-    free(nome_arq_indice);
+    delete[] nome_arq_indice;
 }
 
 void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Numeros de buscas a serem realizadas
     int numBuscas;
-    char *nome_arquivoArvB = (char*) malloc(sizeof(char)*20);
-    scanf("%s %d", nome_arquivoArvB, &numBuscas);
+    char *nome_arquivoArvB = new char[20];
+    cin >> nome_arquivoArvB  >> numBuscas;
 
     //Abre o arquivo de indice para leitura.
     FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
     if (arquivoArvB == NULL)
     {
         msg_erro_Arq_Inconsistente();
-        free(nome_arquivoArvB);
+        delete[] nome_arquivoArvB;
         return;
     }
 
@@ -727,7 +691,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     {
         msg_erro_Arq_Inconsistente();
         fecharArquivo_bin(arquivoArvB);
-        free(nome_arquivo);
+        delete[] nome_arquivo;
         return;
     }
     
@@ -740,14 +704,14 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Le o no raiz da arvore B no arquivo de indice.
     NoArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
 
-    char *nome_campo = (char*) malloc(sizeof(char) * 50);
-    char *valor_campo = (char*) malloc(sizeof(char) * 50);
+    char *nome_campo = new char[50];
+    char *valor_campo = new char[50];
 
     //Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
         //Pega o nome do campo.
-        scanf("%s", nome_campo);
+        cin >> nome_campo;
         //Pega espaco entre o nome e o valor.
         fgetc(stdin);
         //Pega o valor do campo.
@@ -804,17 +768,17 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     desalocaNoArvB(&raiz, 1);
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
-    free(nome_arquivoArvB);
-    free(nome_campo);
-    free(valor_campo);
+    delete[] nome_arquivoArvB;
+    delete[] nome_campo;
+    delete[] valor_campo;
     fecharArquivo_bin(arquivoBin);
     fecharArquivo_bin(arquivoArvB);
 }
 
 void funcionalidade9InsertArvB(char *nome_arquivo)
 {
-    char *nome_arq_indice = (char*) malloc(sizeof(char) * 50);
-    scanf("%s", nome_arq_indice);
+    char *nome_arq_indice = new char[50];
+    cin >> nome_arq_indice;
 
     //Abre o arquivo de indice para leitura.
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
@@ -829,13 +793,13 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
         if(arquivo != NULL){
             fecharArquivo_bin(arquivo);
         }
-        free(nome_arq_indice);
+        delete[] nome_arq_indice;
         return;
     }
 
     // Recebe quantidade de registros a serem inseridos
     int nro_reg;
-    scanf("%d", &nro_reg);
+    cin >> nro_reg;
 
     RegistroDados *registro;
     alocaRegistrosDados(&registro, 1);    
@@ -878,7 +842,7 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
     binarioNaTela(nome_arq_indice);
 
     //Desaloca memoria utilizada.
-    free(nome_arq_indice);
+    delete[] nome_arq_indice;
     desalocaCabecalhoArvB(cabecalhoArvB);
     if (raiz != NULL)
     {
@@ -890,12 +854,12 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
 void funcionalidade10Juncao(char *nome_arquivo1) {
     //Aloca memoria para nomes de arquivos e campos da junacao
-    char *nome_arquivo2 = (char*) malloc(sizeof(char)*20);
-    char *campo_arq1 = (char*) malloc(sizeof(char)*25);
-    char *campo_arq2 =  (char*) malloc(sizeof(char)*25);
-    char *nome_indice_aqr2 = (char*) malloc(sizeof(char)*20);
+    char *nome_arquivo2 = new char[20];
+    char *campo_arq1 = new char[25];
+    char *campo_arq2 =  new char[25];
+    char *nome_indice_aqr2 = new char[20];
 
-    scanf("%s %s %s %s", nome_arquivo2, campo_arq1, campo_arq2, nome_indice_aqr2);
+    cin >> nome_arquivo2 >> campo_arq1 >> campo_arq2 >> nome_indice_aqr2;
 
     //Verifica se a juncao esta sendo feita com o idPoPsConectado e idConecta, arquivo 1 e arquivo 2 respectivamente.
     if(strcmp(campo_arq1, "idPoPsConectado") && strcmp(campo_arq2, "idConecta")) {
@@ -979,13 +943,13 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
+    delete[] campo_arq1;
+    delete[] campo_arq2;
+    delete[] nome_arquivo2;
+    delete[] nome_indice_aqr2;
     desalocaCabecalhoArvB(cabecalhoArvB);
     desalocaNoArvB(&raiz, 1);
     desalocaRegistrosCabecalho(cabecalhoArqvBin);
-    free(campo_arq1);
-    free(campo_arq2);
-    free(nome_arquivo2);
-    free(nome_indice_aqr2);
     fecharArquivo_bin(arquivoBin1);
     fecharArquivo_bin(arquivoBin2);
     fecharArquivo_bin(arquivoArvB_arq2);
