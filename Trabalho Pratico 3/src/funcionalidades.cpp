@@ -12,12 +12,12 @@ void tiraAspasDuplas(char *str)
     if (str[0] == '"')
     {
         int i = 0;
-        while (i + 1 < (strlen(str)) && str[i + 1] != '"')
+        while (i + 1 < (int)(strlen(str)) && str[i + 1] != '"')
         { // Enquanto o proximo ainda
             str[i] = str[i + 1];
             i++;
         }
-        for (int j = i; j < (strlen(str)); j++)
+        for (int j = i; j < (int)(strlen(str)); j++)
         {
             str[j] = '\0';
         }
@@ -172,7 +172,7 @@ void copiaStrVar(char *dest, char *src)
 void cortaDados(char *buf, char *dado)
 {
     // Garante dado vazio
-    for (int i = 0; i < sizeof(dado); i++)
+    for (int i = 0; i < (int) sizeof(dado); i++)
     {
         dado[i] = '\0';
     }
@@ -298,7 +298,7 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
     RegistroDados *dados;
 
     // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if (dados != NULL)
@@ -382,7 +382,7 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
     RegistroDados *dados;
 
     // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
         if (dados != NULL)
@@ -407,7 +407,7 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
 void funcionalidade1CreateTable(char *nome_arquivo_csv)
 {
     // Recebe nome do arquivo bin
-    char *nome_arquivo_bin = malloc(sizeof(char) * 20);
+    char *nome_arquivo_bin = (char*) malloc(sizeof(char) * 20);
     scanf("%s", nome_arquivo_bin);
 
     FILE *arquivoCSV = abrirLeitura_csv(nome_arquivo_csv);
@@ -430,7 +430,7 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     RegistroDados *dados;
     alocaRegistrosDados(&dados, 1);
 
-    char *buf = malloc(sizeof(char) * 100);
+    char *buf = (char*) malloc(sizeof(char) * 100);
 
     // Pega a primeira linha do arquivo CSV e descarta
     fgets(buf, 100, arquivoCSV);
@@ -471,7 +471,7 @@ void funcionalidade2Select(char *nome_arquivo)
     RegistroDados *dados;
 
     // Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalho->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
 
@@ -507,8 +507,8 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
 
-    char *nome_campo = malloc(sizeof(char) * 50);
-    char *valor_campo = malloc(sizeof(char) * 50);
+    char *nome_campo = (char*) malloc(sizeof(char) * 50);
+    char *valor_campo = (char*) malloc(sizeof(char) * 50);
     // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
     {
@@ -549,8 +549,8 @@ void funcionalidade4Remove(char *nome_arquivo)
     }
 
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
-    char *nome_campo = malloc(sizeof(char) * 50);
-    char *valor_campo = malloc(sizeof(char) * 50);
+    char *nome_campo = (char*) malloc(sizeof(char) * 50);
+    char *valor_campo = (char*) malloc(sizeof(char) * 50);
 
     // Faz n buscas
     for (int i = 0; i < numBuscas; i++)
@@ -612,7 +612,7 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 {
     RegistroCabecalho *cabecalhoNovo;
     alocaRegistrosCabecalho(&cabecalhoNovo);
-    FILE *arq_compactado = abrirEscrita_bin("compactado.bin");
+    FILE *arq_compactado = abrirEscrita_bin((char*) "compactado.bin");
     if (arq_compactado == NULL)
     {
         msg_erro_Arq_FalhaCriacao();
@@ -630,7 +630,7 @@ void funcionalidade6Compactacao(char *nome_arquivo)
     }
     RegistroCabecalho *cabecalhoAntigo = lerRegistroCabecalhoArquivoBin(arq_original);
 
-    for (int i = 0; i < *(cabecalhoAntigo->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalhoAntigo->proxRRN); i++)
     {
         RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_original, i);
         if (dados != NULL)
@@ -655,7 +655,7 @@ void funcionalidade6Compactacao(char *nome_arquivo)
 
 void funcionalidade7CreateIndex(char *nome_arquivo)
 {
-    char *nome_arq_indice = malloc(sizeof(char) * 50);
+    char *nome_arq_indice = (char*) malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
@@ -682,7 +682,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     alocaNoArvB(&raiz, 1);
 
     //Percorre arquivo de dados inteiro.
-    for (int i = 0; i < *(cabecalhoCsv->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalhoCsv->proxRRN); i++)
     {   
         //Le dado do arquivo de dados por RRN.
         RegistroDados *reg = lerRegistroDadosArquivoBin_RRN(arq_dados, i);
@@ -709,7 +709,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
 void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Numeros de buscas a serem realizadas
     int numBuscas;
-    char *nome_arquivoArvB = malloc(sizeof(char)*20);
+    char *nome_arquivoArvB = (char*) malloc(sizeof(char)*20);
     scanf("%s %d", nome_arquivoArvB, &numBuscas);
 
     //Abre o arquivo de indice para leitura.
@@ -740,8 +740,8 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     //Le o no raiz da arvore B no arquivo de indice.
     NoArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoArvB->noRaiz));
 
-    char *nome_campo = malloc(sizeof(char) * 50);
-    char *valor_campo = malloc(sizeof(char) * 50);
+    char *nome_campo = (char*) malloc(sizeof(char) * 50);
+    char *valor_campo = (char*) malloc(sizeof(char) * 50);
 
     //Faz n buscas
     for (int i = 0; i < numBuscas; i++)
@@ -813,7 +813,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
 
 void funcionalidade9InsertArvB(char *nome_arquivo)
 {
-    char *nome_arq_indice = malloc(sizeof(char) * 50);
+    char *nome_arq_indice = (char*) malloc(sizeof(char) * 50);
     scanf("%s", nome_arq_indice);
 
     //Abre o arquivo de indice para leitura.
@@ -890,10 +890,10 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
 void funcionalidade10Juncao(char *nome_arquivo1) {
     //Aloca memoria para nomes de arquivos e campos da junacao
-    char *nome_arquivo2 = malloc(sizeof(char)*20);
-    char *campo_arq1 = malloc(sizeof(char)*25);
-    char *campo_arq2 = malloc(sizeof(char)*25);
-    char *nome_indice_aqr2 = malloc(sizeof(char)*20);
+    char *nome_arquivo2 = (char*) malloc(sizeof(char)*20);
+    char *campo_arq1 = (char*) malloc(sizeof(char)*25);
+    char *campo_arq2 =  (char*) malloc(sizeof(char)*25);
+    char *nome_indice_aqr2 = (char*) malloc(sizeof(char)*20);
 
     scanf("%s %s %s %s", nome_arquivo2, campo_arq1, campo_arq2, nome_indice_aqr2);
 
@@ -939,7 +939,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     long nroDadosEncontrados = 0;
 
     //Verifica todos os RRNs do arquivo
-    for (int i = 0; i < *(cabecalhoArqvBin->proxRRN); i++)
+    for (unsigned int i = 0; i < *(cabecalhoArqvBin->proxRRN); i++)
     {
         //Le um dado do arquivo de dados por RRN.
         RegistroDados *dado1 = lerRegistroDadosArquivoBin_RRN(arquivoBin1, i);

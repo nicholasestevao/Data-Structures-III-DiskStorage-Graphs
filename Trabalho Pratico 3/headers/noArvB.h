@@ -1,5 +1,5 @@
-#ifndef __NO_ARV_B__
-#define __NO_ARV_B__
+#ifndef __NO_ARV_B_C__
+#define __NO_ARV_B_C__
 
 #include <stdio.h>
 #include <stdlib.h>

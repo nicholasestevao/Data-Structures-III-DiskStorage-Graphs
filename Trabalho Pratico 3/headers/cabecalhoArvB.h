@@ -1,5 +1,5 @@
-#ifndef __CABECALHO__ARV_B__
-#define __CABECALHO__ARV_B__
+#ifndef __CABECALHO_ARV_B_C__
+#define __CABECALHO_ARV_B_C__
 
 #include <stdio.h>
 #include <stdlib.h>

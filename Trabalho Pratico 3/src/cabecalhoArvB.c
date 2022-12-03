@@ -2,12 +2,12 @@
 
 void alocaCabecalhoArvB(CabecalhoArvB **registro)
 {
-    (*registro) = malloc(sizeof(CabecalhoArvB));
-    (*registro)->status = malloc(sizeof(char) * 1);
-    (*registro)->noRaiz = malloc(sizeof(int) * 1);
-    (*registro)->nroChavesTotal = malloc(sizeof(int) * 1);
-    (*registro)->alturaArvore = malloc(sizeof(int) * 1);
-    (*registro)->RRNproxNo = malloc(sizeof(int) * 1);
+    (*registro) = (CabecalhoArvB*) malloc(sizeof(CabecalhoArvB));
+    (*registro)->status = (char*) malloc(sizeof(char) * 1);
+    (*registro)->noRaiz = (int*) malloc(sizeof(int) * 1);
+    (*registro)->nroChavesTotal = (unsigned int*) malloc(sizeof(int) * 1);
+    (*registro)->alturaArvore = (unsigned int*) malloc(sizeof(int) * 1);
+    (*registro)->RRNproxNo = (unsigned int*) malloc(sizeof(int) * 1);
 
     *((*registro)->status) = '0';
     *((*registro)->noRaiz) = -1;

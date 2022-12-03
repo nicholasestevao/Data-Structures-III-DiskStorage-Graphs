@@ -14,13 +14,13 @@ void iniciaRegistrosCabecalho(RegistroCabecalho *registros)
 //Aloca memoria para todos os ponteiros do RegistroCabecalho.
 void alocaRegistrosCabecalho(RegistroCabecalho **registros)
 {
-    (*registros) = malloc(sizeof(RegistroCabecalho));
-    (*registros)->status = malloc(sizeof(char) * 1);
-    (*registros)->topo = malloc(sizeof(int) * 1);
-    (*registros)->proxRRN = malloc(sizeof(int) * 1);
-    (*registros)->nroRegRem = malloc(sizeof(int) * 1);
-    (*registros)->nroPagDisco = malloc(sizeof(int) * 1);
-    (*registros)->qttCompacta = malloc(sizeof(int) * 1);
+    (*registros) = (RegistroCabecalho*) malloc(sizeof(RegistroCabecalho));
+    (*registros)->status = (char*) malloc(sizeof(char) * 1);
+    (*registros)->topo = (int*) malloc(sizeof(int) * 1);
+    (*registros)->proxRRN = (unsigned int*) malloc(sizeof(int) * 1);
+    (*registros)->nroRegRem = (unsigned int*) malloc(sizeof(int) * 1);
+    (*registros)->nroPagDisco = (unsigned int*) malloc(sizeof(int) * 1);
+    (*registros)->qttCompacta = (unsigned int*) malloc(sizeof(int) * 1);
     iniciaRegistrosCabecalho((*registros));
 }
 

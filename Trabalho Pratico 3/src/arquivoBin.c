@@ -11,7 +11,7 @@ FILE *abrirLeitura_bin(char *nome_arquivo)
         return NULL;
     }
     //Se o arquivo existir
-    char *status = malloc(sizeof(char));
+    char *status = (char*) malloc(sizeof(char));
     fread(status, sizeof(char), 1, arq);
     if (*status == '0')
     {//Se o arquivo estiver inconsistente
@@ -30,7 +30,7 @@ FILE *abrirLeitura_bin(char *nome_arquivo)
 // Atualiza o status do arquivo para inconsistente (1) -> (0)
 FILE *abrirEscrita_bin(char *nome_arquivo)
 {   
-    char *status = malloc(sizeof(char) * 1);
+    char *status = (char*) malloc(sizeof(char) * 1);
 
     FILE *arq = fopen(nome_arquivo, "rb+");
     if (arq == NULL)
@@ -57,7 +57,7 @@ FILE *abrirEscrita_bin(char *nome_arquivo)
 // Necessario usar essa funcao apenas quando o arquivo foi aberto para escrita
 void fecharArquivo_bin(FILE *arquivo_bin)
 {
-    char *status = malloc(sizeof(char) * 1);
+    char *status = (char*) malloc(sizeof(char) * 1);
     *status = '1';
     fseek(arquivo_bin, 0, SEEK_SET);
     fwrite(status, sizeof(char), 1, arquivo_bin);
@@ -89,7 +89,7 @@ RegistroDados *lerRegistroDadosArquivoBin_RRN(FILE *arquivoBin, int RRN)
         fread(registro->velocidade, sizeof(int), 1, arquivoBin);
 
         int indice = 0;
-        char *c = malloc(sizeof(char));
+        char *c = (char*) malloc(sizeof(char));
         fread(c, sizeof(char), 1, arquivoBin);
         while (*c != '|')
         {
@@ -164,13 +164,13 @@ int inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecalh
         *(cabecalho->nroRegRem) = *(cabecalho->nroRegRem) + 1;
 
         //Aloca variaveis locais
-        char *removido = malloc(sizeof(char));
+        char *removido = (char*) malloc(sizeof(char));
         *removido = '1';
-        int *encadeamento = malloc(sizeof(int));
+        int *encadeamento = (int*) malloc(sizeof(int));
         *encadeamento = topo;
 
         //Grava campos de controle do registro removido e completa com lixo
-        char *lixo = malloc(sizeof(char) * 59);
+        char *lixo = (char*) malloc(sizeof(char) * 59);
         for (int i = 0; i < 59; i++)
         {
             lixo[i] = '$';
@@ -190,7 +190,7 @@ int inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecalh
             tamLixo = 64 * 14;
             //Atualiza quantidade de pag de disco
             *(cabecalho->nroPagDisco) = *(cabecalho->nroPagDisco) + 1;
-            lixo = malloc(sizeof(char) * 960);
+            lixo = (char*) malloc(sizeof(char) * 960);
             for (int i = 0; i < 960; i++)
             {
                 lixo[i] = '$';
@@ -232,13 +232,13 @@ int inserirRegistroDadosArquivoBin(FILE *arquivoBin, RegistroCabecalho *cabecalh
 
             fseek(arquivoBin, byteoffsetNovoTopo - 1, SEEK_SET);
         }
-        char *lixo = malloc(sizeof(char) * 64);
+        char *lixo = (char*) malloc(sizeof(char) * 64);
         for (int i = 0; i < 64; i++)
         {
             lixo[i] = '$';
         }
 
-        char *pipe = malloc(sizeof(char));
+        char *pipe = (char*) malloc(sizeof(char));
         *pipe = '|';
 
         fwrite(dados->removido, sizeof(char), 1, arquivoBin);
@@ -289,7 +289,7 @@ void escreverRegistroCabecalhoArquivoBin(FILE *arquivoBin, RegistroCabecalho *ca
     fwrite(cabecalho->nroRegRem, sizeof(int), 1, arquivoBin);
     fwrite(cabecalho->nroPagDisco, sizeof(int), 1, arquivoBin);
     fwrite(cabecalho->qttCompacta, sizeof(int), 1, arquivoBin);
-    char *lixo = malloc(sizeof(char) * 960);
+    char *lixo = (char*) malloc(sizeof(char) * 960);
     for (int i = 0; i < 960; i++)
     {
         lixo[i] = '$';
@@ -307,7 +307,7 @@ void removeRegistroDadosArquivoBin_RRN(FILE *arquivoBin, RegistroCabecalho *regi
     fseek(arquivoBin, byteoffset, SEEK_SET);
 
     //Lixo a ser gravado no arquivo binario
-    char *lixo = malloc(sizeof(char) * 59);
+    char *lixo = (char*) malloc(sizeof(char) * 59);
     for (int i = 0; i < 59; i++)
     {
         lixo[i] = '$';
