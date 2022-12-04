@@ -150,7 +150,7 @@ a funcionalidade de compactação for solicitada – tamanho: inteiro de 4 bytes
 
 **Representação Gráfica do Registro de Cabeçalho.** O tamanho do registro de cabeçalho deve ser o de uma página de disco, representado da seguinte forma:
 
-![Representação Gráfica do Registro de Cabeçalho](img\RegistroCabecalho_Com_Fundo.png)
+![Representação Gráfica do Registro de Cabeçalho](img/RegistroCabecalho_Com_Fundo.png)
 
 **Observações Importantes**:
 
@@ -189,7 +189,7 @@ colunas).
 
 **Representação Gráfica dos Registros de Dados.** O tamanho dos registros de dados deve ser de 64 bytes. Cada registro de dados deve ser representado da seguinte forma:
 
-![Representação Gráfica dos Registros de Dados](img\RegistroDados_Com_Fundo.png)
+![Representação Gráfica dos Registros de Dados](img/RegistroDados_Com_Fundo.png)
 
 **Observações Importantes**: 
  * Cada registro de dados deve seguir estritamente a ordem definida na sua representação gráfica.
