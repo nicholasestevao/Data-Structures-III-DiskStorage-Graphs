@@ -3,15 +3,24 @@
 
 #include <iostream>
 
-class Aresta
-{
+class Aresta {
     private:
-        int *idPopsConectado;
+        int *idPoPsConectado;
         double *velocidade;
-        Aresta *proxAresta;
+
     public:
-        Aresta(/* args */);
+        Aresta(int idPoPsConectado);
+        Aresta(int idPoPsConectado, double velocidade);
         ~Aresta();
+
+        int getIdPopsConectado() const;
+        double getVelocidade() const;
+
+        bool operator == (const Aresta &other) const;
+        bool operator > (const Aresta &other) const;
+        bool operator >= (const Aresta &other) const;
+        bool operator < (const Aresta &other) const;
+        bool operator <= (const Aresta &other) const;
 };
 
 #endif
