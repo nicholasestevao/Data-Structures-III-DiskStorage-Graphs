@@ -87,26 +87,42 @@ void Vertice::insertAresta(Aresta aresta) {
     }
 }
 
+bool Vertice::operator == (const Vertice &other) const {
+    bool r = false;
+    if(*(this->idConecta) == other.getIdConcecta()) {
+        r = true;
+    }
+    return r;
+}
+
 bool Vertice::operator > (const Vertice &other) const {
     bool r = false;
-
+    if(*(this->idConecta) > other.getIdConcecta()) {
+        r = true;
+    }
     return r;
 }
 
 bool Vertice::operator >= (const Vertice &other) const {
     bool r = false;
-
+    if(*(this->idConecta) >= other.getIdConcecta()) {
+        r = true;
+    }
     return r;
 }
 
 bool Vertice::operator < (const Vertice &other) const {
     bool r = false;
-
+    if(*(this->idConecta) < other.getIdConcecta()) {
+        r = true;
+    }
     return r;
 }
 
 bool Vertice::operator <= (const Vertice &other) const {
     bool r = false;
-
+    if(*(this->idConecta) <= other.getIdConcecta()) {
+        r = true;
+    }
     return r;
 }
