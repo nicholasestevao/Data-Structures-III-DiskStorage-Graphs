@@ -384,9 +384,9 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
     if (arquivoBin == NULL)
     {
+        delete[] nome_arquivo_bin;
         msg_erro_Arq_FalhaCriacao();
         fclose(arquivoCSV);
-        delete[] nome_arquivo_bin;
         return;
     }
     RegistroCabecalho *cabecalho;
@@ -414,13 +414,13 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
 
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
+    delete[] buf;
+    delete[] nome_arquivo_bin;
     desalocaRegistrosCabecalho(cabecalho);
     desalocaRegistrosDados(&dados, 1);
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
-    delete[] buf;
     binarioNaTela(nome_arquivo_bin);
-    delete[] nome_arquivo_bin;
 }
 
 void funcionalidade2Select(char *nome_arquivo)
@@ -494,9 +494,9 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
         printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
     }
 
-    desalocaRegistrosCabecalho(cabecalho);
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
 }
 
@@ -532,9 +532,9 @@ void funcionalidade4Remove(char *nome_arquivo)
     // Escreve o registro de cabecalho atualizado no arquivo binario
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
-    desalocaRegistrosCabecalho(cabecalho);
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
     binarioNaTela(nome_arquivo);
 }
@@ -677,11 +677,11 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     cin >> nome_arquivoArvB  >> numBuscas;
 
     //Abre o arquivo de indice para leitura.
-    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
+    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivoArvB);
     if (arquivoArvB == NULL)
     {
-        msg_erro_Arq_Inconsistente();
         delete[] nome_arquivoArvB;
+        msg_erro_Arq_Inconsistente();
         return;
     }
 
@@ -689,9 +689,9 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
+        delete[] nome_arquivoArvB;
         msg_erro_Arq_Inconsistente();
         fecharArquivo_bin(arquivoArvB);
-        delete[] nome_arquivo;
         return;
     }
     
@@ -765,12 +765,12 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
-    desalocaNoArvB(&raiz, 1);
-    desalocaCabecalhoArvB(cabecalhoArvB);
-    desalocaRegistrosCabecalho(cabecalhoArqvBin);
     delete[] nome_arquivoArvB;
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaNoArvB(&raiz, 1);
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    desalocaRegistrosCabecalho(cabecalhoArqvBin);
     fecharArquivo_bin(arquivoBin);
     fecharArquivo_bin(arquivoArvB);
 }
