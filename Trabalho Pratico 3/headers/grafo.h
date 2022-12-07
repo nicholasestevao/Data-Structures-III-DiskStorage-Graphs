@@ -21,6 +21,7 @@ class Grafo {
 
         void insertVertice(Vertice* vertice);
         void imprimeGrafo();
+        int contaCiclos();
 };
 
 #endif

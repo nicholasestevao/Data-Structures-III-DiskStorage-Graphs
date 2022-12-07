@@ -1,7 +1,6 @@
 #include "../headers/grafo.h"
 
 Grafo::Grafo() {
-
 }
 
 Grafo::~Grafo() {
@@ -66,4 +65,15 @@ void Grafo::imprimeGrafo(){
             it++;
         }
     }
+}
+
+int Grafo::contaCiclos(){
+    int ** visitados = (int **) malloc(sizeof(int *)*(g->getNumVertices()));
+    for(int i = 0; i< g->getNumVertices(); i++){
+        visitados[i] = (int *) malloc(sizeof(int)*2);
+    }
+
+    
+    return 0;
+
 }

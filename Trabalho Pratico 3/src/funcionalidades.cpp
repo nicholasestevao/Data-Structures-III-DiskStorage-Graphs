@@ -993,4 +993,10 @@ void funcionalidade11CriarGrafo(char *nome_arquivo){
     delete g;
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
+    //return g;
+}
+
+void funcionalidade12ContaCiclos(Grafo * g){
+    printf("Quantidade de ciclos: %d", g->contaCiclos());
+    return;
 }
