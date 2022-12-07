@@ -1,46 +1,68 @@
-#include "grafo.h"
+#include "../headers/grafo.h"
 
 Grafo::Grafo() {
-    this->vertices = new list<Vertice>;
+
 }
 
 Grafo::~Grafo() {
-    delete vertices;
+    if(!vertices.empty()) {
+        for(auto it = vertices.begin(); it != vertices.end(); ++it) {
+            delete (*it);
+        }
+    }
 }
 
 Vertice* Grafo::findVertice(int idConecta) const{
     Vertice buscado(idConecta);
-    Vertice *resutldado = nullptr;
-    auto it = vertices->begin();
-    while (it != vertices->end())
-    {
-        if ((*it) == buscado) {
-            resutldado = &(*it);
-            break;
-        } 
-        it++;
+    Vertice *resultado = nullptr;
+    if(!vertices.empty()) {
+        auto it = vertices.begin();
+        while (it != vertices.end())
+        {
+            if ((*(*it)) == buscado) {
+                resultado = (*it);
+                break;
+            } 
+            it++;
+        }
     }
-    return resutldado;
+    return resultado;
 }
 
-list<Vertice> Grafo::getVerices() const {
-    return *vertices;
+list<Vertice*> Grafo::getVertices() const {
+    return vertices;
 }
 
-void Grafo::insertVertice(Vertice vertice) {
-    auto it = vertices->begin();
-    while (it != vertices->end())
+void Grafo::insertVertice(Vertice* vertice) {
+    //auto it = vertices->begin();
+    if(!vertices.empty()) {
+        for(auto it = vertices.begin(); it != vertices.end(); ++it){
+            if((*(*it)) == *vertice) {
+                break;
+            } else if ((*(*it)) > *vertice) {
+                vertices . insert(it, vertice);
+                break;
+            }
+        }
+    } else {
+        vertices.push_back(vertice);
+    }
+}
+
+void Grafo::imprimeGrafo(){
+    auto it = vertices.begin();
+    while (it != vertices.end())
     {
-        if((*it) == vertice) {
-            break;
-        } else if ((*it) > vertice) {
-            this->vertices->insert(it, vertice);
-            break;
+        std::cout << (*it)->getIdConcecta() << " " << (*it)->getNomePoPs() << " " << (*it)->getNomePais() << " " << (*it)->getSiglaPais() << std::endl;
+        list<Aresta*> arestas = (*it)->getArestas();
+        auto it_arestas = arestas.begin();
+        while (it_arestas != arestas.end())
+        {
+            std::cout << "        Aresta: " << (*it_arestas)->getIdPopsConectado() << " " << (*it_arestas)->getVelocidade() << std::endl;
+            
+            it_arestas++;
         }
         it++;
     }
 
-    if(it != vertices->end()) {
-        vertices->push_back(vertice);
-    }
 }
