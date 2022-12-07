@@ -14,14 +14,14 @@ Vertice::Vertice(int idConecta, string nomePoPs, string nomePais, string siglaPa
     this->idConecta = new int;
     *(this->idConecta) = idConecta;
 
-    this->nomePoPs = new string;
-    *(this->nomePoPs) = nomePoPs;
+    this->nomePoPs = new string(nomePoPs);
+    //*(this->nomePoPs) = nomePoPs;
 
-    this->nomePoPs = new string;
-    *(this->nomePais) = nomePais;
+    this->nomePoPs = new string(nomePais);
+    //*(this->nomePais) = nomePais;
 
-    this->siglaPais = new string;
-    *(this->siglaPais) = siglaPais;
+    this->siglaPais = new string(siglaPais);
+    //*(this->siglaPais) = siglaPais;
 
     this->arestas = new list<Aresta>;
 }

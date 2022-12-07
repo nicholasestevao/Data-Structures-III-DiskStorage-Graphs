@@ -61,6 +61,9 @@ int main(int argC, char *argV[]){
         case 10:
             funcionalidade10Juncao(nome_arquivo);
             break;
+        case 11:
+            funcionalidade11CriarGrafo(nome_arquivo);
+            break;    
     }
 
     delete[] nome_arquivo;

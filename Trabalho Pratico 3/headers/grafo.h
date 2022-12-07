@@ -17,9 +17,10 @@ class Grafo {
         ~Grafo();
 
         Vertice* findVertice(int idConecta) const;
-        list<Vertice> getVerices() const;
+        list<Vertice> getVertices() const;
 
         void insertVertice(Vertice vertice);
+        void imprimeGrafo();
 };
 
 #endif

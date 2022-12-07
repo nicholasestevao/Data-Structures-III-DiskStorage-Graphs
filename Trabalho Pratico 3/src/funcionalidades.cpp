@@ -954,3 +954,48 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoBin2);
     fecharArquivo_bin(arquivoArvB_arq2);
 }
+
+void funcionalidade11CriarGrafo(char * nome_arquivo){
+  
+
+    FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
+    if (arq_bin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        fecharArquivo_bin(arq_bin);
+        return;
+    }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
+
+    Grafo * g = new Grafo();
+    
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
+    {
+        RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
+        if (dados != NULL)
+        {
+            // Registro nao removido
+            Vertice * vertice = g->findVertice(*(dados->idConecta));
+            if(vertice == nullptr){
+                //vertice nao existe ainda
+                printf("Vertice novo\n");
+                vertice = new Vertice(*(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
+                printf("%d %s %s %s\n", *(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
+                g->insertVertice(*vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
+            }
+            printf("Inserindo no vertice: %d\n", vertice->getIdConcecta());
+            //vertice ja existe
+            double velocidade_MB = *(dados->velocidade);
+            /*switch(*(dados->velocidade)){
+                case:
+            }*/
+            vertice->insertAresta(Aresta(*(dados->idPoPsConectado), velocidade_MB));
+            
+
+            desalocaRegistrosDados(&dados, 1);
+        }
+    }
+    g->imprimeGrafo();
+    desalocaRegistrosCabecalho(cabecalho);
+    fecharArquivo_bin(arq_bin);
+}

@@ -6,6 +6,7 @@
 #include "arquivoBin.h"
 #include "arquivoCsv.h"
 #include "arvoreB.h"
+#include "grafo.h"
 #include "funcoesFornecidas.h"
 
 using std::cin;
@@ -105,5 +106,8 @@ void funcionalidade9InsertArvB(char *nome_arquivo);
  * retirado os valores a serem buscados.
  */
 void funcionalidade10Juncao(char *nome_arquivo);
+
+
+void funcionalidade11CriarGrafo(char * nome_arquivo);
 
 #endif

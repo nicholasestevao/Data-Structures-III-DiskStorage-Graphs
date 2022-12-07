@@ -21,7 +21,7 @@ $(BIN):
 
 ##__$(BIN)/*.o_Files__
  
-ALLBIN: $(BIN)/aresta.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/arvoreB.o $(BIN)/cabecalhoArvB.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/main.o $(BIN)/mensagens.o $(BIN)/noArvB.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o $(BIN)/registroDados.o $(BIN)/vertice.o
+ALLBIN: $(BIN)/aresta.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/arvoreB.o $(BIN)/cabecalhoArvB.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/grafo.o $(BIN)/main.o $(BIN)/mensagens.o $(BIN)/noArvB.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o $(BIN)/registroDados.o $(BIN)/vertice.o
 
 $(BIN)/main.o: $(SRC)/main.cpp
 	$(CC) $(FLAGS) -o $(BIN)/main.o -c $(SRC)/main.cpp
@@ -46,6 +46,9 @@ $(BIN)/funcionalidades.o: $(SRC)/funcionalidades.cpp
 
 $(BIN)/funcoesFornecidas.o: $(SRC)/funcoesFornecidas.c
 	$(CC) $(FLAGS) -o $(BIN)/funcoesFornecidas.o -c $(SRC)/funcoesFornecidas.c	
+
+$(BIN)/grafo.o: $(SRC)/grafo.cpp
+	$(CC) $(FLAGS) -o $(BIN)/grafo.o -c $(SRC)/grafo.cpp
 
 $(BIN)/mensagens.o: $(SRC)/mensagens.c
 	$(CC) $(FLAGS) -o $(BIN)/mensagens.o -c $(SRC)/mensagens.c
