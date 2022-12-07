@@ -66,14 +66,3 @@ void Grafo::imprimeGrafo(){
         }
     }
 }
-
-int Grafo::contaCiclos(){
-    int ** visitados = (int **) malloc(sizeof(int *)*(g->getNumVertices()));
-    for(int i = 0; i< g->getNumVertices(); i++){
-        visitados[i] = (int *) malloc(sizeof(int)*2);
-    }
-
-    
-    return 0;
-
-}

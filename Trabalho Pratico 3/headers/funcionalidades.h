@@ -114,7 +114,7 @@ void funcionalidade9InsertArvB(char *nome_arquivo);
 void funcionalidade10Juncao(char *nome_arquivo);
 
 
-Grafo * funcionalidade11CriarGrafo(char * nome_arquivo);
+void funcionalidade11CriarGrafo(char * nome_arquivo);
 
 void funcionalidade12ContaCiclos(Grafo * g);
 

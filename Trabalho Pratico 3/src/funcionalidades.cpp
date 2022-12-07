@@ -982,7 +982,8 @@ void funcionalidade11CriarGrafo(char *nome_arquivo){
             }
             //vertice ja existe
             if(*(dados->idPoPsConectado) != -1) {
-                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), *(dados->velocidade), (dados->unidadeMedida)[0]));
+                Aresta *a = new Aresta(*(dados->idPoPsConectado), *(dados->velocidade), (dados->unidadeMedida)[0]);
+                vertice->insertAresta(a);
             }
             
 
@@ -993,10 +994,4 @@ void funcionalidade11CriarGrafo(char *nome_arquivo){
     delete g;
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
-    //return g;
-}
-
-void funcionalidade12ContaCiclos(Grafo * g){
-    printf("Quantidade de ciclos: %d", g->contaCiclos());
-    return;
 }
