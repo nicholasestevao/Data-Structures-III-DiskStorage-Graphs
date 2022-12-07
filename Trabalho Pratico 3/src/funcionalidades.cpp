@@ -308,7 +308,7 @@ int buscaCampoImprimeArquivoDados(char *nome_campo, char *valor_campo, RegistroC
             {
                 flag_encontrados++;
                 imprimeRegistroDadosTela(dados);
-                printf("\n");
+                cout << endl;
             }
             desalocaRegistrosDados(&dados, 1);
         }
@@ -384,9 +384,9 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     FILE *arquivoBin = abrirEscrita_bin(nome_arquivo_bin);
     if (arquivoBin == NULL)
     {
+        delete[] nome_arquivo_bin;
         msg_erro_Arq_FalhaCriacao();
         fclose(arquivoCSV);
-        delete[] nome_arquivo_bin;
         return;
     }
     RegistroCabecalho *cabecalho;
@@ -414,13 +414,13 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
 
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
+    delete[] buf;
+    delete[] nome_arquivo_bin;
     desalocaRegistrosCabecalho(cabecalho);
     desalocaRegistrosDados(&dados, 1);
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
-    delete[] buf;
     binarioNaTela(nome_arquivo_bin);
-    delete[] nome_arquivo_bin;
 }
 
 void funcionalidade2Select(char *nome_arquivo)
@@ -442,7 +442,7 @@ void funcionalidade2Select(char *nome_arquivo)
         if (dados != NULL)
         {
             imprimeRegistroDadosTela(dados);
-            printf("\n");
+            cout << endl;
             desalocaRegistrosDados(&dados, 1);
         }
     }
@@ -450,7 +450,7 @@ void funcionalidade2Select(char *nome_arquivo)
     //Se nao tiver nenhum dado no arquivo de dados;
     if (*(cabecalho->proxRRN) == 0) {
         msg_erro_Reg_Inexistente();
-        printf("\n\n");
+        cout << endl << endl;
     }
     printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
 
@@ -489,14 +489,14 @@ void funcionalidade3SelectWhere(char *nome_arquivo)
         if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalho, arquivoBin) == 0)
         {
             msg_erro_Reg_Inexistente();
-            printf("\n\n");
+            cout << endl << endl;
         }
         printf("Numero de paginas de disco: %d\n\n", *(cabecalho->nroPagDisco));
     }
 
-    desalocaRegistrosCabecalho(cabecalho);
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
 }
 
@@ -532,9 +532,9 @@ void funcionalidade4Remove(char *nome_arquivo)
     // Escreve o registro de cabecalho atualizado no arquivo binario
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
-    desalocaRegistrosCabecalho(cabecalho);
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arquivoBin);
     binarioNaTela(nome_arquivo);
 }
@@ -625,7 +625,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
     if(arq_dados == NULL || arq_indice == NULL){
         msg_erro_Arq_Inexistente();
-        printf("\n\n");
+        cout << endl << endl;
         if(arq_indice != NULL){
             fecharArquivo_bin(arq_indice);
         }
@@ -677,11 +677,11 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     cin >> nome_arquivoArvB  >> numBuscas;
 
     //Abre o arquivo de indice para leitura.
-    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivo);
+    FILE *arquivoArvB = abrirLeitura_bin(nome_arquivoArvB);
     if (arquivoArvB == NULL)
     {
-        msg_erro_Arq_Inconsistente();
         delete[] nome_arquivoArvB;
+        msg_erro_Arq_Inconsistente();
         return;
     }
 
@@ -689,9 +689,9 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     FILE *arquivoBin = abrirLeitura_bin(nome_arquivo);
     if (arquivoBin == NULL)
     {
+        delete[] nome_arquivoArvB;
         msg_erro_Arq_Inconsistente();
         fecharArquivo_bin(arquivoArvB);
-        delete[] nome_arquivoArvB;
         return;
     }
     
@@ -735,7 +735,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
                 RegistroDados *dado = lerRegistroDadosArquivoBin_RRN(arquivoBin, RRN_dado);
 
                 imprimeRegistroDadosTela(dado);
-                printf("\n");
+                cout << endl;
 
                 desalocaRegistrosDados(&dado, 1);
 
@@ -745,7 +745,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
             } else  {
                 //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
                 msg_erro_Reg_Inexistente();
-                printf("\n\n");
+                cout << endl << endl;
                 //Soma 3 paginas de disco acessadas, pois leu o cabecalho do indice, 
                 //cabecalho do arquivo de dados.
                 nroPagDiscoAcessadas += 2;
@@ -754,7 +754,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
             //Se nao encontrar nenhum arquivo imprime mensagem de erro e quebra linha.
             if (buscaCampoImprimeArquivoDados(nome_campo, valor_campo, cabecalhoArqvBin, arquivoBin) == 0) {
                 msg_erro_Reg_Inexistente();
-                printf("\n\n");
+                cout << endl << endl;
             }
             //Numero de paginas de disco acessadas e a quantidade de paginas de 
             //disco existentes no arquivo de dados pois a busca eh feita por busca exaustiva.
@@ -765,12 +765,12 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
-    desalocaNoArvB(&raiz, 1);
-    desalocaCabecalhoArvB(cabecalhoArvB);
-    desalocaRegistrosCabecalho(cabecalhoArqvBin);
     delete[] nome_arquivoArvB;
     delete[] nome_campo;
     delete[] valor_campo;
+    desalocaNoArvB(&raiz, 1);
+    desalocaCabecalhoArvB(cabecalhoArvB);
+    desalocaRegistrosCabecalho(cabecalhoArqvBin);
     fecharArquivo_bin(arquivoBin);
     fecharArquivo_bin(arquivoArvB);
 }
@@ -786,7 +786,7 @@ void funcionalidade9InsertArvB(char *nome_arquivo)
 
     if(arquivo == NULL || arq_indice == NULL){ // Erro arquivo inconsistente
         msg_erro_Arq_Inexistente();
-        printf("\n\n");
+        cout << endl << endl;
         if(arq_indice != NULL){
             fecharArquivo_bin(arq_indice);
         }
@@ -927,7 +927,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
 
                 //Imprime na formataçao de juncao
                 imprimeJuncaoRegistrosDados(dado1, dado2);
-                printf("\n");
+                cout << endl;
 
                 desalocaRegistrosDados(&dado2, 1);
             }
@@ -939,7 +939,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     //Se nao foi encontrado nenhum dado.
     if(nroDadosEncontrados == 0) {
         msg_erro_Reg_Inexistente();
-        printf("\n\n");
+        cout << endl << endl;
     }
 
     //Desaloca memoria e fecha os arruivos utilizados.
@@ -955,9 +955,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-Grafo * funcionalidade11CriarGrafo(char * nome_arquivo){
-  
-
+void funcionalidade11CriarGrafo(char * nome_arquivo){
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
     if (arq_bin == NULL)
     {
@@ -967,38 +965,34 @@ Grafo * funcionalidade11CriarGrafo(char * nome_arquivo){
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
 
-    Grafo * g = new Grafo();
-    
+    Grafo *g = new Grafo();
     for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
         if (dados != NULL)
         {
+            
             // Registro nao removido
-            Vertice * vertice = g->findVertice(*(dados->idConecta));
+            Vertice *vertice = g->findVertice(*(dados->idConecta));
             if(vertice == nullptr){
                 //vertice nao existe ainda
-                printf("Vertice novo\n");
                 vertice = new Vertice(*(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
-                printf("%d %s %s %s\n", *(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
-                g->insertVertice(*vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
+                g->insertVertice(vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
             }
-            printf("Inserindo no vertice: %d\n", vertice->getIdConcecta());
             //vertice ja existe
-            double velocidade_MB = *(dados->velocidade);
-            /*switch(*(dados->velocidade)){
-                case:
-            }*/
-            vertice->insertAresta(Aresta(*(dados->idPoPsConectado), velocidade_MB));
+            if(*(dados->idPoPsConectado) != -1) {
+                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), *(dados->velocidade), (dados->unidadeMedida)[0]));
+            }
             
 
             desalocaRegistrosDados(&dados, 1);
         }
     }
     g->imprimeGrafo();
+    delete g;
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
-    return g;
+    //return g;
 }
 
 void funcionalidade12ContaCiclos(Grafo * g){

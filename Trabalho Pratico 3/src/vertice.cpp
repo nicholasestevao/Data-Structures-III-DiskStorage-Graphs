@@ -1,47 +1,36 @@
 #include "../headers/vertice.h"
 
 Vertice::Vertice(int idConecta) {
-    this->idConecta = new int;
-    *(this->idConecta) = idConecta;
-
-    this->nomePoPs = nullptr;
-    this->nomePoPs = nullptr;
-    this->siglaPais = nullptr;
-    this->arestas = nullptr;
+    this->idConecta = idConecta;
 }
 
 Vertice::Vertice(int idConecta, string nomePoPs, string nomePais, string siglaPais) {
-    this->idConecta = new int;
-    *(this->idConecta) = idConecta;
+    this->idConecta = idConecta;
 
-    this->nomePoPs = new string(nomePoPs);
-    //*(this->nomePoPs) = nomePoPs;
+    this->nomePoPs = nomePoPs;
 
-    this->nomePoPs = new string(nomePais);
-    //*(this->nomePais) = nomePais;
+    this->nomePais = nomePais;
 
-    this->siglaPais = new string(siglaPais);
-    //*(this->siglaPais) = siglaPais;
-
-    this->arestas = new list<Aresta>;
+    this->siglaPais = siglaPais;
 }
 
 Vertice::~Vertice() {
-    delete idConecta;
-    delete nomePoPs;
-    delete nomePais;
-    delete siglaPais;
-    delete arestas;
+    auto it = arestas.begin();
+    while (it != arestas.end())
+    {
+        delete (*it);
+        it++;
+    }
 }
 
 Aresta* Vertice::findAresta(int idPoPsConectado) {
     Aresta buscado(idPoPsConectado);
     Aresta *resutldado = nullptr;
-    auto it = arestas->begin();
-    while (it != arestas->end())
+    auto it = arestas.begin();
+    while (it != arestas.end())
     {
-        if ((*it) == buscado) {
-            resutldado = &(*it);
+        if ((*(*it)) == buscado) {
+            resutldado = (*it);
             break;
         } 
         it++;
@@ -50,46 +39,52 @@ Aresta* Vertice::findAresta(int idPoPsConectado) {
 }
 
 int Vertice::getIdConcecta() const {
-    return *idConecta;
+    return idConecta;
 }
 
-string Vertice::getNomePops() const {
-    return *nomePoPs;
+string Vertice::getNomePoPs() const {
+    return nomePoPs;
 }
 
 string Vertice::getNomePais() const {
-    return *nomePais;
+    return nomePais;
 }
 
 string Vertice::getSiglaPais() const {
-    return *siglaPais;
+    return siglaPais;
 }
 
-list<Aresta> Vertice::getArestas() const {
-    return *arestas;
+list<Aresta*> Vertice::getArestas() const {
+    return arestas;
 }
 
-void Vertice::insertAresta(Aresta aresta) {
-    auto it = arestas->begin();
-    while (it != arestas->end())
-    {
-        if((*it) == aresta) {
-            break;
-        } else if ((*it) > aresta) {
-            this->arestas->insert(it, aresta);
-            break;
-        }
-        it++;
+void Vertice::insertAresta(Aresta *aresta) {
+    if(!arestas.empty()) {
+            for(auto it = arestas.begin(); it != arestas.end(); ++it){
+                if((*(*it)) == *aresta) {
+                    break;
+                } else if ((*(*it)) > *aresta) {
+                    arestas . insert(it, aresta);
+                    break;
+                }
+            }
+    } else {
+        arestas.push_back(aresta);
     }
+}
 
-    if(it != arestas->end()) {
-        arestas->push_back(aresta);
-    }
+void Vertice::operator = (const  Vertice &other) {
+    this->idConecta = other.getIdConcecta();
+    this->nomePais = other.getNomePais();
+    this->nomePoPs = other.getNomePoPs();
+    this->siglaPais = other.getSiglaPais();
+
+    this->arestas = other.getArestas();
 }
 
 bool Vertice::operator == (const Vertice &other) const {
     bool r = false;
-    if(*(this->idConecta) == other.getIdConcecta()) {
+    if(this->idConecta == other.getIdConcecta()) {
         r = true;
     }
     return r;
@@ -97,7 +92,7 @@ bool Vertice::operator == (const Vertice &other) const {
 
 bool Vertice::operator > (const Vertice &other) const {
     bool r = false;
-    if(*(this->idConecta) > other.getIdConcecta()) {
+    if(this->idConecta > other.getIdConcecta()) {
         r = true;
     }
     return r;
@@ -105,7 +100,7 @@ bool Vertice::operator > (const Vertice &other) const {
 
 bool Vertice::operator >= (const Vertice &other) const {
     bool r = false;
-    if(*(this->idConecta) >= other.getIdConcecta()) {
+    if(this->idConecta >= other.getIdConcecta()) {
         r = true;
     }
     return r;
@@ -113,7 +108,7 @@ bool Vertice::operator >= (const Vertice &other) const {
 
 bool Vertice::operator < (const Vertice &other) const {
     bool r = false;
-    if(*(this->idConecta) < other.getIdConcecta()) {
+    if(this->idConecta < other.getIdConcecta()) {
         r = true;
     }
     return r;
@@ -121,7 +116,7 @@ bool Vertice::operator < (const Vertice &other) const {
 
 bool Vertice::operator <= (const Vertice &other) const {
     bool r = false;
-    if(*(this->idConecta) <= other.getIdConcecta()) {
+    if(this->idConecta <= other.getIdConcecta()) {
         r = true;
     }
     return r;

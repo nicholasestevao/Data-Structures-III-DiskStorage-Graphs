@@ -1,80 +1,63 @@
 #include "../headers/grafo.h"
 
 Grafo::Grafo() {
-    this->vertices = new list<Vertice>();
-    this->numVertices = 0;
 }
 
 Grafo::~Grafo() {
-    delete vertices;
+    if(!vertices.empty()) {
+        for(auto it = vertices.begin(); it != vertices.end(); ++it) {
+            delete (*it);
+        }
+    }
 }
 
 Vertice* Grafo::findVertice(int idConecta) const{
     Vertice buscado(idConecta);
     Vertice *resultado = nullptr;
-    auto it = vertices->begin();
-    while (it != vertices->end())
-    {
-        if ((*it) == buscado) {
-            resultado = &(*it);
-            break;
-        } 
-        it++;
+    if(!vertices.empty()) {
+        auto it = vertices.begin();
+        while (it != vertices.end())
+        {
+            if ((*(*it)) == buscado) {
+                resultado = (*it);
+                break;
+            } 
+            it++;
+        }
     }
     return resultado;
 }
 
-list<Vertice> Grafo::getVertices() const {
-    return *vertices;
+list<Vertice*> Grafo::getVertices() const {
+    return vertices;
 }
 
-int Grafo::getNumVertices() const {
-    return this->numVertices;
-}
-
-void Grafo::insertVertice(Vertice vertice) {
+void Grafo::insertVertice(Vertice* vertice) {
     //auto it = vertices->begin();
-    printf("inserindo:\n");
-    for(auto it = this->getVertices().begin(); it != this->getVertices().end(); ++it){
-        printf("oi\n");
-        printf("Vertice: %d %s %s %s\n", it->getIdConcecta(), it->getNomePops(), it->getNomePais(), it->getSiglaPais());
-        if((*it) == vertice) {
-            break;
-        } else if ((*it) > vertice) {
-            this->vertices->insert(it, vertice);
-            (this->numVertices)++;
-            break;
+    if(!vertices.empty()) {
+        for(auto it = vertices.begin(); it != vertices.end(); ++it){
+            if((*(*it)) == *vertice) {
+                break;
+            } else if ((*(*it)) > *vertice) {
+                vertices . insert(it, vertice);
+                break;
+            }
         }
+    } else {
+        vertices.push_back(vertice);
     }
-    /*while (it != vertices->end())
-    {
-        printf("Vertice: %d %s %s %s\n", it->getIdConcecta(), it->getNomePops(), it->getNomePais(), it->getSiglaPais());
-        if((*it) == vertice) {
-            break;
-        } else if ((*it) > vertice) {
-            this->vertices->insert(it, vertice);
-            (this->numVertices)++;
-            break;
-        }
-        it++;
-    }*/
-    printf("saiu");
-
-    /*if(it != vertices->end()) {
-        vertices->push_back(vertice);
-    }*/
 }
 
 void Grafo::imprimeGrafo(){
-    auto it = vertices->begin();
-    while (it != vertices->end())
+    auto it = vertices.begin();
+    while (it != vertices.end())
     {
-        printf("Vertice: %d %s %s %s\n", it->getIdConcecta(), it->getNomePops(), it->getNomePais(), it->getSiglaPais());
-        list<Aresta> arestas = it->getArestas();
+        std::cout << (*it)->getIdConcecta() << " " << (*it)->getNomePoPs() << " " << (*it)->getNomePais() << " " << (*it)->getSiglaPais() << std::endl;
+        list<Aresta*> arestas = (*it)->getArestas();
         auto it_arestas = arestas.begin();
         while (it_arestas != arestas.end())
         {
-            printf("        Aresta: %d %f\n", it_arestas->getIdPopsConectado(), it_arestas->getVelocidade());
+            std::cout << "        Aresta: " << (*it_arestas)->getIdPopsConectado() << " " << (*it_arestas)->getVelocidade() << " Gbps" << std::endl;
             
             it_arestas++;
         }

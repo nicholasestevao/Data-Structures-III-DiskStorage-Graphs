@@ -11,17 +11,16 @@ using std::list;
 
 class Grafo {
     private:
-        list<Vertice> *vertices;
-        int numVertices;
+        list<Vertice*> vertices;
+        bool empty;
     public:
         Grafo();
         ~Grafo();
-
+        
         Vertice* findVertice(int idConecta) const;
-        list<Vertice> getVertices() const;
-        int getNumVertices() const;
+        list<Vertice*> getVertices() const;
 
-        void insertVertice(Vertice vertice);
+        void insertVertice(Vertice* vertice);
         void imprimeGrafo();
         int contaCiclos();
 };
