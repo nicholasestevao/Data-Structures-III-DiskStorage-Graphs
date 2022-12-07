@@ -955,7 +955,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-void funcionalidade11CriarGrafo(char * nome_arquivo){
+Grafo * funcionalidade11CriarGrafo(char * nome_arquivo){
   
 
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
@@ -998,4 +998,10 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
     g->imprimeGrafo();
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
+    return g;
+}
+
+void funcionalidade12ContaCiclos(Grafo * g){
+    printf("Quantidade de ciclos: %d", g->contaCiclos());
+    return;
 }

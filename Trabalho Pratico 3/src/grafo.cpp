@@ -2,6 +2,7 @@
 
 Grafo::Grafo() {
     this->vertices = new list<Vertice>();
+    this->numVertices = 0;
 }
 
 Grafo::~Grafo() {
@@ -27,6 +28,10 @@ list<Vertice> Grafo::getVertices() const {
     return *vertices;
 }
 
+int Grafo::getNumVertices() const {
+    return this->numVertices;
+}
+
 void Grafo::insertVertice(Vertice vertice) {
     //auto it = vertices->begin();
     printf("inserindo:\n");
@@ -37,6 +42,7 @@ void Grafo::insertVertice(Vertice vertice) {
             break;
         } else if ((*it) > vertice) {
             this->vertices->insert(it, vertice);
+            (this->numVertices)++;
             break;
         }
     }
@@ -47,6 +53,7 @@ void Grafo::insertVertice(Vertice vertice) {
             break;
         } else if ((*it) > vertice) {
             this->vertices->insert(it, vertice);
+            (this->numVertices)++;
             break;
         }
         it++;
@@ -74,4 +81,14 @@ void Grafo::imprimeGrafo(){
         it++;
     }
 
+}
+
+int Grafo::contaCiclos(){
+    int ** visitados = (int **) malloc(sizeof(int *)*(g->getNumVertices()));
+    for(int i = 0; i< g->getNumVertices(); i++){
+        visitados[i] = (int *) malloc(sizeof(int)*2);
+    }
+
+    
+    return 0;
 }
