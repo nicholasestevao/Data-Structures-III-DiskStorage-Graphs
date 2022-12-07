@@ -32,8 +32,8 @@ $(BIN)/aresta.o: $(SRC)/aresta.cpp
 $(BIN)/arquivoBin.o: $(SRC)/arquivoBin.c
 	$(CC) $(FLAGS) -o $(BIN)/arquivoBin.o -c $(SRC)/arquivoBin.c
 
-$(BIN)/arquivoCsv.o: $(SRC)/arquivoCsv.c
-	$(CC) $(FLAGS) -o $(BIN)/arquivoCsv.o -c $(SRC)/arquivoCsv.c
+$(BIN)/arquivoCsv.o: $(SRC)/arquivoCSV.c
+	$(CC) $(FLAGS) -o $(BIN)/arquivoCsv.o -c $(SRC)/arquivoCSV.c
 
 $(BIN)/arvoreB.o: $(SRC)/arvoreB.c
 	$(CC) $(FLAGS) -o $(BIN)/arvoreB.o -c $(SRC)/arvoreB.c

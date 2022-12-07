@@ -58,19 +58,39 @@ list<Aresta*> Vertice::getArestas() const {
     return arestas;
 }
 
+void Vertice::setNomePoPs(string nomePoPs) {
+    this->nomePoPs = nomePoPs;
+}
+
+void Vertice::setNomePais(string nomePais) {
+    this->nomePais = nomePais;
+}
+
+void Vertice::setSiglaPais(string siglaPais) {
+    this->siglaPais = siglaPais;
+}
+
 void Vertice::insertAresta(Aresta *aresta) {
     if(!arestas.empty()) {
-            for(auto it = arestas.begin(); it != arestas.end(); ++it){
+            auto it = arestas.begin();
+            bool flagInseriu = false;
+            for(it; it != arestas.end(); ++it){
                 if((*(*it)) == *aresta) {
                     break;
                 } else if ((*(*it)) > *aresta) {
-                    arestas . insert(it, aresta);
+                    arestas.insert(it, aresta);
+                    //printf("Inseriu conectado ao %d\n", aresta->getIdPopsConectado());
+                    flagInseriu = true;
                     break;
                 }
             }
-    } else {
+            if( !flagInseriu){
+                arestas.insert(it, aresta);
+            }                 
+    }else{
         arestas.push_back(aresta);
-    }
+    }   
+    
 }
 
 void Vertice::operator = (const  Vertice &other) {
