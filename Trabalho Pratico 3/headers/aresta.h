@@ -5,13 +5,12 @@
 
 class Aresta {
     private:
-        int *idPoPsConectado;
-        double *velocidade;
+        int idPoPsConectado;
+        double velocidade;
 
     public:
         Aresta(int idPoPsConectado);
         Aresta(int idPoPsConectado, double velocidade);
-        ~Aresta();
 
         int getIdPopsConectado() const;
         double getVelocidade() const;

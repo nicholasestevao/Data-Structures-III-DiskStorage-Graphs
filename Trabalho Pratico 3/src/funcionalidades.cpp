@@ -974,29 +974,24 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
             
             // Registro nao removido
             Vertice *vertice = g->findVertice(*(dados->idConecta));
-            cout << "oi" << endl;
             if(vertice == nullptr){
                 //vertice nao existe ainda
-                printf("Vertice novo\n");
-
-                printf("dados: %s, %s, %s\n", dados->nomePoPs, dados->nomePais, dados->siglaPais);
                 vertice = new Vertice(*(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
-                g->insertVertice(*vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
+                g->insertVertice(vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
             }
-            printf("Inserindo no vertice: %d\n", vertice->getIdConcecta());
             //vertice ja existe
             double velocidade_MB = *(dados->velocidade);
             /*switch(*(dados->velocidade)){
                 case:
             }*/
-            vertice->insertAresta(Aresta(*(dados->idPoPsConectado), velocidade_MB));
+            vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), velocidade_MB));
             
 
             desalocaRegistrosDados(&dados, 1);
         }
     }
     g->imprimeGrafo();
+    delete g;
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
-
 }
