@@ -691,7 +691,7 @@ void funcionalidade8SelectWhere(char *nome_arquivo) {
     {
         msg_erro_Arq_Inconsistente();
         fecharArquivo_bin(arquivoArvB);
-        delete[] nome_arquivo;
+        delete[] nome_arquivoArvB;
         return;
     }
     
