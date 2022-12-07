@@ -1,9 +1,7 @@
 #include <iostream>
-#include "../headers/funcoesFornecidas.h"
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
-
-using std::cin;
+#include "../headers/funcoesFornecidas.h"
 
 int main(int argC, char *argV[]){
     int opcao;
@@ -67,7 +65,6 @@ int main(int argC, char *argV[]){
     }
 
     delete[] nome_arquivo;
-
     return 0;
 }   
 

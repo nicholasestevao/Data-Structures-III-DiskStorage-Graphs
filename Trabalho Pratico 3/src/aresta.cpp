@@ -1,36 +1,26 @@
 #include "../headers/aresta.h"
 
 Aresta::Aresta(int idPoPsConectado) {
-    this->idPoPsConectado = new int;
-    *(this->idPoPsConectado) = idPoPsConectado;
-
-    this->velocidade = nullptr;
+    this->idPoPsConectado = idPoPsConectado;
 }
 
 Aresta::Aresta(int idPoPsConectado, double velocidade) {
-    this->idPoPsConectado = new int;
-    *(this->idPoPsConectado) = idPoPsConectado;
+    this->idPoPsConectado = idPoPsConectado;
 
-    this->velocidade = new double;
-    *(this->velocidade) = velocidade;
-}
-
-Aresta::~Aresta() {
-    delete idPoPsConectado;
-    delete velocidade;
+    this->velocidade = velocidade;
 }
 
 int Aresta::getIdPopsConectado() const {
-    return *idPoPsConectado;
+    return idPoPsConectado;
 }
 
 double Aresta::getVelocidade() const {
-    return *velocidade;
+    return velocidade;
 }
 
 bool Aresta::operator == (const Aresta &other) const {
     bool r = false;
-    if(*(this->idPoPsConectado) == other.getIdPopsConectado()) {
+    if(this->idPoPsConectado == other.getIdPopsConectado()) {
         r = true;
     }
     return r;
@@ -39,7 +29,7 @@ bool Aresta::operator == (const Aresta &other) const {
 
 bool Aresta::operator > (const Aresta &other) const {
     bool r = false;
-    if(*(this->idPoPsConectado) > other.getIdPopsConectado()) {
+    if(this->idPoPsConectado > other.getIdPopsConectado()) {
         r = true;
     }
     return r;
@@ -47,7 +37,7 @@ bool Aresta::operator > (const Aresta &other) const {
 
 bool Aresta::operator >= (const Aresta &other) const {
     bool r = false;
-    if(*(this->idPoPsConectado) >= other.getIdPopsConectado()) {
+    if(this->idPoPsConectado >= other.getIdPopsConectado()) {
         r = true;
     }    
     return r;
@@ -55,7 +45,7 @@ bool Aresta::operator >= (const Aresta &other) const {
 
 bool Aresta::operator < (const Aresta &other) const {
     bool r = false;
-    if(*(this->idPoPsConectado) < other.getIdPopsConectado()) {
+    if(this->idPoPsConectado < other.getIdPopsConectado()) {
         r = true;
     }
     return r;
@@ -63,7 +53,7 @@ bool Aresta::operator < (const Aresta &other) const {
 
 bool Aresta::operator <= (const Aresta &other) const {
     bool r = false;
-    if(*(this->idPoPsConectado) <= other.getIdPopsConectado()) {
+    if(this->idPoPsConectado <= other.getIdPopsConectado()) {
         r = true;
     }
     return r;
