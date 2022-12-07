@@ -981,8 +981,7 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
             }
             //vertice ja existe
             if(*(dados->idPoPsConectado) != -1) {
-                double velocidade_MB = *(dados->velocidade);
-                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), velocidade_MB));
+                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), *(dados->velocidade), (dados->unidadeMedida)[0]));
             }
             
 

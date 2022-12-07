@@ -58,7 +58,7 @@ void Grafo::imprimeGrafo(){
         auto it_arestas = arestas.begin();
         while (it_arestas != arestas.end())
         {
-            std::cout << "        Aresta: " << (*it_arestas)->getIdPopsConectado() << " " << (*it_arestas)->getVelocidade() << std::endl;
+            std::cout << "        Aresta: " << (*it_arestas)->getIdPopsConectado() << " " << (*it_arestas)->getVelocidade() << " Gbps" << std::endl;
             
             it_arestas++;
         }
