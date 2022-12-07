@@ -2,15 +2,21 @@
 #define __FUNCIONALIDADES_C__
 
 #include <iostream>
-#include "mensagens.h"
+#include <string>
+
+#include "aresta.h"
 #include "arquivoBin.h"
 #include "arquivoCsv.h"
 #include "arvoreB.h"
 #include "grafo.h"
 #include "funcoesFornecidas.h"
+#include "mensagens.h"
+#include "vertice.h"
 
 using std::cin;
 using std::cout;
+using std::endl;
+using std::string;
 
 /**
  * Create Table (Funcionalidade_1).

@@ -26,13 +26,14 @@ class Vertice {
         Aresta* findAresta(int idPoPsConectado);
 
         int getIdConcecta() const;
-        string getNomePops() const;
+        string getNomePoPs() const;
         string getNomePais() const;
         string getSiglaPais() const;
         list<Aresta> getArestas() const;
 
         void insertAresta(Aresta aresta);
 
+        void operator = (const  Vertice &other);
         bool operator == (const Vertice &other) const;
         bool operator > (const Vertice &other) const;
         bool operator >= (const Vertice &other) const;

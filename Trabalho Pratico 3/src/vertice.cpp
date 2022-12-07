@@ -17,7 +17,7 @@ Vertice::Vertice(int idConecta, string nomePoPs, string nomePais, string siglaPa
     this->nomePoPs = new string(nomePoPs);
     //*(this->nomePoPs) = nomePoPs;
 
-    this->nomePoPs = new string(nomePais);
+    this->nomePais = new string(nomePais);
     //*(this->nomePais) = nomePais;
 
     this->siglaPais = new string(siglaPais);
@@ -53,7 +53,7 @@ int Vertice::getIdConcecta() const {
     return *idConecta;
 }
 
-string Vertice::getNomePops() const {
+string Vertice::getNomePoPs() const {
     return *nomePoPs;
 }
 
@@ -85,6 +85,15 @@ void Vertice::insertAresta(Aresta aresta) {
     if(it != arestas->end()) {
         arestas->push_back(aresta);
     }
+}
+
+void Vertice::operator = (const  Vertice &other) {
+    *(this->idConecta) = other.getIdConcecta();
+    *(this->nomePais) = other.getNomePais();
+    *(this->nomePoPs) = other.getNomePoPs();
+    *(this->siglaPais) = other.getSiglaPais();
+    delete this->arestas;
+    this->arestas = new list<Aresta>(other.getArestas());
 }
 
 bool Vertice::operator == (const Vertice &other) const {
