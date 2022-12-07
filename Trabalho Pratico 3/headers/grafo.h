@@ -12,7 +12,6 @@ using std::list;
 class Grafo {
     private:
         list<Vertice*> vertices;
-        bool empty;
     public:
         Grafo();
         ~Grafo();

@@ -15,25 +15,26 @@ Vertice::Vertice(int idConecta, string nomePoPs, string nomePais, string siglaPa
 }
 
 Vertice::~Vertice() {
-    auto it = arestas.begin();
-    while (it != arestas.end())
-    {
-        delete (*it);
-        it++;
+    if(!arestas.empty()) {
+        for(auto it = arestas.begin(); it != arestas.end(); ++it) {
+            delete (*it);
+        }
     }
 }
 
 Aresta* Vertice::findAresta(int idPoPsConectado) {
-    Aresta buscado(idPoPsConectado);
     Aresta *resutldado = nullptr;
-    auto it = arestas.begin();
-    while (it != arestas.end())
-    {
-        if ((*(*it)) == buscado) {
-            resutldado = (*it);
-            break;
-        } 
-        it++;
+    if(!arestas.empty()) {
+        Aresta buscado(idPoPsConectado);
+        auto it = arestas.begin();
+        while (it != arestas.end())
+        {
+            if ((*(*it)) == buscado) {
+                resutldado = (*it);
+                break;
+            } 
+            it++;
+        }
     }
     return resutldado;
 }
@@ -64,22 +65,13 @@ void Vertice::insertAresta(Aresta *aresta) {
                 if((*(*it)) == *aresta) {
                     break;
                 } else if ((*(*it)) > *aresta) {
-                    arestas . insert(it, aresta);
+                    arestas.insert(it, aresta);
                     break;
                 }
             }
     } else {
-        arestas.push_back(aresta);
+        arestas.push_front(aresta);
     }
-}
-
-void Vertice::operator = (const  Vertice &other) {
-    this->idConecta = other.getIdConcecta();
-    this->nomePais = other.getNomePais();
-    this->nomePoPs = other.getNomePoPs();
-    this->siglaPais = other.getSiglaPais();
-
-    this->arestas = other.getArestas();
 }
 
 bool Vertice::operator == (const Vertice &other) const {

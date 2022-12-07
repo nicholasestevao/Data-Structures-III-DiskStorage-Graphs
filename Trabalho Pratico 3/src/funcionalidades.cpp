@@ -955,7 +955,7 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-void funcionalidade11CriarGrafo(char * nome_arquivo){
+void funcionalidade11CriarGrafo(char *nome_arquivo){
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
     if (arq_bin == NULL)
     {
@@ -963,6 +963,7 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
         fecharArquivo_bin(arq_bin);
         return;
     }
+    
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
 
     Grafo *g = new Grafo();
