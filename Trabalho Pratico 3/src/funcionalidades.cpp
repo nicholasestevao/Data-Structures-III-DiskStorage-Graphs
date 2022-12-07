@@ -980,11 +980,10 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
                 g->insertVertice(vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
             }
             //vertice ja existe
-            double velocidade_MB = *(dados->velocidade);
-            /*switch(*(dados->velocidade)){
-                case:
-            }*/
-            vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), velocidade_MB));
+            if(*(dados->idPoPsConectado) != -1) {
+                double velocidade_MB = *(dados->velocidade);
+                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), velocidade_MB));
+            }
             
 
             desalocaRegistrosDados(&dados, 1);
