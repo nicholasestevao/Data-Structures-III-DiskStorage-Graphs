@@ -14,6 +14,12 @@ trab: $(BIN) ALLBIN
 run:
 	./programaTrab
 
+clear: 
+	rm $(BIN)/*.o
+
+valgrind: trab
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./programaTrab
+
 ##__./bin_Directory__
 $(BIN):
 	mkdir -p $(BIN)

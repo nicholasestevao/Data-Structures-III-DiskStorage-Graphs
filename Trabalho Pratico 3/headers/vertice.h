@@ -36,7 +36,6 @@ class Vertice {
 
         void insertAresta(Aresta *aresta);
 
-        void operator = (const  Vertice &other);
         bool operator == (const Vertice &other) const;
         bool operator > (const Vertice &other) const;
         bool operator >= (const Vertice &other) const;

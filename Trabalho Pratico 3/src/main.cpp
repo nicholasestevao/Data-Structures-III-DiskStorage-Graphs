@@ -57,7 +57,6 @@ int main(int argC, char *argV[]){
             break;
             
         case 9:
-            //se
             funcionalidade9InsertArvB(nome_arquivo);
             break;
 
