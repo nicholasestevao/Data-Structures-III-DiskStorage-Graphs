@@ -3,12 +3,6 @@
 
 #include <stdio.h>
 #include <locale.h>
-
-/**
- * Configura linguagem para impressao correta das mensagens 
- */
-void config_mensagens();
-
 /**
  * menssagem de ERRO falha na criacao do arquivo.
  */

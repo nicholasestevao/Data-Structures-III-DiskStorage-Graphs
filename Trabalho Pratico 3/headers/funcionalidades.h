@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <locale>
 
 #include "aresta.h"
 #include "arquivoBin.h"

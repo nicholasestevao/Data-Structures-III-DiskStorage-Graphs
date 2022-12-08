@@ -955,7 +955,6 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
     if (arq_bin == NULL)
     {
         msg_erro_falha_funcionalidade();
-        fecharArquivo_bin(arq_bin);
         return;
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
