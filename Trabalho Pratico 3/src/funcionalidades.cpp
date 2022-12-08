@@ -950,15 +950,14 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-void funcionalidade11CriarGrafo(char *nome_arquivo){
+void funcionalidade11CriarGrafo(char * nome_arquivo){
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
     if (arq_bin == NULL)
     {
-        msg_erro_Arq_Inconsistente();
+        msg_erro_falha_funcionalidade();
         fecharArquivo_bin(arq_bin);
         return;
     }
-    
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
 
     //Arquivo de Indice
@@ -969,13 +968,10 @@ void funcionalidade11CriarGrafo(char *nome_arquivo){
 
 
     Grafo *g = new Grafo();
-    printf("%d registros\n", *(cabecalho->proxRRN));
     for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
         RegistroDados *dados_A = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
-        if(*(dados_A->idConecta)>100){
-            printf("Maior que 100\n");
-        }
+        
         if (dados_A != NULL && *(dados_A->idPoPsConectado) != -1)
         {
             // Registro nao removido
@@ -983,6 +979,7 @@ void funcionalidade11CriarGrafo(char *nome_arquivo){
             if(vertice_A == nullptr){
                 //vertice nao existe ainda
                 vertice_A = new Vertice(*(dados_A->idConecta), dados_A->nomePoPs, dados_A->nomePais, dados_A->siglaPais);
+                
                 g->insertVertice(vertice_A);
             }
             //vertice ja existe

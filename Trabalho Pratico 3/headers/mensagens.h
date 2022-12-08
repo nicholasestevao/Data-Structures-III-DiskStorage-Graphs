@@ -2,7 +2,13 @@
 #define __MENSAGENS_C__
 
 #include <stdio.h>
+#include <iostream>
+#include <string>
 
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
 /**
  * menssagem de ERRO falha na criacao do arquivo
  */
@@ -27,5 +33,7 @@ void msg_erro_Reg_Inexistente();
  * menssagem de ERRO de RRN invalido 
  */
 void msg_erro_RRN_Invalido();
+
+void msg_erro_falha_funcionalidade();
 
 #endif
