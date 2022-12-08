@@ -4,6 +4,8 @@
 #include "../headers/funcoesFornecidas.h"
 
 int main(int argC, char *argV[]){
+    config_mensagens();
+    
     int opcao;
     char *nome_arquivo = new char[20];
     

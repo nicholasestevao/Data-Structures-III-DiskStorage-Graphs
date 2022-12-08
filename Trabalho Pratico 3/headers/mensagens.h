@@ -2,38 +2,41 @@
 #define __MENSAGENS_C__
 
 #include <stdio.h>
-#include <iostream>
-#include <string>
+#include <locale.h>
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::string;
 /**
- * menssagem de ERRO falha na criacao do arquivo
+ * Configura linguagem para impressao correta das mensagens 
+ */
+void config_mensagens();
+
+/**
+ * menssagem de ERRO falha na criacao do arquivo.
  */
 void msg_erro_Arq_FalhaCriacao();
 
 /**
- * menssagem de ERRO de Arquivo inconsistente 
+ * menssagem de ERRO de Arquivo inconsistente. 
  */
 void msg_erro_Arq_Inconsistente();
 
 /**
- * menssagem de ERRO de Arquivo Inexistente 
+ * menssagem de ERRO de Arquivo Inexistente. 
  */
 void msg_erro_Arq_Inexistente();
 
 /**
- * menssagem de ERRO de Registro inconsistente 
+ * menssagem de ERRO de Registro inconsistente. 
  */
 void msg_erro_Reg_Inexistente();
 
 /**
- * menssagem de ERRO de RRN invalido 
+ * menssagem de ERRO de RRN invalido.
  */
 void msg_erro_RRN_Invalido();
 
+/**
+ *  menssagem de ERRO de falha na funcionalidade.
+ */
 void msg_erro_falha_funcionalidade();
 
 #endif

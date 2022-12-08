@@ -1,6 +1,6 @@
 CC := g++
 DEBUGFLAGS := -g3 -Wall -Werror
-CFLAGS := -std=c++11 -o3 -march=native $(DEBUGFLAGS)
+CFLAGS := -o3 -march=native $(DEBUGFLAGS)
 
 BIN := ./bin
 HEADERS := ./headers

@@ -1,5 +1,10 @@
 #include "../headers/mensagens.h"
 
+void config_mensagens() {
+    char *ret = setlocale(LC_ALL, "Portuguese_Brazil");
+    printf("%s", ret);
+}
+
 void msg_erro_Arq_FalhaCriacao()
 {
     printf("Falha no processamento do arquivo.");

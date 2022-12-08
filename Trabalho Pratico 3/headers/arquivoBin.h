@@ -1,6 +1,7 @@
 #ifndef __ARQUIVOS_BIN_C__
 #define __ARQUIVOS_BIN_C__
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "arquivoCsv.h"
 #include "mensagens.h"
