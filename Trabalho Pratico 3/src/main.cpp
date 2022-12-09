@@ -45,11 +45,11 @@ int main(int argC, char *argV[]){
         case 7:
         {
             //CreateIndex (7) - Nicholas
-            char *nome_arq_indice = (char * ) malloc(sizeof(char)*50);
+            char *nome_arq_indice = new char[50];
             cin >> nome_arq_indice;
             funcionalidade7CreateIndex(nome_arquivo, nome_arq_indice);            
             binarioNaTela(nome_arq_indice);
-            free(nome_arq_indice);
+            delete[] nome_arq_indice;
             break;
         }
         case 8:
