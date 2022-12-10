@@ -15,7 +15,7 @@ run:
 	./programaTrab
 
 clear: 
-	rm $(BIN)/*.o
+	rm $(BIN)/*.o programaTrab programaTrab.exe  
 
 valgrind: trab
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./programaTrab

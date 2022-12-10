@@ -31,6 +31,6 @@ void msg_erro_RRN_Invalido();
 /**
  *  menssagem de ERRO de falha na funcionalidade.
  */
-void msg_erro_falha_funcionalidade();
+void msg_erro_Falha_Funcionalidade();
 
 #endif

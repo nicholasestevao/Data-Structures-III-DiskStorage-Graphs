@@ -10,7 +10,7 @@ void msg_erro_Arq_Inconsistente()
     printf("Falha no processamento do arquivo.");
 }
 
-void msg_erro_falha_funcionalidade()
+void msg_erro_Falha_Funcionalidade()
 {
     printf("Falha na execução da funcionalidade.");
 }

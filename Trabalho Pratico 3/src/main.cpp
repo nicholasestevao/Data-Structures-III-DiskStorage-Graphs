@@ -2,6 +2,7 @@
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
 #include "../headers/funcoesFornecidas.h"
+#include "../headers/grafo.h"
 
 int main(int argC, char *argV[]){
     
@@ -65,11 +66,17 @@ int main(int argC, char *argV[]){
             funcionalidade10Juncao(nome_arquivo);
             break;
         case 11:
-            funcionalidade11CriarGrafo(nome_arquivo);
+                funcionalidade11CriarGrafo(nome_arquivo);
             break;
         case 12:            
             //funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
-            break;    
+            break;
+        case 13:            
+            funcionalidade13FluxoMaximo(nome_arquivo);
+            break;
+        case 14:            
+            funcionalidade14VelocidadeEntrePontos(nome_arquivo);
+            break;      
     }
 
     delete[] nome_arquivo;
