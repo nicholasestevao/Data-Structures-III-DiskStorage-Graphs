@@ -75,7 +75,7 @@ void Vertice::insertAresta(Aresta *aresta) {
     if(!arestas.empty()) {
             auto it = arestas.begin();
             bool flagInseriu = false;
-            for(it; it != arestas.end(); ++it){
+            for(; it != arestas.end(); ++it){
                 if((*(*it)) == *aresta) {
                     break;
                 } else if ((*(*it)) > *aresta) {

@@ -36,7 +36,7 @@ void Grafo::insertVertice(Vertice* vertice) {
     auto it = vertices.begin();
     bool flagInseriu = false;
     if(!vertices.empty()) {
-        for(it; it != vertices.end(); ++it){
+        for(; it != vertices.end(); ++it){
             if((*(*it)) == *vertice) {
                 break;
             } else if ((*(*it)) > *vertice) {
