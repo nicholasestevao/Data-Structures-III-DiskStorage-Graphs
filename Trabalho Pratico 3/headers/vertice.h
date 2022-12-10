@@ -29,6 +29,9 @@ class Vertice {
         string getNomePoPs() const;
         string getNomePais() const;
         string getSiglaPais() const;
+        void setNomePoPs(string nomePoPs);
+        void setNomePais(string nomePais);
+        void setSiglaPais(string siglaPais);
         list<Aresta*> getArestas() const;
 
         void insertAresta(Aresta *aresta);

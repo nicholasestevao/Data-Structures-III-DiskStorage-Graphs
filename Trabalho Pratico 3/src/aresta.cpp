@@ -15,22 +15,22 @@ double Aresta::converteVelocidadeGbps(double velocidade, char unidade) {
     {   
         //unidade nula
         case ' ':
-            r *= 0.000000000931322574615478515625;
+            r *= 0.00000095367431640625;
             break;
     
         case 'K':
-            r *= 0.00000095367431640625;
+            r *= 0.0009765625 ;
             break;
 
         case 'M':
-            r *= 0.0009765625;
             break;
         
         case 'G':
+            r *= 1024;
             break;
 
         case 'T':
-            r *= 1024;
+            r *= 1048576;
             break;
     }
     return r;

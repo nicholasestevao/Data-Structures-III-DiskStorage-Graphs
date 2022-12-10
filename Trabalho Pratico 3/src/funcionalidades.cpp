@@ -617,10 +617,8 @@ void funcionalidade6Compactacao(char *nome_arquivo)
     binarioNaTela(nome_arquivo);
 }
 
-void funcionalidade7CreateIndex(char *nome_arquivo)
+void funcionalidade7CreateIndex(char *nome_arquivo, char * nome_arq_indice)
 {
-    char *nome_arq_indice = new char[50];
-    cin >> nome_arq_indice;
     FILE *arq_dados = abrirLeitura_bin(nome_arquivo);
     FILE *arq_indice = abrirEscrita_bin(nome_arq_indice);
     if(arq_dados == NULL || arq_indice == NULL){
@@ -635,7 +633,6 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
         delete[] nome_arq_indice;
         return;
     }
-
     //Le cabecalho do arquivo binario.
     RegistroCabecalho *cabecalhoCsv = lerRegistroCabecalhoArquivoBin(arq_dados);
 
@@ -666,8 +663,6 @@ void funcionalidade7CreateIndex(char *nome_arquivo)
 
     fecharArquivo_bin(arq_indice);
     fclose(arq_dados);
-    binarioNaTela(nome_arq_indice);
-    delete[] nome_arq_indice;
 }
 
 void funcionalidade8SelectWhere(char *nome_arquivo) {
@@ -955,37 +950,64 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-void funcionalidade11CriarGrafo(char *nome_arquivo){
+void funcionalidade11CriarGrafo(char * nome_arquivo){
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
     if (arq_bin == NULL)
     {
         msg_erro_Arq_Inconsistente();
         return;
     }
-    
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
+
+    //Arquivo de Indice
+    funcionalidade7CreateIndex(nome_arquivo, (char*) "indice.bin");
+    FILE* arquivoArvB = abrirLeitura_bin((char*)  "indice.bin");
+    CabecalhoArvB *cabecalhoIndice = lecabecalhoArvB(arquivoArvB);
+    NoArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoIndice->noRaiz));
+
 
     Grafo *g = new Grafo();
     for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
     {
-        RegistroDados *dados = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
-        if (dados != NULL)
+        RegistroDados *dados_A = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
+        
+        if (dados_A != NULL && *(dados_A->idPoPsConectado) != -1)
         {
-            
             // Registro nao removido
-            Vertice *vertice = g->findVertice(*(dados->idConecta));
-            if(vertice == nullptr){
+            Vertice *vertice_A = g->findVertice(*(dados_A->idConecta));
+            if(vertice_A == nullptr){
                 //vertice nao existe ainda
-                vertice = new Vertice(*(dados->idConecta), dados->nomePoPs, dados->nomePais, dados->siglaPais);
-                g->insertVertice(vertice); // conferir se vai funcioanr pois passei por parametro nao referencia
+                vertice_A = new Vertice(*(dados_A->idConecta), dados_A->nomePoPs, dados_A->nomePais, dados_A->siglaPais);
+                
+                g->insertVertice(vertice_A);
             }
             //vertice ja existe
-            if(*(dados->idPoPsConectado) != -1) {
-                vertice->insertAresta(new Aresta(*(dados->idPoPsConectado), *(dados->velocidade), (dados->unidadeMedida)[0]));
-            }
+            vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
             
 
-            desalocaRegistrosDados(&dados, 1);
+            // Inserindo no outro vertice (pois o grafo é nao direcionado)
+            
+
+            Vertice *vertice_B = g->findVertice(*(dados_A->idPoPsConectado));
+            if(vertice_B == nullptr){
+                //vertice nao existe ainda
+                int RRN_vertice_B = -1;
+                buscaChaveArvoreB(arquivoArvB, raiz, *(dados_A->idPoPsConectado), &RRN_vertice_B);
+                if(RRN_vertice_B != -1){
+                    RegistroDados *dados_B = lerRegistroDadosArquivoBin_RRN(arq_bin, RRN_vertice_B);
+                    //printf(" Criou vertice b: %d para conectar com %d\n", *(dados_B->idConecta),*(dados_A->idConecta) );
+                    vertice_B = new Vertice(*(dados_B->idConecta), dados_B->nomePoPs, dados_B->nomePais, dados_B->siglaPais);
+                    g->insertVertice(vertice_B);
+                    desalocaRegistrosDados(&dados_B, 1);
+                }             
+            }else{
+                    //printf("Foi no vertice b: %d para conectar com %d\n",  vertice_B->getIdConcecta(),*(dados_A->idConecta) );
+                } 
+            //vertice ja existe
+            vertice_B->insertAresta(new Aresta(*(dados_A->idConecta), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+            
+            desalocaRegistrosDados(&dados_A, 1);
+            
         }
     }
     g->imprimeGrafo();

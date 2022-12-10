@@ -1,5 +1,4 @@
 #include "../headers/arquivoBin.h"
-#include <stdlib.h>
 
 // Abre arquivo binario para leitura
 // Nao atualiza o status

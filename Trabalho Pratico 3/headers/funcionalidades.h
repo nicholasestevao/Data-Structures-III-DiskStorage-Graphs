@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <locale>
 
 #include "aresta.h"
 #include "arquivoBin.h"
@@ -76,7 +77,7 @@ void funcionalidade6Compactacao(char* nome_arquivo);
  * 
  * @param nome_arquivo Nome do arquivo de dados .bin.
  */
-void funcionalidade7CreateIndex(char * nome_arquivo);
+void funcionalidade7CreateIndex(char * nome_arquivo, char * nome_arq_indice);
 
 /**
  * Select where (Funcionalidade_8).

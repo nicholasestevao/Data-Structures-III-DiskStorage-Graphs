@@ -4,6 +4,7 @@
 #include "../headers/funcoesFornecidas.h"
 
 int main(int argC, char *argV[]){
+    
     int opcao;
     char *nome_arquivo = new char[20];
     
@@ -42,10 +43,15 @@ int main(int argC, char *argV[]){
             break;
 
         case 7:
+        {
             //CreateIndex (7) - Nicholas
-            funcionalidade7CreateIndex(nome_arquivo);
+            char *nome_arq_indice = new char[50];
+            cin >> nome_arq_indice;
+            funcionalidade7CreateIndex(nome_arquivo, nome_arq_indice);            
+            binarioNaTela(nome_arq_indice);
+            delete[] nome_arq_indice;
             break;
-            
+        }
         case 8:
             //Select Where (8) - Isaac
             funcionalidade8SelectWhere(nome_arquivo);
@@ -61,6 +67,9 @@ int main(int argC, char *argV[]){
         case 11:
             funcionalidade11CriarGrafo(nome_arquivo);
             break;
+        case 12:            
+            //funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
+            break;    
     }
 
     delete[] nome_arquivo;
