@@ -1029,7 +1029,7 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
         cout << ": " << fluxo_max; 
         if(fluxo_max != -1) {
-            cout << "Mpbs" << endl;
+            cout << " Mpbs" << endl;
         } else {
             cout << endl;
         }
@@ -1039,5 +1039,5 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
 }
 
 void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo) {
-
+    
 }

@@ -14,6 +14,12 @@ trab: $(BIN) ALLBIN
 run:
 	./programaTrab
 
+test: 
+	./programaTrab > teste.out
+
+debug:
+	gdb programaTrab 
+
 clear: 
 	rm $(BIN)/*.o programaTrab programaTrab.exe  
 
