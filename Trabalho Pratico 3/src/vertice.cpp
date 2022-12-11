@@ -55,6 +55,20 @@ string Vertice::getSiglaPais() const {
     return siglaPais;
 }
 
+Aresta* Vertice::getAresta(int index) const {
+    Aresta *r = nullptr;
+    auto it = arestas.begin();
+    if(!arestas.empty()) {
+        for(int i = 0; i < index; i++) {
+            if(it != arestas.end()) {
+                it++;
+            }
+        }
+        r = (*it);
+    }
+    return r;
+}
+
 list<Aresta*> Vertice::getArestas() const {
     return arestas;
 }

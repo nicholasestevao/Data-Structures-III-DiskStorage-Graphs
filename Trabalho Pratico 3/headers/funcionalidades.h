@@ -135,8 +135,9 @@ void funcionalidade12ContaCiclos(char *nome_arquivo);
 /**
  * 
  * @param nome_arquivo Nome do arquivo de dados .bin.
+ * @param qnt_busca Quantidade de buscas a serem realizada.
  */
-void funcionalidade13FluxoMaximo(char *nome_arquivo);
+void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca);
 
 
 /**

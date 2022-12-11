@@ -68,6 +68,44 @@ Grafo::~Grafo() {
     }
 }
 
+int Grafo::findGreaterVerticeOpen(vector<pair<char, double>> &d, int &tam) const {
+    int r = -1;
+    double coust = -1;
+    for(int i = 0; i < tam; i++) {
+        if((d[i].second != INFINITY) && (coust < d[i].second) && (d[i].first == 'O')) {
+            coust = d[i].second;
+            r = i;
+        }
+    }
+    return r;
+}
+
+int Grafo::findIndexVertice(int idConecta) const {
+    int indice = -1;
+    if(!vertices.empty()) {
+        Vertice buscado(idConecta);
+        for(auto it = vertices.begin(); it != vertices.end(); it++) {
+            indice++;
+            if((*(*it)) == buscado) {
+                break;
+            }  
+        }
+    }
+    return indice;
+}
+
+int Grafo::findLessVerticeOpen(vector<pair<char, double>> &d, int &tam) const {
+    int r = -1;
+    double coust = INFINITY;
+    for(int i = 0; i < tam; i++) {
+        if ((coust > d[i].second) && (d[i].first == 'O')) {
+            coust = d[i].second;
+            r = i;
+        }
+    }
+    return r;
+}
+
 Vertice* Grafo::findVertice(int idConecta) const{
     Vertice *resultado = nullptr;
     if(!vertices.empty()) {
@@ -83,6 +121,20 @@ Vertice* Grafo::findVertice(int idConecta) const{
         }
     }
     return resultado;
+}
+
+Vertice* Grafo::getVertice(int index) const {
+    Vertice *r = nullptr;
+    auto it = vertices.begin();
+    if(!vertices.empty()) {
+        for(int i = 0; i < index; i++) {
+            if(it != vertices.end()) {
+                it++;
+            }
+        }
+        r = (*it);
+    }
+    return r;
 }
 
 list<Vertice*> Grafo::getVertices() const {
@@ -140,13 +192,77 @@ int Grafo::contaCiclos(){
 }
 
 double Grafo::maiorDistanciaEntreVertices(int id_Partida, int id_Chegada) const {
-    return 0.0;
+    double r = 0;
+    int tam = vertices.size();
+    vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+    int qnt_open = tam;
+    vector<int> *p = new vector<int>(tam, -1);
+
+    int actual_index = findIndexVertice(id_Partida);
+    (*d)[actual_index] = pair<char, double>('O', 0);
+    while (qnt_open > 0) {
+        actual_index = findGreaterVerticeOpen((*d), tam);
+        if(actual_index == -1) {
+            //cout << "Actual_Index: " << actual_index << endl;
+            break;
+        }
+        (*d)[actual_index].first = 'C';
+        qnt_open--;
+        Vertice *actual_vertice = getVertice(actual_index);
+        //cout << "Menor custo - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
+        list<Aresta*> actual_arestas = actual_vertice->getArestas();
+        for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
+            int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
+            //cout << "Sub_Index: " << sub_index << " ID: " << (*it_ar)->getIdPopsConectado() << endl;
+            if(((*d)[sub_index].second == INFINITY) || ((*d)[sub_index].second < (*it_ar)->getVelocidade())) {
+                //cout << "       Substituiu " << (*d)[sub_index].second;
+                (*d)[sub_index].second = (*d)[actual_index].second + (*it_ar)->getVelocidade();
+                //cout << " por " << (*d)[sub_index].second << endl;
+            }
+        }
+    }
+    actual_index = findIndexVertice(id_Chegada);
+    r = (*d)[actual_index].second;
+
+    delete d;
+    delete p;
+    return r;
 }
 
 double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const {
-    vector<pair<char, double>> *d = new vector<pair<char, double>>(vertices.size(), pair<char, double>('A', INFINITY));
-    
+    double r = 0;
+    int tam = vertices.size();
+    vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+    int qnt_open = tam;
+    vector<int> *p = new vector<int>(tam, -1);
+
+    int actual_index = findIndexVertice(id_Partida);
+    (*d)[actual_index] = pair<char, double>('O', 0);
+    while (qnt_open > 0) {
+        actual_index = findLessVerticeOpen((*d), tam);
+        if(actual_index == -1) {
+            //cout << "Actual_Index: " << actual_index << endl;
+            break;
+        }
+        (*d)[actual_index].first = 'C';
+        qnt_open--;
+        Vertice *actual_vertice = getVertice(actual_index);
+        //cout << "Menor custo - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
+        list<Aresta*> actual_arestas = actual_vertice->getArestas();
+        for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
+            int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
+            //cout << "Sub_Index: " << sub_index << " ID: " << (*it_ar)->getIdPopsConectado() << endl;
+            if(((*d)[sub_index].second == INFINITY) || ((*d)[sub_index].second > (*it_ar)->getVelocidade())) {
+                //cout << "       Substituiu " << (*d)[sub_index].second;
+                (*d)[sub_index].second = (*d)[actual_index].second + (*it_ar)->getVelocidade();
+                //cout << " por " << (*d)[sub_index].second << endl;
+            }
+        }
+    }
+    actual_index = findIndexVertice(id_Chegada);
+    r = (*d)[actual_index].second;
 
     delete d;
-    return 0;
+    delete p;
+    return r;
 }

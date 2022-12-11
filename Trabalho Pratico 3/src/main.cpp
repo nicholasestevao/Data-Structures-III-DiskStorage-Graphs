@@ -71,8 +71,10 @@ int main(int argC, char *argV[]){
         case 12:            
             //funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
             break;
-        case 13:            
-            funcionalidade13FluxoMaximo(nome_arquivo);
+        case 13:
+            int qnt_buscas;
+            cin >> qnt_buscas;            
+            funcionalidade13FluxoMaximo(nome_arquivo, qnt_buscas);
             break;
         case 14:            
             funcionalidade14VelocidadeEntrePontos(nome_arquivo);

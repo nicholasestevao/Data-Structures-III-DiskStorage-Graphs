@@ -965,10 +965,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo) {
 
 }
 
-void funcionalidade13FluxoMaximo(char *nome_arquivo) {
-    double fluxo_max = 0.0;
-    int id_Partida = 0, id_Chegada = 0;
-    cin >> id_Partida >> id_Chegada;
+void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     Grafo *g = nullptr;
     try {
         g = new Grafo(nome_arquivo);
@@ -978,11 +975,15 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo) {
         return;
     }
 
-    fluxo_max = g->menorDistanciaEntreVertices(id_Partida, id_Chegada);
-
-    cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
-    cout << ": " << fluxo_max << "Mpbs" << endl;
-
+    double fluxo_max = 0.0;
+    int id_Partida = 0, id_Chegada = 0;
+    for(int i = 0; i < qnt_busca; i++) {
+        cin >> id_Partida >> id_Chegada;
+        fluxo_max = g->menorDistanciaEntreVertices(id_Partida, id_Chegada);
+        cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
+        cout << ": " << fluxo_max << "Mpbs" << endl;
+    }
+    
     delete g;
 }
 

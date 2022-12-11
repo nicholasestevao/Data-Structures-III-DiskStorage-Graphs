@@ -23,10 +23,9 @@ valgrind: trab
 ##__./bin_Directory__
 $(BIN):
 	mkdir -p $(BIN)
-##--------------------	
+##--------------------
 
 ##__$(BIN)/*.o_Files__
- 
 ALLBIN: $(BIN)/aresta.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/arvoreB.o $(BIN)/cabecalhoArvB.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/grafo.o $(BIN)/main.o $(BIN)/mensagens.o $(BIN)/noArvB.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o $(BIN)/registroDados.o $(BIN)/vertice.o
 
 $(BIN)/main.o: $(SRC)/main.cpp

@@ -29,7 +29,12 @@ using std::endl;
 class Grafo {
     private:
         list<Vertice*> vertices;
-    public:
+        Vertice* getVertice(int index) const;
+        int findIndexVertice(int idConecta) const;
+        int findLessVerticeOpen(vector<pair<char, double>> &d, int &tam) const;
+        int findGreaterVerticeOpen(vector<pair<char, double>> &d, int &tam) const;
+
+    public:    
         Grafo(char *nome_arquivo);
         ~Grafo();
         
@@ -40,8 +45,8 @@ class Grafo {
         void imprimeGrafo() const;
         int contaCiclos();
         double maiorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;
-        double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;
-        
+        double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;  
+
 };
 
 #endif
