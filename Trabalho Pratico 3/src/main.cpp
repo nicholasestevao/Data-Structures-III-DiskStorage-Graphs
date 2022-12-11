@@ -67,7 +67,9 @@ int main(int argC, char *argV[]){
         case 11:
         {
             Grafo * g = funcionalidade11CriarGrafo(nome_arquivo);
-            g->imprimeGrafo();
+            if(g != NULL){
+                g->imprimeGrafo();
+            }           
             break;
         }           
         case 12:            
