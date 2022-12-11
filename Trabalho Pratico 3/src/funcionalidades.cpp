@@ -979,9 +979,14 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     int id_Partida = 0, id_Chegada = 0;
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada;
-        fluxo_max = g->menorDistanciaEntreVertices(id_Partida, id_Chegada);
+        fluxo_max = g->maiorDistanciaEntreVertices(id_Partida, id_Chegada);
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
-        cout << ": " << fluxo_max << "Mpbs" << endl;
+        cout << ": " << fluxo_max; 
+        if(fluxo_max != -1) {
+            cout << "Mpbs" << endl;
+        } else {
+            cout << endl;
+        }
     }
     
     delete g;

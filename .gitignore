@@ -3,5 +3,7 @@
 *.bin
 *.zip
 *.txt
+*.in
+*.out
 programaTrab
 .vscode

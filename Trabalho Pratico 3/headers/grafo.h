@@ -31,9 +31,9 @@ class Grafo {
         list<Vertice*> vertices;
         Vertice* getVertice(int index) const;
         int findIndexVertice(int idConecta) const;
-        int findLessVerticeOpen(vector<pair<char, double>> &d, int &tam) const;
-        int findGreaterVerticeOpen(vector<pair<char, double>> &d, int &tam) const;
-
+        int findLargestVerticeOpen (vector<pair<char, double>> &d, int &tam) const;
+        int findSmallestVerticeOpen (vector<pair<char, double>> &d, int &tam) const;
+        void imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam) const;
     public:    
         Grafo(char *nome_arquivo);
         ~Grafo();
