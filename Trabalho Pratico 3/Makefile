@@ -26,7 +26,7 @@ $(BIN):
 ##--------------------
 
 ##__$(BIN)/*.o_Files__
-ALLBIN: $(BIN)/aresta.o $(BIN)/arquivoBin.o $(BIN)/arquivoCsv.o $(BIN)/arvoreB.o $(BIN)/cabecalhoArvB.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/grafo.o $(BIN)/main.o $(BIN)/mensagens.o $(BIN)/noArvB.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o $(BIN)/registroDados.o $(BIN)/vertice.o
+ALLBIN: $(BIN)/aresta.o $(BIN)/arquivoBin.o $(BIN)/arquivoCSV.o $(BIN)/arvoreB.o $(BIN)/cabecalhoArvB.o $(BIN)/funcionalidades.o $(BIN)/funcoesFornecidas.o $(BIN)/grafo.o $(BIN)/main.o $(BIN)/mensagens.o $(BIN)/noArvB.o $(BIN)/registroCabecalho.o $(BIN)/registroDados.o $(BIN)/registroDados.o $(BIN)/vertice.o
 
 $(BIN)/main.o: $(SRC)/main.cpp
 	$(CC) $(CFLAGS) -o $(BIN)/main.o -c $(SRC)/main.cpp 
@@ -37,8 +37,8 @@ $(BIN)/aresta.o: $(SRC)/aresta.cpp
 $(BIN)/arquivoBin.o: $(SRC)/arquivoBin.c
 	$(CC) $(CFLAGS) -o $(BIN)/arquivoBin.o -c $(SRC)/arquivoBin.c
 
-$(BIN)/arquivoCsv.o: $(SRC)/arquivoCsv.c
-	$(CC) $(CFLAGS) -o $(BIN)/arquivoCsv.o -c $(SRC)/arquivoCsv.c
+$(BIN)/arquivoCSV.o: $(SRC)/arquivoCSV.c
+	$(CC) $(CFLAGS) -o $(BIN)/arquivoCSV.o -c $(SRC)/arquivoCSV.c
 
 $(BIN)/arvoreB.o: $(SRC)/arvoreB.c
 	$(CC) $(CFLAGS) -o $(BIN)/arvoreB.o -c $(SRC)/arvoreB.c
