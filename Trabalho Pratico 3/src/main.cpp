@@ -13,6 +13,11 @@ int main(int argC, char *argV[]){
 
     switch (opcao)
     {
+        case -1:
+            //Create table (1) - Isaac e Nicholas
+            funcionalidadeNegative1CreateCsv(nome_arquivo);
+            break;
+
         case 1:
             //Create table (1) - Isaac e Nicholas
             funcionalidade1CreateTable(nome_arquivo);

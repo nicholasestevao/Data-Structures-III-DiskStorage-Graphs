@@ -47,6 +47,13 @@ void alocaRegistrosDados(RegistroDados ** registros, int numReg);
  * @param numReg quantidade de itens do vetor de RegistroDados.
  */
 void desalocaRegistrosDados(RegistroDados ** registros, int numReg);
+/**
+ * Escreve no arquivo um RegistroDados.
+ * 
+ * @param registro RegistroDados a ser exibido na tela.
+ * @param arquivo Arquivo onde sera escrito.
+ */
+void escreveRegistroDadosArquivo(RegistroDados *registro, FILE *arquivo);
 
 /**
  * Exibe na tela um RegistroDados.

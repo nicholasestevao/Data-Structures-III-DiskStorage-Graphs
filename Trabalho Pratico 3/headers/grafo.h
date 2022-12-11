@@ -31,7 +31,6 @@ class Grafo {
         list<Vertice*> vertices;
         Vertice* getVertice(int index) const;
         int findIndexVertice(int idConecta) const;
-        int findLargestVerticeOpen (vector<pair<char, double>> &d, int &tam) const;
         int findSmallestVerticeOpen (vector<pair<char, double>> &d, int &tam) const;
         void imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam) const;
     public:    
@@ -44,7 +43,6 @@ class Grafo {
         void insertVertice(Vertice* vertice);
         void imprimeGrafo() const;
         int contaCiclos();
-        double maiorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;
         double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;  
 
 };

@@ -22,6 +22,14 @@ using std::endl;
 using std::string;
 
 /**
+ * Create CSV (Funcionalidade -1).
+ * Cria uma tabela csv a partir de um arquivo binario .
+ * 
+ * @param nome_arquivo_bin Nome do arquivo .bin.
+ */
+void funcionalidadeNegative1CreateCsv(char *nome_arquivo_bin);
+
+/**
  * Create Table (Funcionalidade_1).
  * Cria o arquivo binario a partir de uma tabela csv.
  * 

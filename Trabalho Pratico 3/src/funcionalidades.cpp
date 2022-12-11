@@ -368,6 +368,52 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
     }
 }
 
+void funcionalidadeNegative1CreateCsv(char *nome_arquivo_bin)
+{
+    char *nome_arquivo_csv = new char[20];
+    cin >> nome_arquivo_csv;
+
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo_bin);
+    if (arquivoBin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+
+    FILE *arquivoCSV = abrirEscrita_csv(nome_arquivo_csv);
+    if (arquivoBin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+    RegistroDados *dados;
+    fprintf(arquivoCSV, "idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade\n");
+    // Verifica todos os RRNs do arquivo
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
+    {
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
+
+        if (dados != NULL)
+        {
+            escreveRegistroDadosArquivo(dados, arquivoCSV);
+            fprintf(arquivoCSV, "\n");
+            desalocaRegistrosDados(&dados, 1);
+        }
+    }
+
+    //Se nao tiver nenhum dado no arquivo de dados;
+    if (*(cabecalho->proxRRN) == 0) {
+        msg_erro_Reg_Inexistente();
+        cout << endl << endl;
+    }
+
+    delete[] nome_arquivo_csv;
+    desalocaRegistrosCabecalho(cabecalho);
+    fecharArquivo_bin(arquivoBin);
+    fclose(arquivoCSV);
+}
+
 void funcionalidade1CreateTable(char *nome_arquivo_csv)
 {
     // Recebe nome do arquivo bin
@@ -979,7 +1025,7 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     int id_Partida = 0, id_Chegada = 0;
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada;
-        fluxo_max = g->maiorDistanciaEntreVertices(id_Partida, id_Chegada);
+        fluxo_max = g->menorDistanciaEntreVertices(id_Partida, id_Chegada);
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
         cout << ": " << fluxo_max; 
         if(fluxo_max != -1) {
