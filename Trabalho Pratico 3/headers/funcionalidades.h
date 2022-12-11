@@ -1,6 +1,7 @@
 #ifndef __FUNCIONALIDADES_C__
 #define __FUNCIONALIDADES_C__
 
+#include <exception>
 #include <iostream>
 #include <string>
 #include <locale>
@@ -16,8 +17,17 @@
 
 using std::cin;
 using std::cout;
+using std::invalid_argument;
 using std::endl;
 using std::string;
+
+/**
+ * Create CSV (Funcionalidade -1).
+ * Cria uma tabela csv a partir de um arquivo binario .
+ * 
+ * @param nome_arquivo_bin Nome do arquivo .bin.
+ */
+void funcionalidadeNegative1CreateCsv(char *nome_arquivo_bin);
 
 /**
  * Create Table (Funcionalidade_1).
@@ -76,6 +86,7 @@ void funcionalidade6Compactacao(char* nome_arquivo);
  * já criado pela funcionalidade 1, implementando uma Arvore B.
  * 
  * @param nome_arquivo Nome do arquivo de dados .bin.
+ * @param nome_arq_indice Nome do arquivo indice a ser criado.
  */
 void funcionalidade7CreateIndex(char * nome_arquivo, char * nome_arq_indice);
 
@@ -114,9 +125,32 @@ void funcionalidade9InsertArvB(char *nome_arquivo);
  */
 void funcionalidade10Juncao(char *nome_arquivo);
 
+/**
+ * 
+ * 
+ * @param nome_arquivo Nome do arquivo de dados .bin.
+ * 
+ * @return retorna o grafo criado.
+ */
+void funcionalidade11CriarGrafo(char *nome_arquivo);
 
-Grafo * funcionalidade11CriarGrafo(char * nome_arquivo);
+/**
+ * 
+ * @param g grafo criado pela funcionalidade 11.
+ */
+void funcionalidade12ContaCiclos(char *nome_arquivo);
 
-void funcionalidade12ContaCiclos(Grafo * g);
+/**
+ * 
+ * @param nome_arquivo Nome do arquivo de dados .bin.
+ * @param qnt_busca Quantidade de buscas a serem realizada.
+ */
+void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca);
+
+/**
+ * 
+ * @param nome_arquivo Nome do arquivo de dados .bin.
+ */
+void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca);
 
 #endif

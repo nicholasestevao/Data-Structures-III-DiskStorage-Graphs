@@ -2,16 +2,22 @@
 #include "../headers/arquivoBin.h"
 #include "../headers/funcionalidades.h"
 #include "../headers/funcoesFornecidas.h"
+#include "../headers/grafo.h"
 
 int main(int argC, char *argV[]){
     
-    int opcao;
+    int opcao, qnt_buscas;
     char *nome_arquivo = new char[20];
     
     cin >> opcao >> nome_arquivo;
 
     switch (opcao)
     {
+        case -1:
+            //Create table (1) - Isaac e Nicholas
+            funcionalidadeNegative1CreateCsv(nome_arquivo);
+            break;
+
         case 1:
             //Create table (1) - Isaac e Nicholas
             funcionalidade1CreateTable(nome_arquivo);
@@ -65,16 +71,19 @@ int main(int argC, char *argV[]){
             funcionalidade10Juncao(nome_arquivo);
             break;
         case 11:
-        {
-            Grafo * g = funcionalidade11CriarGrafo(nome_arquivo);
-            if(g != NULL){
-                g->imprimeGrafo();
-            }           
-            break;
-        }           
+            funcionalidade11CriarGrafo(nome_arquivo);
+            break;          
         case 12:            
             funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
-            break;    
+            break;
+        case 13:
+            cin >> qnt_buscas;            
+            funcionalidade13FluxoMaximo(nome_arquivo, qnt_buscas);
+            break;
+        case 14:
+            cin >> qnt_buscas;            
+            funcionalidade14VelocidadeEntrePontos(nome_arquivo, qnt_buscas);
+            break;
     }
 
     delete[] nome_arquivo;

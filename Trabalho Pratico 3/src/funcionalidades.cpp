@@ -368,6 +368,52 @@ void buscaCampoRemoveArquivoDados(char *nome_campo, char *valor_campo, RegistroC
     }
 }
 
+void funcionalidadeNegative1CreateCsv(char *nome_arquivo_bin)
+{
+    char *nome_arquivo_csv = new char[20];
+    cin >> nome_arquivo_csv;
+
+    FILE *arquivoBin = abrirLeitura_bin(nome_arquivo_bin);
+    if (arquivoBin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+
+    FILE *arquivoCSV = abrirEscrita_csv(nome_arquivo_csv);
+    if (arquivoBin == NULL)
+    {
+        msg_erro_Arq_Inconsistente();
+        return;
+    }
+    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arquivoBin);
+    RegistroDados *dados;
+    fprintf(arquivoCSV, "idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade\n");
+    // Verifica todos os RRNs do arquivo
+    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
+    {
+        dados = lerRegistroDadosArquivoBin_RRN(arquivoBin, i);
+
+        if (dados != NULL)
+        {
+            escreveRegistroDadosArquivo(dados, arquivoCSV);
+            fprintf(arquivoCSV, "\n");
+            desalocaRegistrosDados(&dados, 1);
+        }
+    }
+
+    //Se nao tiver nenhum dado no arquivo de dados;
+    if (*(cabecalho->proxRRN) == 0) {
+        msg_erro_Reg_Inexistente();
+        cout << endl << endl;
+    }
+
+    delete[] nome_arquivo_csv;
+    desalocaRegistrosCabecalho(cabecalho);
+    fecharArquivo_bin(arquivoBin);
+    fclose(arquivoCSV);
+}
+
 void funcionalidade1CreateTable(char *nome_arquivo_csv)
 {
     // Recebe nome do arquivo bin
@@ -950,73 +996,15 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-Grafo * funcionalidade11CriarGrafo(char * nome_arquivo){
-    FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
-    if (arq_bin == NULL)
-    {
-        msg_erro_falha_funcionalidade();
-        return NULL;
+void funcionalidade11CriarGrafo(char * nome_arquivo){
+    Grafo *g = nullptr;
+    try {
+        g = new Grafo(nome_arquivo);
+        g->imprimeGrafo();
+    } catch (invalid_argument &e) {
+        msg_erro_Falha_Funcionalidade();
     }
-    RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
-
-    //Arquivo de Indice
-    funcionalidade7CreateIndex(nome_arquivo, (char*) "indice.bin");
-    FILE* arquivoArvB = abrirLeitura_bin((char*)  "indice.bin");
-    CabecalhoArvB *cabecalhoIndice = lecabecalhoArvB(arquivoArvB);
-    NoArvB *raiz = leNoArvB_RRN(arquivoArvB, *(cabecalhoIndice->noRaiz));
-
-
-    Grafo *g = new Grafo();
-    for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
-    {
-        RegistroDados *dados_A = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
-        
-        if (dados_A != NULL && *(dados_A->idPoPsConectado) != -1)
-        {
-            // Registro nao removido
-            Vertice *vertice_A = g->findVertice(*(dados_A->idConecta));
-            if(vertice_A == nullptr){
-                //vertice nao existe ainda
-                vertice_A = new Vertice(*(dados_A->idConecta), dados_A->nomePoPs, dados_A->nomePais, dados_A->siglaPais);
-                
-                g->insertVertice(vertice_A);
-            }
-            //vertice ja existe
-            vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
-            
-
-            // Inserindo no outro vertice (pois o grafo é nao direcionado)
-            
-
-            Vertice *vertice_B = g->findVertice(*(dados_A->idPoPsConectado));
-            if(vertice_B == nullptr){
-                //vertice nao existe ainda
-                int RRN_vertice_B = -1;
-                buscaChaveArvoreB(arquivoArvB, raiz, *(dados_A->idPoPsConectado), &RRN_vertice_B);
-                if(RRN_vertice_B != -1){
-                    RegistroDados *dados_B = lerRegistroDadosArquivoBin_RRN(arq_bin, RRN_vertice_B);
-                    //printf(" Criou vertice b: %d para conectar com %d\n", *(dados_B->idConecta),*(dados_A->idConecta) );
-                    vertice_B = new Vertice(*(dados_B->idConecta), dados_B->nomePoPs, dados_B->nomePais, dados_B->siglaPais);
-                    g->insertVertice(vertice_B);
-                    desalocaRegistrosDados(&dados_B, 1);
-                }             
-            }else{
-                    //printf("Foi no vertice b: %d para conectar com %d\n",  vertice_B->getIdConcecta(),*(dados_A->idConecta) );
-                } 
-            //vertice ja existe
-            vertice_B->insertAresta(new Aresta(*(dados_A->idConecta), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
-            
-            desalocaRegistrosDados(&dados_A, 1);
-            
-        }
-    }
-    //g->imprimeGrafo();
-    //delete g;
-    desalocaRegistrosCabecalho(cabecalho);
-    fecharArquivo_bin(arq_bin);
-    fecharArquivo_bin(arquivoArvB);
-    remove((char*)  "indice.bin");
-    return g;
+    delete g;
 }
 
 void funcionalidade12ContaCiclos(Grafo * g){
@@ -1059,4 +1047,66 @@ void funcionalidade12ContaCiclos(Grafo * g){
     //printf("Arvore: %d\n", num_arestas_arvore); 
     //printf("Retorno: %d\n", num_arestas_retorno);
     return;
+}
+
+void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
+    Grafo *g = nullptr;
+    try {
+        g = new Grafo(nome_arquivo);
+    } catch (invalid_argument &e) {
+        msg_erro_Falha_Funcionalidade();
+        delete g;
+        return;
+    }
+
+    double fluxo_max = 0.0;
+    int id_Partida = 0, id_Chegada = 0;
+    for(int i = 0; i < qnt_busca; i++) {
+        cin >> id_Partida >> id_Chegada;
+        fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
+        cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
+        cout << ": " << fluxo_max; 
+        if(fluxo_max != -1) {
+            cout << " Mbps" << endl;
+        } else {
+            cout << endl;
+        }
+    }
+    
+    delete g;
+}
+
+void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca) {
+    Grafo *g = nullptr;
+    try {
+        g = new Grafo(nome_arquivo);
+    } catch (invalid_argument &e) {
+        msg_erro_Falha_Funcionalidade();
+        delete g;
+        return;
+    }
+
+    double comprimento_total = 0.0;
+    int id_Partida = 0, id_Chegada = 0, id_Parada = 0;
+    for(int i = 0; i < qnt_busca; i++) {
+        cin >> id_Partida >> id_Chegada >> id_Parada;
+        double comprimento_Partida_Parada = g->menorDistanciaEntreVertices(id_Partida, id_Parada);
+        double comprimento_Parada_Chegada = g->menorDistanciaEntreVertices(id_Parada, id_Chegada);
+
+        if((comprimento_Partida_Parada == -1) || (comprimento_Parada_Chegada == -1)) {
+            comprimento_total = -1;
+        } else {
+            comprimento_total = comprimento_Partida_Parada + comprimento_Parada_Chegada;
+        }
+
+        cout << "Comprimento do caminho entre " << id_Partida << " e " <<  id_Chegada;
+        cout << " parando em " << id_Parada << ": " << comprimento_total; 
+        if(comprimento_total != -1) {
+            cout << "Mbps" << endl;
+        } else {
+            cout << endl;
+        }
+    }
+    
+    delete g;
 }

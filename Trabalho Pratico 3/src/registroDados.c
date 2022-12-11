@@ -40,6 +40,57 @@ void desalocaRegistrosDados(RegistroDados **registros, int numReg)
 }
 
 //Exibe na tela um RegistroDados.
+void escreveRegistroDadosArquivo(RegistroDados *registro, FILE *arquivo)
+{   
+    //idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade
+    if(*(registro->removido) == '0') {
+        if (*(registro->idConecta) != -1)
+        {
+            fprintf(arquivo, "%d", *(registro->idConecta));
+        }
+    } else {
+        fprintf(arquivo, "*");
+    }
+    fprintf(arquivo, ",");
+
+    if ((registro->nomePoPs)[0] != '\0')
+    {
+        fprintf(arquivo, "%s", registro->nomePoPs);
+    }
+    fprintf(arquivo, ",");
+
+    if ((registro->nomePais)[0] != '\0')
+    {
+        fprintf(arquivo, "%s", registro->nomePais);
+    }
+    fprintf(arquivo, ",");
+
+    if ((registro->siglaPais)[0] != '$' && (registro->siglaPais)[0] != '\0')
+    {
+        fprintf(arquivo, "%s", registro->siglaPais);
+    }
+    fprintf(arquivo, ",");
+
+
+    if (*(registro->idPoPsConectado) != -1)
+    {
+        fprintf(arquivo, "%d", *(registro->idPoPsConectado));
+    }
+    fprintf(arquivo, ",");
+
+    if ((registro->unidadeMedida)[0] != '$')
+    {
+        fprintf(arquivo, "%c", *(registro->unidadeMedida));
+    }
+    fprintf(arquivo, ",");
+    
+    if (*(registro->velocidade) != -1)
+    {
+        fprintf(arquivo, "%d", *(registro->velocidade));
+    }
+}
+
+//Exibe na tela um RegistroDados.
 void imprimeRegistroDadosTela(RegistroDados *registro)
 {
     if (*(registro->idConecta) != -1)

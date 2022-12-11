@@ -15,6 +15,7 @@ FILE *abrirLeitura_bin(char *nome_arquivo)
     if (*status == '0')
     {//Se o arquivo estiver inconsistente
         fclose(arq);
+        free(status);
         return NULL;
     }
     else

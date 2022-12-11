@@ -2,29 +2,52 @@
 #define __GRAFO_CPP__
 
 #include <algorithm>
+#include <cmath>
+#include <exception>
 #include <iostream>
-#include  <list>
+#include <list>
+#include <utility>
+#include <vector>
+
+#include "arquivoBin.h"
+#include "arvoreB.h"
+#include "funcionalidades.h"
 #include "vertice.h"
 
+using std::invalid_argument;
 using std::find;
 using std::list;
+using std::pair;
+using std::vector;
+
+
+//debug
+using std::cout;
+using std::cin;
+using std::endl;
 
 class Grafo {
     private:
         list<Vertice*> vertices;
-    public:
-        Grafo();
+        Vertice* getVertice(int index) const;
+        int findIndexVertice(int idConecta) const;
+        int findSmallestVerticeOpen (vector<pair<char, double>> &d, int &tam) const;
+        void imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam) const;
+    public:    
+        Grafo(char *nome_arquivo);
         ~Grafo();
         
+        void buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno, int * num_arestas_arvore);
         Vertice* findVertice(int idConecta) const;
         int findVerticeIndex(int idConecta) const;
         list<Vertice*> getVertices() const;
 
+        double fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const;
         void insertVertice(Vertice* vertice);
-        void imprimeGrafo();
+        void imprimeGrafo() const;
         int contaCiclos();
+        double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;  
         int totalArestas() const;
-        void buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno, int * num_arestas_arvore);
 };
 
 #endif
