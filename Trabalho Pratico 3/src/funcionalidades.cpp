@@ -415,12 +415,12 @@ void funcionalidade1CreateTable(char *nome_arquivo_csv)
     escreverRegistroCabecalhoArquivoBin(arquivoBin, cabecalho);
 
     delete[] buf;
-    delete[] nome_arquivo_bin;
     desalocaRegistrosCabecalho(cabecalho);
     desalocaRegistrosDados(&dados, 1);
     fecharArquivo_bin(arquivoBin);
     fclose(arquivoCSV);
     binarioNaTela(nome_arquivo_bin);
+    delete[] nome_arquivo_bin;
 }
 
 void funcionalidade2Select(char *nome_arquivo)
@@ -662,7 +662,7 @@ void funcionalidade7CreateIndex(char *nome_arquivo, char * nome_arq_indice)
     desalocaRegistrosCabecalho(cabecalhoCsv);
 
     fecharArquivo_bin(arq_indice);
-    fclose(arq_dados);
+    fecharArquivo_bin(arq_dados);
 }
 
 void funcionalidade8SelectWhere(char *nome_arquivo) {
