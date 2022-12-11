@@ -37,7 +37,9 @@ class Grafo {
         Grafo(char *nome_arquivo);
         ~Grafo();
         
+        void buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno, int * num_arestas_arvore);
         Vertice* findVertice(int idConecta) const;
+        int findVerticeIndex(int idConecta) const;
         list<Vertice*> getVertices() const;
 
         double fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const;
@@ -45,7 +47,7 @@ class Grafo {
         void imprimeGrafo() const;
         int contaCiclos();
         double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;  
-
+        int totalArestas() const;
 };
 
 #endif

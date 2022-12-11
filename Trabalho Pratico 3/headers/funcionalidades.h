@@ -147,7 +147,6 @@ void funcionalidade12ContaCiclos(char *nome_arquivo);
  */
 void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca);
 
-
 /**
  * 
  * @param nome_arquivo Nome do arquivo de dados .bin.
