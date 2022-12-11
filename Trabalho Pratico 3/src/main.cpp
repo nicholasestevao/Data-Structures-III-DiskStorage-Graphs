@@ -74,7 +74,7 @@ int main(int argC, char *argV[]){
             funcionalidade11CriarGrafo(nome_arquivo);
             break;          
         case 12:            
-            funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
+            funcionalidade12ContaCiclos(nome_arquivo);
             break;
         case 13:
             cin >> qnt_buscas;            

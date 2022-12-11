@@ -1007,7 +1007,16 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
     delete g;
 }
 
-void funcionalidade12ContaCiclos(Grafo * g){
+void funcionalidade12ContaCiclos(char *nome_arquivo){
+    Grafo *g = nullptr;
+    try {
+        g = new Grafo(nome_arquivo);
+    } catch (invalid_argument &e) {
+        msg_erro_Falha_Funcionalidade();
+        delete g;
+        return;
+    }
+
     int numVertices = g->getVertices().size();
     int** arv_busca = (int **) malloc(sizeof(int*)*numVertices);
     for(int i = 0; i<numVertices; i++){
@@ -1034,19 +1043,17 @@ void funcionalidade12ContaCiclos(Grafo * g){
         {
             // se o vertice ainda nao tiver sido descoberto
             //printf("Analisando vertice %d\n", (*it)->getIdConcecta());
-            g->buscaProfundidade(g, &arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore);
+            g->buscaProfundidade(&arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore);
             id_vertice_pai = (*it)->getIdConcecta();
             it++;
             //printf("Foi para o proximo vertice na chamada inicial\n");
         }
     }
 
-
-    printf("Quantidade de ciclos: %d\n", num_arestas_retorno);
+    cout << "Quantidade de ciclos: " << num_arestas_retorno << endl;
     //printf("Total de Arestas: %d\n", g->totalArestas());
     //printf("Arvore: %d\n", num_arestas_arvore); 
     //printf("Retorno: %d\n", num_arestas_retorno);
-    return;
 }
 
 void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {

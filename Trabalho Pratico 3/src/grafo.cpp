@@ -18,12 +18,12 @@ Grafo::Grafo(char *nome_arquivo) {
             if (dados_A != NULL && *(dados_A->idPoPsConectado) != -1)
             {
                 // Registro nao removido
-                Vertice *vertice_A = this->findVertice(*(dados_A->idConecta));
+                Vertice *vertice_A = findVertice(*(dados_A->idConecta));
                 if(vertice_A == nullptr){
                     //vertice nao existe ainda
                     vertice_A = new Vertice(*(dados_A->idConecta), dados_A->nomePoPs, dados_A->nomePais, dados_A->siglaPais);
                     
-                    this->insertVertice(vertice_A);
+                    insertVertice(vertice_A);
                 }
                 //vertice ja existe
                 if(*(dados_A->idPoPsConectado) != -1) {
@@ -34,7 +34,7 @@ Grafo::Grafo(char *nome_arquivo) {
                 // Inserindo no outro vertice (pois o grafo é nao direcionado)
                 
 
-                Vertice *vertice_B = this->findVertice(*(dados_A->idPoPsConectado));
+                Vertice *vertice_B = findVertice(*(dados_A->idPoPsConectado));
                 if(vertice_B == nullptr){
                     //vertice nao existe ainda
                     int RRN_vertice_B = -1;
@@ -43,7 +43,7 @@ Grafo::Grafo(char *nome_arquivo) {
                         RegistroDados *dados_B = lerRegistroDadosArquivoBin_RRN(arq_bin, RRN_vertice_B);
                         //printf(" Criou vertice b: %d para conectar com %d\n", *(dados_B->idConecta),*(dados_A->idConecta) );
                         vertice_B = new Vertice(*(dados_B->idConecta), dados_B->nomePoPs, dados_B->nomePais, dados_B->siglaPais);
-                        this->insertVertice(vertice_B);
+                        insertVertice(vertice_B);
                         desalocaRegistrosDados(&dados_B, 1);
                     }             
                 }else{
@@ -182,7 +182,6 @@ Vertice* Grafo::getVertice(int index) const {
 }
 
 int Grafo::findVerticeIndex(int idConecta) const{
-    Vertice *resultado = nullptr;
     int i = 0;
     if(!vertices.empty()) {
         Vertice buscado(idConecta);
@@ -190,7 +189,6 @@ int Grafo::findVerticeIndex(int idConecta) const{
         while (it != vertices.end())
         {
             if ((*(*it)) == buscado) {
-                resultado = (*it);
                 break;
             } 
             it++;
@@ -201,7 +199,6 @@ int Grafo::findVerticeIndex(int idConecta) const{
 }
 
 int Grafo::totalArestas() const{
-    Vertice *resultado = nullptr;
     int total = 0;
     if(!vertices.empty()) {
         auto it = vertices.begin();
@@ -266,17 +263,6 @@ void Grafo::imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam)
     }
 }
 
-int Grafo::contaCiclos(){
-    /*int ** visitados = (int **) malloc(sizeof(int *)*(this->getNumVertices()));
-    for(int i = 0; i< this->getNumVertices(); i++){
-        visitados[i] = (int *) malloc(sizeof(int)*2);
-    }*/
-
-    
-    return 0;
-
-}
-
 double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const {
     double r = -1;
     if((findIndexVertice(id_Partida) != -1) && (findIndexVertice(id_Chegada) != -1)) {
@@ -323,7 +309,7 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
     return r;
  }
 
-void Grafo::buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore){
+void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore){
     // ind 0 -> idConecta
     // ind 1 -> cor do vertice
             /*
@@ -335,16 +321,16 @@ void Grafo::buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual
     // ind 2 -> tempo de descoberta
     // ind 3 -> tempo de termino
     // ind 4 -> numero de arestas de retorno
-    Vertice vertice_atual = *(g->findVertice(id_vertice_atual));
+    Vertice vertice_atual = *(findVertice(id_vertice_atual));
     list<Aresta*> arestas = vertice_atual.getArestas();
     if(!arestas.empty()) {
             //printf("Vertice atual : %d\n", vertice_atual.getIdConcecta());
-            if((*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][1] == -1){
+            if((*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] == -1){
                 // Encontrou vertice que ainda nao foi descoberto (branco)
                 //printf("Encontrou vertice branco (%d)\n",vertice_atual.getIdConcecta());
-                (*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
-                (*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][1] = 1; // cinza
-                (*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][2] = *tempo;
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 1; // cinza
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][2] = *tempo;
             }  
 
             /*list<Aresta*> arestas2 = vertice_atual.getArestas();
@@ -357,14 +343,14 @@ void Grafo::buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual
             printf("\n");*/
 
             //Lista de vertices
-            list<Vertice*> vertices = g->getVertices();
+            list<Vertice*> vertices = getVertices();
             auto it = arestas.begin();
-            for(it; it != arestas.end(); ++it){
+            for(; it != arestas.end(); ++it){
                 int idPoPs = (*it)->getIdPopsConectado();
                 if(idPoPs != id_vertice_pai){
                     (*tempo)++;
                     //int idVerticePoPs = idPoPs - menorIdConecta;
-                    int idVerticePoPs = g->findVerticeIndex(idPoPs);
+                    int idVerticePoPs = findVerticeIndex(idPoPs);
                     //printf("    Passou pela aresta %d <-> %d    (id na lista: %d)\n", vertice_atual.getIdConcecta(), idPoPs,idVerticePoPs);
                     // indo no vertice idPoPs verificar
 
@@ -386,7 +372,7 @@ void Grafo::buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual
                             (*arv_busca)[idVerticePoPs][1] = 1; // cinza
                             (*arv_busca)[idVerticePoPs][2] = *tempo;
                         }   
-                        g->buscaProfundidade(g,arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore);
+                        buscaProfundidade(arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore);
                         //printf("Vertice atual voltou a ser: %d\n", vertice_atual.getIdConcecta());
                     }               
                 }else{
@@ -394,9 +380,9 @@ void Grafo::buscaProfundidade(Grafo * g, int *** arv_busca, int id_vertice_atual
                 }              
             }
             //printf("Testou todas as arestas do vertice %d\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][1] = 2;   
+            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 2;   
             //printf("Vertice %d se tornou preto\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[g->findVerticeIndex(vertice_atual.getIdConcecta())][3] = *tempo; 
+            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][3] = *tempo; 
 
     }
 }
