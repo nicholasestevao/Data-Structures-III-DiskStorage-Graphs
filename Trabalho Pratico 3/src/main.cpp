@@ -6,7 +6,7 @@
 
 int main(int argC, char *argV[]){
     
-    int opcao;
+    int opcao, qnt_buscas;
     char *nome_arquivo = new char[20];
     
     cin >> opcao >> nome_arquivo;
@@ -77,12 +77,12 @@ int main(int argC, char *argV[]){
             //funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
             break;
         case 13:
-            int qnt_buscas;
             cin >> qnt_buscas;            
             funcionalidade13FluxoMaximo(nome_arquivo, qnt_buscas);
             break;
-        case 14:            
-            funcionalidade14VelocidadeEntrePontos(nome_arquivo);
+        case 14:
+            cin >> qnt_buscas;            
+            funcionalidade14VelocidadeEntrePontos(nome_arquivo, qnt_buscas);
             break;      
     }
 

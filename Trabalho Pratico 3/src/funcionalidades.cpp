@@ -1025,11 +1025,11 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     int id_Partida = 0, id_Chegada = 0;
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada;
-        fluxo_max = g->menorDistanciaEntreVertices(id_Partida, id_Chegada);
+        fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
         cout << ": " << fluxo_max; 
         if(fluxo_max != -1) {
-            cout << " Mpbs" << endl;
+            cout << " Mbps" << endl;
         } else {
             cout << endl;
         }
@@ -1038,6 +1038,37 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     delete g;
 }
 
-void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo) {
+void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca) {
+    Grafo *g = nullptr;
+    try {
+        g = new Grafo(nome_arquivo);
+    } catch (invalid_argument &e) {
+        msg_erro_Falha_Funcionalidade();
+        delete g;
+        return;
+    }
+
+    double comprimento_total = 0.0;
+    int id_Partida = 0, id_Chegada = 0, id_Parada = 0;
+    for(int i = 0; i < qnt_busca; i++) {
+        cin >> id_Partida >> id_Chegada >> id_Parada;
+        double comprimento_Partida_Parada = g->menorDistanciaEntreVertices(id_Partida, id_Parada);
+        double comprimento_Parada_Chegada = g->menorDistanciaEntreVertices(id_Parada, id_Chegada);
+
+        if((comprimento_Partida_Parada == -1) || (comprimento_Parada_Chegada == -1)) {
+            comprimento_total = -1;
+        } else {
+            comprimento_total = comprimento_Partida_Parada + comprimento_Parada_Chegada;
+        }
+
+        cout << "Comprimento do caminho entre " << id_Partida << " e " <<  id_Chegada;
+        cout << " parando em " << id_Parada << ": " << comprimento_total; 
+        if(comprimento_total != -1) {
+            cout << "Mbps" << endl;
+        } else {
+            cout << endl;
+        }
+    }
     
+    delete g;
 }

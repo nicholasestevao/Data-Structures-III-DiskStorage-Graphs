@@ -40,6 +40,7 @@ class Grafo {
         Vertice* findVertice(int idConecta) const;
         list<Vertice*> getVertices() const;
 
+        double fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const;
         void insertVertice(Vertice* vertice);
         void imprimeGrafo() const;
         int contaCiclos();

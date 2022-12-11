@@ -152,6 +152,6 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca);
  * 
  * @param nome_arquivo Nome do arquivo de dados .bin.
  */
-void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo);
+void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca);
 
 #endif

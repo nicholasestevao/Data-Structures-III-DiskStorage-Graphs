@@ -115,6 +115,58 @@ Vertice* Grafo::findVertice(int idConecta) const{
     return resultado;
 }
 
+double Grafo::fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const {
+    double r = -1;
+    if((findIndexVertice(id_Partida) != -1) && (findIndexVertice(id_Chegada) != -1)) {
+        int tam = vertices.size();
+        vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+        int qnt_open = tam;
+        vector<int> *p = new vector<int>(tam, -1);
+
+        int actual_index = findIndexVertice(id_Partida);
+        (*d)[actual_index] = pair<char, double>('O', 0);
+        while (qnt_open > 0) {
+            actual_index = findSmallestVerticeOpen((*d), tam);
+            if(actual_index == -1) {
+                //cout << "Actual_Index: " << actual_index << endl;
+                //cout << "   Qauntidade abertos: " << qnt_open << endl;
+                //imprimeTodosVerticesAbertos((*d), tam);
+                break;
+            }
+            (*d)[actual_index].first = 'C';
+            qnt_open--;
+            Vertice *actual_vertice = getVertice(actual_index);
+            int actual_index_id = actual_vertice->getIdConcecta();
+            //cout << "======================" << endl;
+            //cout << "Menor custo: " << (*d)[actual_index].second <<" - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
+            list<Aresta*> actual_arestas = actual_vertice->getArestas();
+            for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
+                int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
+                //cout << "   Sub_Index: " << sub_index << " ID: " << (*it_ar)->getIdPopsConectado() << " - Custo: " << (*d)[sub_index].second  << endl;
+                if(((*d)[sub_index].second > (*it_ar)->getVelocidade())) {
+                    double coust = (*it_ar)->getVelocidade(); 
+                    if((actual_index_id != id_Partida) && ((*it_ar)->getVelocidade() > (*d)[actual_index].second)) {
+                        coust = (*d)[actual_index].second;
+                    }
+                    //cout << "       (" << (*d)[actual_index].second << " || " << (*it_ar)->getVelocidade() << ") ? " << " -> " << coust << endl;
+                    //cout << "*     " << (*d)[sub_index].second << " > " << (*it_ar)->getVelocidade() << endl;
+                    //cout << "       Substituiu " << (*d)[sub_index].second;
+                    (*d)[sub_index].second = coust;
+                    //cout << " por " << (*d)[sub_index].second << endl;
+                }
+            }
+        }
+        actual_index = findIndexVertice(id_Chegada);
+        if((*d)[actual_index].second != INFINITY) {
+            r = (*d)[actual_index].second;
+        }
+
+        delete d;
+        delete p;
+    }
+    return r;
+}
+
 Vertice* Grafo::getVertice(int index) const {
     Vertice *r = nullptr;
     auto it = vertices.begin();
@@ -205,31 +257,25 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
         while (qnt_open > 0) {
             actual_index = findSmallestVerticeOpen((*d), tam);
             if(actual_index == -1) {
-                cout << "Actual_Index: " << actual_index << endl;
-                cout << "   Qauntidade abertos: " << qnt_open << endl;
-                imprimeTodosVerticesAbertos((*d), tam);
+                //cout << "Actual_Index: " << actual_index << endl;
+                //cout << "   Qauntidade abertos: " << qnt_open << endl;
+                //imprimeTodosVerticesAbertos((*d), tam);
                 break;
             }
             (*d)[actual_index].first = 'C';
             qnt_open--;
             Vertice *actual_vertice = getVertice(actual_index);
-            int actual_index_id = actual_vertice->getIdConcecta();
-            cout << "======================" << endl;
-            cout << "Menor custo: " << (*d)[actual_index].second <<" - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
+            //cout << "======================" << endl;
+            //cout << "Menor custo: " << (*d)[actual_index].second <<" - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
             list<Aresta*> actual_arestas = actual_vertice->getArestas();
             for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
                 int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
-                cout << "   Sub_Index: " << sub_index << " ID: " << (*it_ar)->getIdPopsConectado() << " - Custo: " << (*d)[sub_index].second  << endl;
-                if(((*d)[sub_index].second > (*it_ar)->getVelocidade())) {
-                    double coust = (*it_ar)->getVelocidade(); 
-                    if((actual_index_id != id_Partida) && ((*it_ar)->getVelocidade() > (*d)[actual_index].second)) {
-                        coust = (*d)[actual_index].second;
-                    }
-                    cout << "       (" << (*d)[actual_index].second << " || " << (*it_ar)->getVelocidade() << ") ? " << " -> " << coust << endl;
-                    cout << "*     " << (*d)[sub_index].second << " > " << (*it_ar)->getVelocidade() << endl;
-                    cout << "       Substituiu " << (*d)[sub_index].second;
+                double coust = (*d)[actual_index].second + (*it_ar)->getVelocidade();
+                if((*d)[sub_index].second > coust) {
+                    //cout << "*     " << (*d)[sub_index].second << " > " << coust<< endl;
+                    //cout << "       Substituiu " << (*d)[sub_index].second;
                     (*d)[sub_index].second = coust;
-                    cout << " por " << (*d)[sub_index].second << endl;
+                    //cout << " por " << (*d)[sub_index].second << endl;
                 }
             }
         }
