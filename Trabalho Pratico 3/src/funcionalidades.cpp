@@ -950,12 +950,12 @@ void funcionalidade10Juncao(char *nome_arquivo1) {
     fecharArquivo_bin(arquivoArvB_arq2);
 }
 
-void funcionalidade11CriarGrafo(char * nome_arquivo){
+Grafo * funcionalidade11CriarGrafo(char * nome_arquivo){
     FILE *arq_bin = abrirLeitura_bin(nome_arquivo);
     if (arq_bin == NULL)
     {
         msg_erro_falha_funcionalidade();
-        return;
+        return NULL;
     }
     RegistroCabecalho *cabecalho = lerRegistroCabecalhoArquivoBin(arq_bin);
 
@@ -1010,14 +1010,53 @@ void funcionalidade11CriarGrafo(char * nome_arquivo){
             
         }
     }
-    g->imprimeGrafo();
-    delete g;
+    //g->imprimeGrafo();
+    //delete g;
     desalocaRegistrosCabecalho(cabecalho);
     fecharArquivo_bin(arq_bin);
-    //return g;
+    fecharArquivo_bin(arquivoArvB);
+    remove((char*)  "indice.bin");
+    return g;
 }
 
 void funcionalidade12ContaCiclos(Grafo * g){
-    printf("Quantidade de ciclos: %d", g->contaCiclos());
+    int numVertices = g->getVertices().size();
+    int** arv_busca = (int **) malloc(sizeof(int*)*numVertices);
+    for(int i = 0; i<numVertices; i++){
+        arv_busca[i] = (int * ) malloc(sizeof(int)*4);
+        for(int j = 0; j< 5; j++){
+            arv_busca[i][j] = -1;
+        }
+    }
+    //printf("Numero de vertices: %d\n", numVertices);
+    
+    // ind 0 -> idConecta
+    // ind 1 -> cor do vertice
+    // ind 2 -> tempo de descoberta
+    // ind 3 -> tempo de termino
+    int tempo = 0;
+    int id_vertice_pai = -1;
+    int num_arestas_retorno = 0;
+    int num_arestas_arvore = 0;
+    list<Vertice*> vertices = g->getVertices();
+    if(!vertices.empty()) {
+        auto it = vertices.begin();
+        //printf("Inicio %d\n", (*it)->getIdConcecta());        
+        while (it != vertices.end() && (arv_busca)[/*(*it)->getIdConcecta() - menorIdConecta*/g->findVerticeIndex((*it)->getIdConcecta())][0] == -1)
+        {
+            // se o vertice ainda nao tiver sido descoberto
+            //printf("Analisando vertice %d\n", (*it)->getIdConcecta());
+            g->buscaProfundidade(g, &arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore);
+            id_vertice_pai = (*it)->getIdConcecta();
+            it++;
+            //printf("Foi para o proximo vertice na chamada inicial\n");
+        }
+    }
+
+
+    printf("Quantidade de ciclos: %d\n", num_arestas_retorno);
+    //printf("Total de Arestas: %d\n", g->totalArestas());
+    //printf("Arvore: %d\n", num_arestas_arvore); 
+    //printf("Retorno: %d\n", num_arestas_retorno);
     return;
 }

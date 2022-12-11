@@ -1,0 +1,11 @@
+idConecta,nomePoPs,nomePais,siglaPais,idPoPsConectado,unidadeMedida,velocidade
+1,Budapest ,Hungary,HU,2,G,10
+2,ULAGOS,Chile,CL,3,G,1
+3,Nicosia,Cyprus,CY,4,G,1
+4,Porto Velho,Brazil,BR,5,G,3
+5,Tallinn ,Estonia,EE,6,G,10
+6,PoPs-C12,Chile,CL,7,,
+7,RC-12,Chile,CL,8,G,1
+8,La Serena,Chile,CL,9,M,301
+9,PoPs-C3,Chile,CL,1,G,1
+6,PoPs-C12,Chile,CL,8,,

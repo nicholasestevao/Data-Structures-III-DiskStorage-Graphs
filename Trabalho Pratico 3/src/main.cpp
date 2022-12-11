@@ -65,10 +65,13 @@ int main(int argC, char *argV[]){
             funcionalidade10Juncao(nome_arquivo);
             break;
         case 11:
-            funcionalidade11CriarGrafo(nome_arquivo);
+        {
+            Grafo * g = funcionalidade11CriarGrafo(nome_arquivo);
+            g->imprimeGrafo();
             break;
+        }           
         case 12:            
-            //funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
+            funcionalidade12ContaCiclos(funcionalidade11CriarGrafo(nome_arquivo));
             break;    
     }
 
