@@ -14,10 +14,11 @@ Grafo::Grafo(char *nome_arquivo) {
         for (unsigned int i = 0; i < *(cabecalho->proxRRN); i++)
         {
             RegistroDados *dados_A = lerRegistroDadosArquivoBin_RRN(arq_bin, i);
-            
+            //imprimeRegistroDadosTela(dados_A);
             if (dados_A != NULL && *(dados_A->idPoPsConectado) != -1)
             {
                 // Registro nao removido
+                //printf("inseriu pelo v %d\n", *(dados_A->idConecta));
                 Vertice *vertice_A = findVertice(*(dados_A->idConecta));
                 if(vertice_A == nullptr){
                     //vertice nao existe ainda
@@ -28,12 +29,10 @@ Grafo::Grafo(char *nome_arquivo) {
                 //vertice ja existe
                 if(*(dados_A->idPoPsConectado) != -1) {
                     vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+                    //printf("veloc: %d\n", *(dados_A->velocidade));
                 }
-                
 
                 // Inserindo no outro vertice (pois o grafo é nao direcionado)
-                
-
                 Vertice *vertice_B = findVertice(*(dados_A->idPoPsConectado));
                 if(vertice_B == nullptr){
                     //vertice nao existe ainda
@@ -44,11 +43,11 @@ Grafo::Grafo(char *nome_arquivo) {
                         //printf(" Criou vertice b: %d para conectar com %d\n", *(dados_B->idConecta),*(dados_A->idConecta) );
                         vertice_B = new Vertice(*(dados_B->idConecta), dados_B->nomePoPs, dados_B->nomePais, dados_B->siglaPais);
                         insertVertice(vertice_B);
+                        //printf("inseriu outro v %d\n", *(dados_B->idConecta));
                         desalocaRegistrosDados(&dados_B, 1);
                     }             
-                }else{
-                        //printf("Foi no vertice b: %d para conectar com %d\n",  vertice_B->getIdConcecta(),*(dados_A->idConecta) );
-                    } 
+                    
+                }
                 //vertice ja existe
                 vertice_B->insertAresta(new Aresta(*(dados_A->idConecta), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
                 
@@ -86,12 +85,12 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
     list<Aresta*> arestas = vertice_atual.getArestas();
     if(!arestas.empty()) {
             //printf("Vertice atual : %d\n", vertice_atual.getIdConcecta());
-            if((*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] == -1){
+            if((*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][1] == -1){
                 // Encontrou vertice que ainda nao foi descoberto (branco)
                 //printf("Encontrou vertice branco (%d)\n",vertice_atual.getIdConcecta());
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 1; // cinza
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][2] = *tempo;
+                (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
+                (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][1] = 1; // cinza
+                (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][2] = *tempo;
             }  
 
             /*list<Aresta*> arestas2 = vertice_atual.getArestas();
@@ -111,7 +110,7 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
                 if(idPoPs != id_vertice_pai){
                     (*tempo)++;
                     //int idVerticePoPs = idPoPs - menorIdConecta;
-                    int idVerticePoPs = findVerticeIndex(idPoPs);
+                    int idVerticePoPs = findIndexVertice(idPoPs);
                     //printf("    Passou pela aresta %d <-> %d    (id na lista: %d)\n", vertice_atual.getIdConcecta(), idPoPs,idVerticePoPs);
                     // indo no vertice idPoPs verificar
 
@@ -141,9 +140,9 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
                 }              
             }
             //printf("Testou todas as arestas do vertice %d\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 2;   
+            (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][1] = 2;   
             //printf("Vertice %d se tornou preto\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][3] = *tempo; 
+            (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][3] = *tempo; 
     }
 }
 
@@ -204,31 +203,21 @@ double Grafo::fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const {
         while (qnt_open > 0) {
             actual_index = findSmallestVerticeOpen((*d), tam);
             if(actual_index == -1) {
-                //cout << "Actual_Index: " << actual_index << endl;
-                //cout << "   Qauntidade abertos: " << qnt_open << endl;
-                //imprimeTodosVerticesAbertos((*d), tam);
                 break;
             }
             (*d)[actual_index].first = 'C';
             qnt_open--;
             Vertice *actual_vertice = getVertice(actual_index);
             int actual_index_id = actual_vertice->getIdConcecta();
-            //cout << "======================" << endl;
-            //cout << "Menor custo: " << (*d)[actual_index].second <<" - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
             list<Aresta*> actual_arestas = actual_vertice->getArestas();
             for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
                 int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
-                //cout << "   Sub_Index: " << sub_index << " ID: " << (*it_ar)->getIdPopsConectado() << " - Custo: " << (*d)[sub_index].second  << endl;
                 if(((*d)[sub_index].second > (*it_ar)->getVelocidade())) {
                     double coust = (*it_ar)->getVelocidade(); 
                     if((actual_index_id != id_Partida) && ((*it_ar)->getVelocidade() > (*d)[actual_index].second)) {
                         coust = (*d)[actual_index].second;
                     }
-                    //cout << "       (" << (*d)[actual_index].second << " || " << (*it_ar)->getVelocidade() << ") ? " << " -> " << coust << endl;
-                    //cout << "*     " << (*d)[sub_index].second << " > " << (*it_ar)->getVelocidade() << endl;
-                    //cout << "       Substituiu " << (*d)[sub_index].second;
                     (*d)[sub_index].second = coust;
-                    //cout << " por " << (*d)[sub_index].second << endl;
                 }
             }
         }
@@ -254,36 +243,6 @@ Vertice* Grafo::getVertice(int index) const {
         r = (*it);
     }
     return r;
-}
-
-int Grafo::findVerticeIndex(int idConecta) const{
-    int i = 0;
-    if(!vertices.empty()) {
-        Vertice buscado(idConecta);
-        auto it = vertices.begin();
-        while (it != vertices.end())
-        {
-            if ((*(*it)) == buscado) {
-                break;
-            } 
-            it++;
-            i++;
-        }
-    }
-    return i;
-}
-
-int Grafo::totalArestas() const{
-    int total = 0;
-    if(!vertices.empty()) {
-        auto it = vertices.begin();
-        while (it != vertices.end())
-        {
-            total +=(*it)->getArestas().size();
-            it++;
-        }
-    }
-    return total;
 }
 
 list<Vertice*> Grafo::getVertices() const {
@@ -316,13 +275,13 @@ void Grafo::imprimeGrafo() const {
     auto it = vertices.begin();
     while (it != vertices.end())
     {
-        //std::cout << (*it)->getIdConcecta() << " " << (*it)->getNomePoPs() << " " << (*it)->getNomePais() << " " << (*it)->getSiglaPais() << std::endl;
         list<Aresta*> arestas = (*it)->getArestas();
         auto it_arestas = arestas.begin();
         while (it_arestas != arestas.end())
         {
-            //std::cout << "        Aresta: " << (*it_arestas)->getIdPopsConectado() << " " << (*it_arestas)->getVelocidade() << " Gbps" << std::endl;
-            printf("%d %s %s %s %d %.0fMbps\n", (*it)->getIdConcecta(), (*it)->getNomePoPs().c_str(),(*it)->getNomePais().c_str(), (*it)->getSiglaPais().c_str(), (*it_arestas)->getIdPopsConectado(), (*it_arestas)->getVelocidade());
+            cout << (*it)->getIdConcecta() << " " << (*it)->getNomePoPs().c_str() << " " << (*it)->getNomePais().c_str(); 
+            cout << " " << (*it)->getSiglaPais().c_str() << " " << (*it_arestas)->getIdPopsConectado(); 
+            cout << " " << (*it_arestas)->getVelocidade() << "Mbps" << endl;
             it_arestas++;
         }
         it++;
@@ -350,25 +309,17 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
         while (qnt_open > 0) {
             actual_index = findSmallestVerticeOpen((*d), tam);
             if(actual_index == -1) {
-                //cout << "Actual_Index: " << actual_index << endl;
-                //cout << "   Qauntidade abertos: " << qnt_open << endl;
-                //imprimeTodosVerticesAbertos((*d), tam);
                 break;
             }
             (*d)[actual_index].first = 'C';
             qnt_open--;
             Vertice *actual_vertice = getVertice(actual_index);
-            //cout << "======================" << endl;
-            //cout << "Menor custo: " << (*d)[actual_index].second <<" - Indice: " << actual_index << " ID: " << actual_vertice->getIdConcecta() << endl;
             list<Aresta*> actual_arestas = actual_vertice->getArestas();
             for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
                 int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
                 double coust = (*d)[actual_index].second + (*it_ar)->getVelocidade();
                 if((*d)[sub_index].second > coust) {
-                    //cout << "*     " << (*d)[sub_index].second << " > " << coust<< endl;
-                    //cout << "       Substituiu " << (*d)[sub_index].second;
                     (*d)[sub_index].second = coust;
-                    //cout << " por " << (*d)[sub_index].second << endl;
                 }
             }
         }

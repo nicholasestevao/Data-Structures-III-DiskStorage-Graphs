@@ -1039,7 +1039,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
     if(!vertices.empty()) {
         auto it = vertices.begin();
         //printf("Inicio %d\n", (*it)->getIdConcecta());        
-        while (it != vertices.end() && (arv_busca)[/*(*it)->getIdConcecta() - menorIdConecta*/g->findVerticeIndex((*it)->getIdConcecta())][0] == -1)
+        while (it != vertices.end() && (arv_busca)[/*(*it)->getIdConcecta() - menorIdConecta*/g->findIndexVertice((*it)->getIdConcecta())][0] == -1)
         {
             // se o vertice ainda nao tiver sido descoberto
             //printf("Analisando vertice %d\n", (*it)->getIdConcecta());
