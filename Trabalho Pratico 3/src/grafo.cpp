@@ -198,7 +198,6 @@ double Grafo::fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const {
         int tam = vertices.size();
         vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
         int qnt_open = tam;
-        vector<int> *p = new vector<int>(tam, -1);
 
         int actual_index = findIndexVertice(id_Partida);
         (*d)[actual_index] = pair<char, double>('O', 0);
@@ -239,7 +238,6 @@ double Grafo::fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const {
         }
 
         delete d;
-        delete p;
     }
     return r;
 }
@@ -346,7 +344,6 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
         int tam = vertices.size();
         vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
         int qnt_open = tam;
-        vector<int> *p = new vector<int>(tam, -1);
 
         int actual_index = findIndexVertice(id_Partida);
         (*d)[actual_index] = pair<char, double>('O', 0);
@@ -381,7 +378,6 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
         }
 
         delete d;
-        delete p;
     }
     return r;
  }
