@@ -70,6 +70,83 @@ Grafo::~Grafo() {
     }
 }
 
+void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore){
+    // ind 0 -> idConecta
+    // ind 1 -> cor do vertice
+            /*
+                -1 -> branco
+                1 -> cinza
+                2 -> preto
+            
+            */
+    // ind 2 -> tempo de descoberta
+    // ind 3 -> tempo de termino
+    // ind 4 -> numero de arestas de retorno
+    Vertice vertice_atual = *(findVertice(id_vertice_atual));
+    list<Aresta*> arestas = vertice_atual.getArestas();
+    if(!arestas.empty()) {
+            //printf("Vertice atual : %d\n", vertice_atual.getIdConcecta());
+            if((*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] == -1){
+                // Encontrou vertice que ainda nao foi descoberto (branco)
+                //printf("Encontrou vertice branco (%d)\n",vertice_atual.getIdConcecta());
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 1; // cinza
+                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][2] = *tempo;
+            }  
+
+            /*list<Aresta*> arestas2 = vertice_atual.getArestas();
+            auto it_arestas = arestas2.begin();
+            while (it_arestas != arestas2.end())
+            {
+                printf("%d ", (*it_arestas)->getIdPopsConectado());
+                it_arestas++;
+            }
+            printf("\n");*/
+
+            //Lista de vertices
+            list<Vertice*> vertices = getVertices();
+            auto it = arestas.begin();
+            for(; it != arestas.end(); ++it){
+                int idPoPs = (*it)->getIdPopsConectado();
+                if(idPoPs != id_vertice_pai){
+                    (*tempo)++;
+                    //int idVerticePoPs = idPoPs - menorIdConecta;
+                    int idVerticePoPs = findVerticeIndex(idPoPs);
+                    //printf("    Passou pela aresta %d <-> %d    (id na lista: %d)\n", vertice_atual.getIdConcecta(), idPoPs,idVerticePoPs);
+                    // indo no vertice idPoPs verificar
+
+                    if((*arv_busca)[idVerticePoPs][1] == 2){
+                        //Encontrou vertice preto -> vai para proxima aresta
+                        //printf("Encontrou vertice preto\n");
+                        //break;
+                    }else if((*arv_busca)[idVerticePoPs][1] == 1){
+                        // Encontrou vertice cinza
+                        (*num_arestas_retorno)++;
+                        //printf("Encontrou vertice cinza (%d)\n",idPoPs);
+                        //vai para proxima aresta
+                        //break;
+                    }else{
+                        if((*arv_busca)[idVerticePoPs][1] == -1){
+                            // Encontrou vertice que ainda nao foi descoberto (branco)
+                            //printf("Encontrou vertice branco (%d)\n",idPoPs);
+                            (*arv_busca)[idVerticePoPs][0] = idPoPs;
+                            (*arv_busca)[idVerticePoPs][1] = 1; // cinza
+                            (*arv_busca)[idVerticePoPs][2] = *tempo;
+                        }   
+                        buscaProfundidade(arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore);
+                        //printf("Vertice atual voltou a ser: %d\n", vertice_atual.getIdConcecta());
+                    }               
+                }else{
+                    //printf("    Ignorou aresta     %d <-> %d (vem do no pai)\n", vertice_atual.getIdConcecta(), idPoPs);                    
+                }              
+            }
+            //printf("Testou todas as arestas do vertice %d\n", vertice_atual.getIdConcecta());
+            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 2;   
+            //printf("Vertice %d se tornou preto\n", vertice_atual.getIdConcecta());
+            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][3] = *tempo; 
+    }
+}
+
 int Grafo::findIndexVertice(int idConecta) const {
     int retorno = -1;
     if(!vertices.empty()) {
@@ -308,81 +385,3 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
     }
     return r;
  }
-
-void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore){
-    // ind 0 -> idConecta
-    // ind 1 -> cor do vertice
-            /*
-                -1 -> branco
-                1 -> cinza
-                2 -> preto
-            
-            */
-    // ind 2 -> tempo de descoberta
-    // ind 3 -> tempo de termino
-    // ind 4 -> numero de arestas de retorno
-    Vertice vertice_atual = *(findVertice(id_vertice_atual));
-    list<Aresta*> arestas = vertice_atual.getArestas();
-    if(!arestas.empty()) {
-            //printf("Vertice atual : %d\n", vertice_atual.getIdConcecta());
-            if((*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] == -1){
-                // Encontrou vertice que ainda nao foi descoberto (branco)
-                //printf("Encontrou vertice branco (%d)\n",vertice_atual.getIdConcecta());
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][0] = vertice_atual.getIdConcecta();
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 1; // cinza
-                (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][2] = *tempo;
-            }  
-
-            /*list<Aresta*> arestas2 = vertice_atual.getArestas();
-            auto it_arestas = arestas2.begin();
-            while (it_arestas != arestas2.end())
-            {
-                printf("%d ", (*it_arestas)->getIdPopsConectado());
-                it_arestas++;
-            }
-            printf("\n");*/
-
-            //Lista de vertices
-            list<Vertice*> vertices = getVertices();
-            auto it = arestas.begin();
-            for(; it != arestas.end(); ++it){
-                int idPoPs = (*it)->getIdPopsConectado();
-                if(idPoPs != id_vertice_pai){
-                    (*tempo)++;
-                    //int idVerticePoPs = idPoPs - menorIdConecta;
-                    int idVerticePoPs = findVerticeIndex(idPoPs);
-                    //printf("    Passou pela aresta %d <-> %d    (id na lista: %d)\n", vertice_atual.getIdConcecta(), idPoPs,idVerticePoPs);
-                    // indo no vertice idPoPs verificar
-
-                    if((*arv_busca)[idVerticePoPs][1] == 2){
-                        //Encontrou vertice preto -> vai para proxima aresta
-                        //printf("Encontrou vertice preto\n");
-                        //break;
-                    }else if((*arv_busca)[idVerticePoPs][1] == 1){
-                        // Encontrou vertice cinza
-                        (*num_arestas_retorno)++;
-                        //printf("Encontrou vertice cinza (%d)\n",idPoPs);
-                        //vai para proxima aresta
-                        //break;
-                    }else{
-                        if((*arv_busca)[idVerticePoPs][1] == -1){
-                            // Encontrou vertice que ainda nao foi descoberto (branco)
-                            //printf("Encontrou vertice branco (%d)\n",idPoPs);
-                            (*arv_busca)[idVerticePoPs][0] = idPoPs;
-                            (*arv_busca)[idVerticePoPs][1] = 1; // cinza
-                            (*arv_busca)[idVerticePoPs][2] = *tempo;
-                        }   
-                        buscaProfundidade(arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore);
-                        //printf("Vertice atual voltou a ser: %d\n", vertice_atual.getIdConcecta());
-                    }               
-                }else{
-                    //printf("    Ignorou aresta     %d <-> %d (vem do no pai)\n", vertice_atual.getIdConcecta(), idPoPs);                    
-                }              
-            }
-            //printf("Testou todas as arestas do vertice %d\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][1] = 2;   
-            //printf("Vertice %d se tornou preto\n", vertice_atual.getIdConcecta());
-            (*arv_busca)[findVerticeIndex(vertice_atual.getIdConcecta())][3] = *tempo; 
-
-    }
-}
