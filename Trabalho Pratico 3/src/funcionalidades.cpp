@@ -1035,6 +1035,8 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
     int id_vertice_pai = -1;
     int num_arestas_retorno = 0;
     int num_arestas_arvore = 0;
+    int num_ciclos_2_vertices = 0;
+    
     list<Vertice*> vertices = g->getVertices();
     if(!vertices.empty()) {
         auto it = vertices.begin();
@@ -1043,7 +1045,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
         {
             // se o vertice ainda nao tiver sido descoberto
             //printf("Analisando vertice %d\n", (*it)->getIdConcecta());
-            g->buscaProfundidade(&arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore);
+            g->buscaProfundidade(&arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore, &num_ciclos_2_vertices);
             id_vertice_pai = (*it)->getIdConcecta();
             it++;
             //printf("Foi para o proximo vertice na chamada inicial\n");

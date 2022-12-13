@@ -7,13 +7,22 @@ Aresta::Aresta(int idPoPsConectado) {
 Aresta::Aresta(int idPoPsConectado, double velocidade, char unidadeMedida) {
     this->idPoPsConectado = idPoPsConectado;
     if(velocidade != -1) {
-        this->velocidade = this->converteVelocidadeGbps(velocidade, unidadeMedida);
+        this->velocidade = this->converteVelocidadeMbps(velocidade, unidadeMedida);
     } else {
         this->velocidade = 0;
     }
 }
 
-double Aresta::converteVelocidadeGbps(double velocidade, char unidade) {
+void Aresta::setVelocidade_Unidade(double velocidade, char unidade){
+    if(velocidade != -1) {
+        this->velocidade = this->converteVelocidadeMbps(velocidade, unidade);
+    } else {
+        this->velocidade = 0;
+    }
+}   
+
+
+double Aresta::converteVelocidadeMbps(double velocidade, char unidade) {
     double r = velocidade;
     switch (unidade)
     {   

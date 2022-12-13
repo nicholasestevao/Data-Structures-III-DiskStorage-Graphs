@@ -28,8 +28,27 @@ Grafo::Grafo(char *nome_arquivo) {
                 }
                 //vertice ja existe
                 if(*(dados_A->idPoPsConectado) != -1) {
-                    vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
-                    //printf("veloc: %d\n", *(dados_A->velocidade));
+                    //printf("Aresta tem id pops conectado\n");
+                    Aresta *a = vertice_A->findAresta(*(dados_A->idPoPsConectado));
+                    
+                    if(a == nullptr){
+                        //printf("Aresta ainda nao existe\n");
+                        if(*(dados_A->velocidade) >0){
+                            vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+                           // printf("Inseriu aresta pois a velocidade nao eh nula\n");
+                        }else{
+                            //printf("Nao inseriu pois a velocidade eh nula\n");
+                        }                        
+                    }else{
+                        //printf("Aresta ja existe");
+                        //printf("veloc: %d\n", *(dados_A->velocidade));
+                        if(a->getVelocidade() == 0){
+                            a->setVelocidade_Unidade(*(dados_A->velocidade), *(dados_A->unidadeMedida));
+                        }else if(*(dados_A->velocidade) != 0 && a->converteVelocidadeMbps(*(dados_A->velocidade), *(dados_A->unidadeMedida)) != a->getVelocidade()){
+                            //printf("Velocidade nao nula diferente da anterior\n");
+                            vertice_A->insertAresta(new Aresta(*(dados_A->idPoPsConectado), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+                        }
+                    }
                 }
 
                 // Inserindo no outro vertice (pois o grafo é nao direcionado)
@@ -49,7 +68,9 @@ Grafo::Grafo(char *nome_arquivo) {
                     
                 }
                 //vertice ja existe
-                vertice_B->insertAresta(new Aresta(*(dados_A->idConecta), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+                if(*(dados_A->velocidade) != 0 ){
+                    vertice_B->insertAresta(new Aresta(*(dados_A->idConecta), *(dados_A->velocidade), (dados_A->unidadeMedida)[0]));
+                }                
                 
                 desalocaRegistrosDados(&dados_A, 1);
             }
@@ -69,7 +90,7 @@ Grafo::~Grafo() {
     }
 }
 
-void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore){
+void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int *tempo, int * num_arestas_retorno, int * num_arestas_arvore, int * num_ciclos_2_vertices){
     // ind 0 -> idConecta
     // ind 1 -> cor do vertice
             /*
@@ -105,8 +126,10 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
             //Lista de vertices
             list<Vertice*> vertices = getVertices();
             auto it = arestas.begin();
+            int idPoPs_anterior = -1;
             for(; it != arestas.end(); ++it){
                 int idPoPs = (*it)->getIdPopsConectado();
+                
                 if(idPoPs != id_vertice_pai){
                     (*tempo)++;
                     //int idVerticePoPs = idPoPs - menorIdConecta;
@@ -132,12 +155,20 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
                             (*arv_busca)[idVerticePoPs][1] = 1; // cinza
                             (*arv_busca)[idVerticePoPs][2] = *tempo;
                         }   
-                        buscaProfundidade(arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore);
+                        buscaProfundidade(arv_busca, idPoPs, vertice_atual.getIdConcecta(), tempo, num_arestas_retorno, num_arestas_arvore, num_ciclos_2_vertices);
                         //printf("Vertice atual voltou a ser: %d\n", vertice_atual.getIdConcecta());
                     }               
                 }else{
-                    //printf("    Ignorou aresta     %d <-> %d (vem do no pai)\n", vertice_atual.getIdConcecta(), idPoPs);                    
-                }              
+                    //printf("    Ignorou aresta     %d <-> %d (vem do no pai)\n", vertice_atual.getIdConcecta(), idPoPs);  
+                }
+                //Contas ciclos entre 2 vertices
+                if(idPoPs_anterior == idPoPs){
+                    (*num_ciclos_2_vertices)++;
+                    if((*num_ciclos_2_vertices)%2 == 0){
+                        (*num_arestas_retorno)++;
+                    }
+                }
+                idPoPs_anterior = idPoPs; 
             }
             //printf("Testou todas as arestas do vertice %d\n", vertice_atual.getIdConcecta());
             (*arv_busca)[findIndexVertice(vertice_atual.getIdConcecta())][1] = 2;   
