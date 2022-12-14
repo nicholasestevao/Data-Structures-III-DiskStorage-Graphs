@@ -21,6 +21,13 @@ void Aresta::setVelocidade_Unidade(double velocidade, char unidade){
     }
 }   
 
+void Aresta::setVelocidade(double velocidade){
+    if(velocidade != -1) {
+        this->velocidade = velocidade;
+    } else {
+        this->velocidade = 0;
+    }
+}  
 
 double Aresta::converteVelocidadeMbps(double velocidade, char unidade) {
     double r = velocidade;

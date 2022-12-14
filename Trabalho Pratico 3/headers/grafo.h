@@ -8,6 +8,8 @@
 #include <list>
 #include <utility>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 #include "arquivoBin.h"
 #include "arvoreB.h"
@@ -19,6 +21,8 @@ using std::find;
 using std::list;
 using std::pair;
 using std::vector;
+using std::queue;
+using std::min;
 
 
 //debug
@@ -35,6 +39,8 @@ class Grafo {
          */
         list<Vertice*> vertices;
 
+        int buscaLargura(int org, int dest, int * parent, int tam);
+        
         /**
          * Encontra o menor vertice aberto no vetor de par(status, distancia), 
          * buscando pela menor distancia entre os pares com status aberto('O').
@@ -162,6 +168,7 @@ class Grafo {
          */
         double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;
 
+        int fluxoMaximo(int org, int dest);
 };
 
 #endif

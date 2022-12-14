@@ -363,3 +363,56 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
     }
     return r;
  }
+
+
+int Grafo::buscaLargura(int org, int dest,  int * parent, int tam){
+    
+    for(int i = 0; i<tam; i++){
+        parent[i] = -1;
+    }
+    parent[org] = -2; // usar find vertice index
+    queue<pair<int, int>> fila;
+    fila.push({org, 999999});
+
+    while(!fila.empty()){
+        int atual = fila.front().first;
+        int fluxo = fila.front().second;
+        fila.pop();
+
+        list<Aresta*> arestas = findVertice(atual)->getArestas();
+        for(auto it = arestas.begin(); it != arestas.end(); it++){
+            if(parent[(*it)->getIdPopsConectado()] == -1 && findVertice(atual)->findAresta((*it)->getIdPopsConectado())->getVelocidade() > 0){
+                parent[(*it)->getIdPopsConectado()] = atual;
+                int novo_fluxo;
+                if(fluxo < (*it)->getVelocidade()){
+                    novo_fluxo = fluxo;
+                }else{
+                    novo_fluxo = (*it)->getVelocidade();
+                }
+                if((*it)->getIdPopsConectado() == dest){
+                    return novo_fluxo;
+                }
+                fila.push({(*it)->getIdPopsConectado(), novo_fluxo});
+            }
+        } 
+    }
+    return 0;
+}
+
+int Grafo::fluxoMaximo(int org, int dest){
+    int fluxo = 0;
+    int * parent = new int[vertices.size()];
+    int novo_fluxo;
+
+    while((novo_fluxo = buscaLargura(org, dest, parent, vertices.size())) != 0){
+        fluxo += novo_fluxo;
+        int atual = dest;
+        while(atual != org){
+            int anterior = parent[atual];
+            findVertice(anterior)->findAresta(atual)->setVelocidade(findVertice(anterior)->findAresta(atual)->getVelocidade() - novo_fluxo);
+            findVertice(atual)->findAresta(anterior)->setVelocidade(findVertice(atual)->findAresta(anterior)->getVelocidade() + novo_fluxo);
+            atual = anterior;
+        }
+    }
+    return fluxo;
+}

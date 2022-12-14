@@ -19,6 +19,7 @@ class Aresta {
         double getVelocidade() const;
 
         void setVelocidade_Unidade(double velocidade, char unidade); 
+        void setVelocidade(double velocidade); 
 
         bool operator == (const Aresta &other) const;
         bool operator > (const Aresta &other) const;

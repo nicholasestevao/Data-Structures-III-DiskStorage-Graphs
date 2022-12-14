@@ -1068,11 +1068,13 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
         return;
     }
 
+
     double fluxo_max = 0.0;
     int id_Partida = 0, id_Chegada = 0;
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada;
-        fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
+        fluxo_max = g->fluxoMaximo(id_Partida, id_Chegada);
+        //fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
         cout << ": " << fluxo_max; 
         if(fluxo_max != -1) {
@@ -1119,3 +1121,4 @@ void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca) {
     
     delete g;
 }
+
