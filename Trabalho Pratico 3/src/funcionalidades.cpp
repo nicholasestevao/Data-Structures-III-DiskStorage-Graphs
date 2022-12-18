@@ -1024,7 +1024,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
         for(int j = 0; j< 4; j++){
             arv_busca[i][j] = -1;
         }
-    }    
+    }
     // ind 0 -> idConecta
     // ind 1 -> cor do vertice
     // ind 2 -> tempo de descoberta
@@ -1044,8 +1044,8 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
             it++;
         }
     }
-
     cout << "Quantidade de ciclos: " << num_arestas_retorno << endl;
+    delete arv_busca;
 }
 
 void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
