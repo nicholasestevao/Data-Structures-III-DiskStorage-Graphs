@@ -38,8 +38,6 @@ class Grafo {
          * Lista encadeada de ponteiro de Vertices.
          */
         list<Vertice*> vertices;
-
-        int buscaLargura(int org, int dest, int * parent, int tam);
         
         /**
          * Encontra o menor vertice aberto no vetor de par(status, distancia), 
@@ -87,7 +85,7 @@ class Grafo {
          * @param num_arestas_arvore
          * @param num_ciclos_2_vertices numeros de ciclos que envolvem apenas dois vertices (uma aresta de A para B e outra de B para A).
          */
-        void buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno, int * num_arestas_arvore, int * num_ciclos_2_vertices);
+        void buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno);
         
         /**
          * Encontra o indice(posicao relativa) de um vertice na lista
@@ -168,7 +166,6 @@ class Grafo {
          */
         double menorDistanciaEntreVertices(int id_Partida, int id_Chegada, vector<int> *antecessores) const;
 
-        int fluxoMaximo(int org, int dest);
 };
 
 #endif

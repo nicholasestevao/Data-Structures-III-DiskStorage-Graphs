@@ -1024,9 +1024,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
         for(int j = 0; j< 5; j++){
             arv_busca[i][j] = -1;
         }
-    }
-    //printf("Numero de vertices: %d\n", numVertices);
-    
+    }    
     // ind 0 -> idConecta
     // ind 1 -> cor do vertice
     // ind 2 -> tempo de descoberta
@@ -1034,28 +1032,20 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
     int tempo = 0;
     int id_vertice_pai = -1;
     int num_arestas_retorno = 0;
-    int num_arestas_arvore = 0;
-    int num_ciclos_2_vertices = 0;
     
     list<Vertice*> vertices = g->getVertices();
     if(!vertices.empty()) {
-        auto it = vertices.begin();
-        //printf("Inicio %d\n", (*it)->getIdConcecta());        
-        while (it != vertices.end() && (arv_busca)[/*(*it)->getIdConcecta() - menorIdConecta*/g->findIndexVertice((*it)->getIdConcecta())][0] == -1)
+        auto it = vertices.begin();  
+        while (it != vertices.end() && (arv_busca)[g->findIndexVertice((*it)->getIdConcecta())][0] == -1)
         {
             // se o vertice ainda nao tiver sido descoberto
-            //printf("Analisando vertice %d\n", (*it)->getIdConcecta());
-            g->buscaProfundidade(&arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno, &num_arestas_arvore, &num_ciclos_2_vertices);
+            g->buscaProfundidade(&arv_busca, (*it)->getIdConcecta(), id_vertice_pai, &tempo, &num_arestas_retorno);
             id_vertice_pai = (*it)->getIdConcecta();
             it++;
-            //printf("Foi para o proximo vertice na chamada inicial\n");
         }
     }
 
     cout << "Quantidade de ciclos: " << num_arestas_retorno << endl;
-    //printf("Total de Arestas: %d\n", g->totalArestas());
-    //printf("Arvore: %d\n", num_arestas_arvore); 
-    //printf("Retorno: %d\n", num_arestas_retorno);
 }
 
 void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
@@ -1073,8 +1063,7 @@ void funcionalidade13FluxoMaximo(char *nome_arquivo, int &qnt_busca) {
     int id_Partida = 0, id_Chegada = 0;
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada;
-        fluxo_max = g->fluxoMaximo(id_Partida, id_Chegada);
-        //fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
+        fluxo_max = g->fluxoMaxEntreVertices(id_Partida, id_Chegada);
         cout << "Fluxo máximo entre " << id_Partida << " e " <<  id_Chegada;
         cout << ": " << fluxo_max; 
         if(fluxo_max != -1) {
