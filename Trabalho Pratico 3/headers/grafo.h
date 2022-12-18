@@ -75,15 +75,14 @@ class Grafo {
         ~Grafo();
         
         /**
-         * 
+         * Realiza uma busca em profundidade no grafo a partir de um vertice
+         * e conta a quantidade de arestas de retorno encontradas
          * 
          * @param arv_busca
          * @param id_vertice_atual
          * @param id_vertice_pai
          * @param tempo
          * @param num_arestas_retorno
-         * @param num_arestas_arvore
-         * @param num_ciclos_2_vertices numeros de ciclos que envolvem apenas dois vertices (uma aresta de A para B e outra de B para A).
          */
         void buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno);
         
@@ -155,7 +154,7 @@ class Grafo {
         
         /**
          * Calcula a menor distancia entre dois vertices (vertice de partida 
-         * e vertice de chagada). A menor distancia se da pelo menor soma de
+         * e vertice de chegada). A menor distancia se da pelo menor soma de
          * velocidades de um caminho entre dois vertices.
          * 
          * @param id_Partida ID do vertice de partida.

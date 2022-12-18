@@ -109,7 +109,6 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
             //Lista de vertices
             list<Vertice*> vertices = getVertices();
             auto it = arestas.begin();
-            //int idPoPs_anterior = -1;
             for(; it != arestas.end(); ++it){
                 int idPoPs = (*it)->getIdPopsConectado();
                 

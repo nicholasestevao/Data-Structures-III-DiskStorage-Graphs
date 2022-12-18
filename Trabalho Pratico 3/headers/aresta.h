@@ -28,12 +28,12 @@ class Aresta {
         bool operator <= (const Aresta &other) const;
 
         /**
-         * Converte a velocdade de conexão para Gb/s.
+         * Converte a velocdade de conexão para Mb/s.
          * 
          * @param velocidade velocidade a ser convertida.
          * @param unidade da velocidade a ser convertida.
          * 
-         * @return retorna a velocidade em Gp/s.
+         * @return retorna a velocidade em Mb/s.
          */
         double converteVelocidadeMbps(double velocidade, char unidade);
 };
