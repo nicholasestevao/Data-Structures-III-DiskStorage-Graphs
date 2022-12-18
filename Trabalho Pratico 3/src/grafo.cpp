@@ -328,11 +328,12 @@ void Grafo::imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam)
     }
 }
 
-double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const {
+double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada, vector<int> *antecessores) const {
     double r = -1;
     if((findIndexVertice(id_Partida) != -1) && (findIndexVertice(id_Chegada) != -1)) {
         int tam = vertices.size();
         vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+        //vector<int> *antecessores = new vector<int>(tam, -1);
         int qnt_open = tam;
 
         int actual_index = findIndexVertice(id_Partida);
@@ -351,6 +352,7 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
                 double coust = (*d)[actual_index].second + (*it_ar)->getVelocidade();
                 if((*d)[sub_index].second > coust) {
                     (*d)[sub_index].second = coust;
+                    (*antecessores)[sub_index] = actual_index;
                 }
             }
         }
@@ -358,9 +360,12 @@ double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const 
         if((*d)[actual_index].second != INFINITY) {
             r = (*d)[actual_index].second;
         }
-
+        /*for(int i =0; i < tam; i++) {
+            cout << "       Index: " << i << " Antecessor: " << (*antecessores)[i] << endl;
+        }*/
         delete d;
     }
+    
     return r;
  }
 
@@ -400,17 +405,40 @@ int Grafo::buscaLargura(int org, int dest,  int * parent, int tam){
 }
 
 int Grafo::fluxoMaximo(int org, int dest){
+    cout<<"fluxo maximo"<<endl;
     int fluxo = 0;
-    int * parent = new int[vertices.size()];
+    vector<int> *antecessores = new vector<int>(getVertices().size(), -1);
     int novo_fluxo;
 
-    while((novo_fluxo = buscaLargura(org, dest, parent, vertices.size())) != 0){
+    while((novo_fluxo = menorDistanciaEntreVertices(org, dest, antecessores)) != -1){
         fluxo += novo_fluxo;
         int atual = dest;
         while(atual != org){
-            int anterior = parent[atual];
-            findVertice(anterior)->findAresta(atual)->setVelocidade(findVertice(anterior)->findAresta(atual)->getVelocidade() - novo_fluxo);
-            findVertice(atual)->findAresta(anterior)->setVelocidade(findVertice(atual)->findAresta(anterior)->getVelocidade() + novo_fluxo);
+            int anterior = antecessores->at(findIndexVertice(atual));
+            anterior = getVertice(anterior)->getIdConcecta();
+            cout << "Aresta: " << anterior << " - " << atual << " - " << novo_fluxo << endl;
+            Vertice * vert_anterior = findVertice(anterior);
+            Vertice * vert_atual = findVertice(atual);
+            if(vert_anterior != nullptr){
+                Aresta * aresta_anterior_atual = vert_anterior->findAresta(atual);
+                if(aresta_anterior_atual != nullptr){
+                    aresta_anterior_atual->setVelocidade(aresta_anterior_atual->getVelocidade() - novo_fluxo);
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+            if(vert_atual != nullptr){
+                Aresta * aresta_atual_anterior = vert_atual->findAresta(anterior);
+                if(aresta_atual_anterior != nullptr){
+                    aresta_atual_anterior->setVelocidade(aresta_atual_anterior->getVelocidade() + novo_fluxo);
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
             atual = anterior;
         }
     }

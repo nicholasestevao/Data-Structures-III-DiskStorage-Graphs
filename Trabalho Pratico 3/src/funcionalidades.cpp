@@ -1099,10 +1099,11 @@ void funcionalidade14VelocidadeEntrePontos(char *nome_arquivo, int &qnt_busca) {
 
     double comprimento_total = 0.0;
     int id_Partida = 0, id_Chegada = 0, id_Parada = 0;
+    vector<int> *antecessores = new vector<int>(g->getVertices().size(), -1);
     for(int i = 0; i < qnt_busca; i++) {
         cin >> id_Partida >> id_Chegada >> id_Parada;
-        double comprimento_Partida_Parada = g->menorDistanciaEntreVertices(id_Partida, id_Parada);
-        double comprimento_Parada_Chegada = g->menorDistanciaEntreVertices(id_Parada, id_Chegada);
+        double comprimento_Partida_Parada = g->menorDistanciaEntreVertices(id_Partida, id_Parada, antecessores);
+        double comprimento_Parada_Chegada = g->menorDistanciaEntreVertices(id_Parada, id_Chegada, antecessores);
 
         if((comprimento_Partida_Parada == -1) || (comprimento_Parada_Chegada == -1)) {
             comprimento_total = -1;

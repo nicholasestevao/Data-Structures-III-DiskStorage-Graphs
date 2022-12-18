@@ -166,7 +166,7 @@ class Grafo {
          * @return Retorna a menor distancia entre o verice de partida e de chegada.
          * caso nao exista uma conexao entre esses dois vertices retorna -1.
          */
-        double menorDistanciaEntreVertices(int id_Partida, int id_Chegada) const;
+        double menorDistanciaEntreVertices(int id_Partida, int id_Chegada, vector<int> *antecessores) const;
 
         int fluxoMaximo(int org, int dest);
 };
