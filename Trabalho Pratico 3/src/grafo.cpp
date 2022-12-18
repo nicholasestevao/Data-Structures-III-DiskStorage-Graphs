@@ -410,7 +410,7 @@ int Grafo::fluxoMaximo(int org, int dest){
     vector<int> *antecessores = new vector<int>(getVertices().size(), -1);
     int novo_fluxo;
 
-    while((novo_fluxo = menorDistanciaEntreVertices(org, dest, antecessores)) != -1){
+    while((novo_fluxo = menorDistanciaEntreVertices(org, dest, antecessores)) != -1 && novo_fluxo > 0){
         fluxo += novo_fluxo;
         int atual = dest;
         while(atual != org){
