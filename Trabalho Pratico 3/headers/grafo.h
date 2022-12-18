@@ -8,7 +8,6 @@
 #include <list>
 #include <utility>
 #include <vector>
-#include <queue>
 #include <algorithm>
 
 #include "arquivoBin.h"
@@ -16,18 +15,13 @@
 #include "funcionalidades.h"
 #include "vertice.h"
 
+using std::cout;
+using std::endl;
 using std::invalid_argument;
-using std::find;
 using std::list;
 using std::pair;
 using std::vector;
-using std::queue;
-using std::min;
 
-
-//debug
-using std::cout;
-using std::endl;
 
 /**
  * Classe grafo.
