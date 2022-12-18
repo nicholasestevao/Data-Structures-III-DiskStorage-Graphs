@@ -1021,7 +1021,7 @@ void funcionalidade12ContaCiclos(char *nome_arquivo){
     int** arv_busca = (int **) malloc(sizeof(int*)*numVertices);
     for(int i = 0; i<numVertices; i++){
         arv_busca[i] = (int * ) malloc(sizeof(int)*4);
-        for(int j = 0; j< 5; j++){
+        for(int j = 0; j< 4; j++){
             arv_busca[i][j] = -1;
         }
     }    

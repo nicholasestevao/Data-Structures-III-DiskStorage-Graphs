@@ -78,11 +78,11 @@ class Grafo {
          * Realiza uma busca em profundidade no grafo a partir de um vertice
          * e conta a quantidade de arestas de retorno encontradas
          * 
-         * @param arv_busca
-         * @param id_vertice_atual
-         * @param id_vertice_pai
-         * @param tempo
-         * @param num_arestas_retorno
+         * @param arv_busca matriz de inteiros que armazena o idConecta, a cor, o tempo de descoberta e o tempo de finalização de cada vértice
+         * @param id_vertice_atual indice do vertice atual da buscca
+         * @param id_vertice_pai indice do vertice pai da busca
+         * @param tempo tempo atual da busca
+         * @param num_arestas_retorno quatidade de arestas de retorno encontradas
          */
         void buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_vertice_pai, int * tempo, int * num_arestas_retorno);
         

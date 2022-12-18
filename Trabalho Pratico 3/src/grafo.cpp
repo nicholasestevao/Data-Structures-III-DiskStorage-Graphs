@@ -95,7 +95,6 @@ void Grafo::buscaProfundidade(int *** arv_busca, int id_vertice_atual, int id_ve
         */
     // ind 2 -> tempo de descoberta
     // ind 3 -> tempo de termino
-    // ind 4 -> numero de arestas de retorno
     Vertice vertice_atual = *(findVertice(id_vertice_atual));
     list<Aresta*> arestas = vertice_atual.getArestas();
     if(!arestas.empty()) {
