@@ -190,40 +190,76 @@ Vertice* Grafo::findVertice(int idConecta) const{
 }
 
 double Grafo::fluxoMaxEntreVertices(int id_Partida, int id_Chegada) const {
+    //Inicia o retorno com -1.
     double r = -1;
+    //Se o vertice de partida ou o vertice de chegada existirem.
     if((findIndexVertice(id_Partida) != -1) && (findIndexVertice(id_Chegada) != -1)) {
+        //Pega tamnaho do grafo (quantidade de vertices).
         int tam = vertices.size();
+        //Cria um vetor de pares com a mesma quantidade de vertices do grafo.
+        //Par - (Aberto, Velocidade Fluxo) -> todos abertos e com fluxo infinito
         vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+        //Quantidade de vertices abertos
         int qnt_open = tam;
 
+        //Indice atual comeca do vertice de patida
         int actual_index = findIndexVertice(id_Partida);
+        //Garante abertura do vertice de partida e colca fluxo 0.
         (*d)[actual_index] = pair<char, double>('O', 0);
+
+        //Enaquanto tiver vertices abertos.
         while (qnt_open > 0) {
+
+            //Pega um vertice aberto com o menor fluxo.
             actual_index = findSmallestVerticeOpen((*d), tam);
+            //Se nao tiver um menor acaba rotina.
             if(actual_index == -1) {
                 break;
             }
+
+            //Fecha o veritce que acabou de acessar.
             (*d)[actual_index].first = 'C';
+
+            //Diminui a quantidade de vertices abertos.
             qnt_open--;
+
+            //Recupera esse vertice.
             Vertice *actual_vertice = getVertice(actual_index);
+
+            //Recupera seu id.
             int actual_index_id = actual_vertice->getIdConcecta();
+
+            //Recupera todas suas arestas.
             list<Aresta*> actual_arestas = actual_vertice->getArestas();
+
+            //Percorre todas as arestas atualizando o fluxo na sua posição equivalete do vetor de pares.
             for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
+                //Pega o indice do vertice de ligacao da aresta.
                 int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
+                //Se o fluxo atual eh maior que a velocidade dessa aresta .
                 if(((*d)[sub_index].second > (*it_ar)->getVelocidade())) {
-                    double coust = (*it_ar)->getVelocidade(); 
+                    //O fluxo passa ser a velocidade da aresta.
+                    double flux = (*it_ar)->getVelocidade(); 
+                    //Se o indice atual for diferente do vertice de partida e
+                    // a velociade atual for maior que o fluxo do vertice atual.
                     if((actual_index_id != id_Partida) && ((*it_ar)->getVelocidade() > (*d)[actual_index].second)) {
-                        coust = (*d)[actual_index].second;
+                        //O fluxo passa ser o menor (no caso a do vertice atual).
+                        flux = (*d)[actual_index].second;
                     }
-                    (*d)[sub_index].second = coust;
+                    //Atualiza fluxo do sub indice para o definido anteriormente.
+                    (*d)[sub_index].second = flux;
                 }
             }
         }
+        //Pega o indice do Vertice de chegada.
         actual_index = findIndexVertice(id_Chegada);
+        //Verifica se ele foi acessado ao menos 1 vez.
         if((*d)[actual_index].second != INFINITY) {
+            //Atualiza retorno para o fluxo maximo do vertice de partida ao de chegada
             r = (*d)[actual_index].second;
         }
 
+        //Deleta o vetor de pares.
         delete d;
     }
     return r;
@@ -296,40 +332,71 @@ void Grafo::imprimeTodosVerticesAbertos(vector<pair<char, double>> &d, int &tam)
 }
 
 double Grafo::menorDistanciaEntreVertices(int id_Partida, int id_Chegada, vector<int> *antecessores) const {
+    //Inicia o retorno com -1.
     double r = -1;
+    //Se o vertice de partida ou o vertice de chegada existirem.
     if((findIndexVertice(id_Partida) != -1) && (findIndexVertice(id_Chegada) != -1)) {
+        //Pega tamnaho do grafo (quantidade de vertices).
         int tam = vertices.size();
+        //Cria um vetor de pares com a mesma quantidade de vertices do grafo.
+        //Par - (Aberto, distancia) -> todos abertos e com distancia infinita
         vector<pair<char, double>> *d = new vector<pair<char, double>>(tam, pair<char, double>('O', INFINITY));
+        //Quantidade de vertices abertos
         int qnt_open = tam;
 
+        //Indice atual comeca do vertice de patida
         int actual_index = findIndexVertice(id_Partida);
+        //Garante abertura do vertice de partida e colca distancia 0.
         (*d)[actual_index] = pair<char, double>('O', 0);
+
+        //Enaquanto tiver vertices abertos.
         while (qnt_open > 0) {
+
+            //Pega um vertice aberto com o menor distancia.
             actual_index = findSmallestVerticeOpen((*d), tam);
+            //Se nao tiver um menor acaba rotina.
             if(actual_index == -1) {
                 break;
             }
+
+            //Fecha o veritce que acabou de acessar.
             (*d)[actual_index].first = 'C';
+
+            //Diminui a quantidade de vertices abertos.
             qnt_open--;
+
+            //Recupera esse vertice.
             Vertice *actual_vertice = getVertice(actual_index);
+
+            //Recupera todas suas arestas.
             list<Aresta*> actual_arestas = actual_vertice->getArestas();
+
+            //Percorre todas as arestas atualizando a distancia na sua posição equivalete do vetor de pares.
             for(auto it_ar = actual_arestas.begin(); it_ar != actual_arestas.end(); it_ar++) {
+                //Pega o indice do vertice de ligacao da aresta.
                 int sub_index = findIndexVertice((*it_ar)->getIdPopsConectado());
+                //O custo eh soma do custo atual com a distancia do vertice.
                 double coust = (*d)[actual_index].second + (*it_ar)->getVelocidade();
+                //Se o custo for menor que a distancia do vertice de partida a esse vertice. 
                 if((*d)[sub_index].second > coust) {
+                    //Atualiza a distancia do vertice de partida a esse vertice para a menor.
                     (*d)[sub_index].second = coust;
+                    //Atualiza o vetor de antecessores. 
                     (*antecessores)[sub_index] = actual_index;
                 }
             }
         }
+        //Pega o indice do vertice de chegada.
         actual_index = findIndexVertice(id_Chegada);
+        //Se ele foi acessado pelo menos 1 vez.
         if((*d)[actual_index].second != INFINITY) {
+            //O retorno recebe a menor distancia entre o vertice de partida e de chegada. 
             r = (*d)[actual_index].second;
         }
+
+        //Deleta o vetor de pares.
         delete d;
     }
     
     return r;
  }
-
-
